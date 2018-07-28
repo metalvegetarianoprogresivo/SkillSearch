@@ -1,0 +1,121 @@
+{% extends "templates/base.html" %}
+{% load static search_extras %}
+{% block extra_headers %}
+<script src="{% static 'js/modal.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        var roster_cart_buttons = $('.roster-cart');
+
+        $('.roster-cart').each(function(){
+            var bio = $(this);
+            var add_to_roster_action = "{% url 'add_to_roster' %}";
+            var remove_from_roster_action = "{% url 'remove_from_roster' %}";
+
+            bio.on('click', function(){
+                var bio_id = bio.attr('data-bio');
+                $.post(
+                    bio.attr('data-action'),
+                    {"bio_id": bio_id},
+                    function(data){
+                        get_roster_bios();
+                        var buttons = $('[data-bio='+bio_id+']');
+                        buttons.attr('data-action', data.added ? remove_from_roster_action : add_to_roster_action);
+                        buttons.html(data.added ? 'Remove from cart' : 'Add to cart');
+                    }
+                );
+            });
+            bio.removeClass('d-none');
+        });
+    });
+</script>
+{% endblock %}
+{% block content %}
+
+<div class="container my-4 pb-5">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mt-2 float-left">
+                {% if bios %}
+                {{ title }} {% if q %} for {{ q }} {% endif %}
+                {% else %}
+                No matches for {{ q }}
+                {% endif %}
+            </h5>
+        </div>
+        <div class="table-responsive">
+            {% if bios %}
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <th>Consultant</th>
+                        <th>Skills</th>
+                        {% comment %}<th>Kimble</th>{% endcomment %}
+                        <th style="width: 70px">Action</th>
+                    </tr>
+                    {% for bio in bios %}
+                    <tr>
+                        <td class="align-middle" style="width: 300px;">
+                            <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.1.id }}">
+                                {{ bio.1.name }}
+                            </a><br>
+                            <center class="font-weight-bold">{{ bio.1.title }}</center>
+                        </td>
+                        <td class="align-middle" style="width: 450px;">{% get_importance bio.1.technical_skills.all tags %}</td>
+                        {% comment %}<td class="align-middle" style="width: 450px;">{% get_importance bio.1.capabilities.all tags %}</td>{% endcomment %}
+                        <td class="align-middle">
+                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.1.pk }}" data-action="{% if bio.1.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.1.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav class="float-right pr-5" aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if bios.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link paginator-link" href="?q={{ q }}&page=1">&laquo; first</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link paginator-link" href="?q={{ q }}&page={{ bios.previous_page_number }}">{{ bios.previous_page_number }}</a>
+                    </li>
+                    {% endif %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{ bios.number }}</a>
+                    </li>
+                    {% if bios.has_next %}
+                    <li class="page-item">
+                        <a class="page-link paginator-link" href="?q={{ q }}&page={{ bios.next_page_number }}">{{ bios.next_page_number }}</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link paginator-link" href="?q={{ q }}&page={{ bios.paginator.num_pages }}">last &raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% for bio in bios %}
+<div class="modal fade mt-5 pt-5" id="theModal{{ bio.1.id }}" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{ bio.1.name }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{ bio.1.profile }}
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.1.pk }}" data-bio="{{ bio.1.pk }}" data-action="{% if bio.1.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.1.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Open Bio</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

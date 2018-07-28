@@ -1,0 +1,67 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container my-4 pb-5">
+<div class="card">
+  <div class="card-header">
+    <h5 class="mt-2 float-left">{{ title }}</h5>
+  </div>
+  {% block extra_form_content %}{% endblock %}
+  <form class="border rounded p-3" action="{{ form_action }}" method="post" {% if enctype %}enctype="multipart/form-data"{% endif %}>
+    {% if form.non_field_errors %}
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="alert alert-danger small" role="alert">
+            {{ form.non_field_errors }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    {% for field in form %}
+      {% if field.errors %}
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="alert alert-danger small" role="alert">
+            {{ field.errors }}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="form-group row fieldWrapper">
+        <div class="col-sm-2">
+          {{ field.label_tag }}
+          {% if field.help_text %}
+            <br/>
+            <p class="font-weight-light text-secondary small help">{{ field.help_text|safe }}</p>
+          {% endif %}
+        </div>
+        <div class="col-sm-4">
+          {{ field }}
+        </div>
+      </div>
+    {% endfor %}
+    {% if inline_formset %}
+      <div class="row">
+        <div class="col-sm-5">
+          {{ inline_formset.management_form }}
+          <ul class="list-group">
+          {% for inline_form in inline_formset %}
+            <li class="list-group-item">
+              {{ inline_form.as_p }}
+            </li>
+          {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+    <div class="row pt-2">
+      <div class="col-sm-5">
+        {% csrf_token %}
+        <input class="btn btn-success" type="submit" value="Execute">
+        <a class="btn cancel-button" href="{% url 'bios_index' %}">Cancel</a>
+      </div>
+    </div>
+  </form>
+</div>
+</div>
+{% endblock %}
