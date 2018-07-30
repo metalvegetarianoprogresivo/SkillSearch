@@ -66,8 +66,8 @@ def process_documents():
                                             # Skill already added
                                             continue
                             elif len(cell_text) < 31:
-                                if "/" in name:
-                                    for sub in name.split("/"):
+                                if "/" in cell_text:
+                                    for sub in cell_text.split("/"):
                                         skill, _ = Technical.objects.get_or_create(
                                             name=sub.strip()
                                         )
