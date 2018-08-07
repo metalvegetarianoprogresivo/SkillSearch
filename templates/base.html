@@ -23,6 +23,7 @@
                         //roster_bios = data.bios;
                         $('#roster_count2').html(data.bios.length);
                         $('#roster_count1').html(data.bios.length);
+
                     }
                 );
             }
@@ -38,11 +39,34 @@
     <body>
 
         <nav class="navbar navbar-expand-md bg-light navbar-light fixed-top">
-           <a class="navbar-brand" href="https://www.intersysconsulting.com/">
-               <img width="159" height="23" src="https://www.intersysconsulting.com/wp-content/themes/intersys17/dist/images/intersys-logo.svg" alt="Intersys Consulting, Inc.">
-           </a>
-           <!-- Links -->
-           <div class="d-none d-md-block">
+            <a class="navbar-brand" href="https://www.intersysconsulting.com/">
+                <img width="159" height="23" src="https://www.intersysconsulting.com/wp-content/themes/intersys17/dist/images/intersys-logo.svg" alt="Intersys Consulting, Inc.">
+            </a>
+            <!-- Links -->
+            <a class="btn btn-info mx-1 " href="{% url 'roster_detail' %}">
+                    <span id="roster_count" class="badge badge-sm badge-pill badge-info">0</span>
+                    <span class="oi oi-cart"></span>
+            </a>
+            <div class="float-right">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            </div>
+            <div class="collapse navbar-collapse float-right" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><span class="oi oi-home"></span> Home</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0 search-form" action="/search">
+                <input id="input-search" class="form-control mr-sm-2" type="text" name="q" placeholder="Search skills" {% if q %}value="{{ q }}"{% endif %}>
+                <button class="btn btn-success my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass"></span> Search</button>
+                <a class="btn btn-info mx-1 d-sm-none d-md-block" href="{% url 'roster_detail' %}">
+                    <span id="roster_count" class="badge badge-sm badge-pill badge-info">0</span>
+                    <span class="oi oi-cart"></span>
+                  </a>
+            </form>
             </div>
             <li class="nav-item d-none d-sm-block d-md-none d-block d-sm-none navbar-nav mr-auto">
                    <a class="nav-link" href="/"><span class="oi oi-home"></span> Home</a>
