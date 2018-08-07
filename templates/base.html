@@ -22,7 +22,7 @@
                     function(data){
                         //roster_bios = data.bios;
                         $('#roster_count2').html(data.bios.length);
-                        //$('#roster_count2').html(data.bios.length);
+                        $('#roster_count1').html(data.bios.length);
                     }
                 );
             }
@@ -48,7 +48,7 @@
                    <a class="nav-link" href="/"><span class="oi oi-home"></span> Home</a>
             </li>
              <a id="buttonCart" class="btn btn-info mx-1 sm-block d-none d-sm-block d-md-none d-block d-sm-none" href="{% url 'roster_detail' %}">
-                   <span id="roster_count2" class="badge badge-sm badge-pill badge-info">0</span>
+                   <span id="roster_count1" class="badge badge-sm badge-pill badge-info">0</span>
                    <span class="oi oi-cart"></span>
                  </a>
            <button  class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
