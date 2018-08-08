@@ -2,6 +2,32 @@
 {% load static search_extras %}
 {% block extra_headers %}
 <script src="{% static 'js/modal.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        var roster_cart_buttons = $('.roster-cart');
+
+        $('.roster-cart').each(function(){
+            var bio = $(this);
+            var add_to_roster_action = "{% url 'add_to_roster' %}";
+            var remove_from_roster_action = "{% url 'remove_from_roster' %}";
+
+            bio.on('click', function(){
+                var bio_id = bio.attr('data-bio');
+                $.post(
+                    bio.attr('data-action'),
+                    {"bio_id": bio_id},
+                    function(data){
+                        get_roster_bios();
+                        var buttons = $('[data-bio='+bio_id+']');
+                        buttons.attr('data-action', data.added ? remove_from_roster_action : add_to_roster_action);
+                        buttons.html(data.added ? 'Remove from cart' : 'Add to cart');
+                    }
+                );
+            });
+            bio.removeClass('d-none');
+        });
+    });
+</script>
 {% endblock %}
 {% block content %}
 
@@ -17,17 +43,21 @@
                         <th>Consultant</th>
                         <th>Skills</th>
                         {% comment %}<th>Capabilities</th>{% endcomment %}
+                        <th style="width: 70px">Action</th>
                     </tr>
                     {% for bio in bios %}
                     <tr>
                         <td class="align-middle" style="width: 300px;">
                             <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
-                                {{ bio.name }}
+                                {{ bio.name }} hola1
                             </a><br>
-                            <center class="font-weight-bold">{{ bio.title }}</center>
+                            <center class="font-weight-bold">{{ bio.title }}hola2</center>
                         </td>
-                        <td class="align-middle" style="width: 450px;">{% get_importance bio.technical_skills.all tags %}</td>
+                        <td class="align-middle" style="width: 450px;">{% get_importance bio.technical_skills.all tags %}hola3</td>
                         {% comment %}<td class="align-middle" style="width: 450px;">{% get_importance bio.capabilities.all tags %}</td>{% endcomment %}
+                       <td class="align-middle">
+                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -49,7 +79,7 @@
                 {{ bio.profile }}
             </div>
             <div class="modal-footer">
-                <button class="btn btn-sm btn-outline-success d-none roster-cart float_left" data-bio="{{ bio.1.pk }}" data-action="{% if bio.1.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.1.pk in roster %}Remove from roster{% else %}Add to roster{% endif %}</button>
+                <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.pk }}" data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Open Bio</button>
             </div>
