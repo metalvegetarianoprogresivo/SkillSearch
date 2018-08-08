@@ -49,11 +49,11 @@
                     <tr>
                         <td class="align-middle" style="width: 300px;">
                             <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
-                                {{ bio.name }} hola1
+                                {{ bio.name }} 
                             </a><br>
-                            <center class="font-weight-bold">{{ bio.title }}hola2</center>
+                            <center class="font-weight-bold">{{ bio.title }}</center>
                         </td>
-                        <td class="align-middle" style="width: 450px;">{% get_importance bio.technical_skills.all tags %}hola3</td>
+                        <td class="align-middle" style="width: 450px;">{% get_importance bio.technical_skills.all tags %}</td>
                         {% comment %}<td class="align-middle" style="width: 450px;">{% get_importance bio.capabilities.all tags %}</td>{% endcomment %}
                        <td class="align-middle">
                             <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
