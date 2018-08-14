@@ -57,7 +57,10 @@ coverage.xml
 local_settings.py
 db.sqlite3
 consultantmarketproject/static/*
+consultantmarketproject/static/.*
 consultantmarketproject/media/*
+media/*
+media/.*
 
 # Flask stuff:
 instance/
