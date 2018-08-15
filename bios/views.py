@@ -7,8 +7,11 @@ from .get_documents import GetDocumentsCommand
 from .models import Bio, Technical
 
 def index(request):
+    if(request.session["authenticated"] == None or request.session["authenticated"] == False):
+        return redirect("https://skillsearch.westeurope.cloudapp.azure.com/")
     context = {
-    }
+        'title':'Update the bios'
+        }
     return render(request, 'bios/index.html', context)
 
 def process_documents():

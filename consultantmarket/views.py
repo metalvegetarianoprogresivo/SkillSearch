@@ -3,11 +3,10 @@ from django.http import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
+from django.shortcuts import redirect
 # Use this just as example
 @csrf_exempt
 def index(request):
-    request.session['authenticated'] = False
-    
     '''
     print(dir(request))
     print("------POST") 
@@ -21,11 +20,18 @@ def index(request):
     print(dir(request.GET))
     print("--GTE")
     print(request.GET.keys())
-    '''
     print("LLaves y valores")
     for key, val in request.POST.items():
         print(key+"--"+val+"\n")
+    '''
     proxyURL = getURL()
+    if(request.POST.keys()):
+        request.session['authenticated'] = True
+        print("POST")
+    else:
+        request.session['authenticated'] = False
+        print("False")
+        return redirect(proxyURL["authurl"])
     #if(request.session['authenticated'] == False):
     #    return redirect(proxyURL)
     #full_path = request.get_full_path()
@@ -65,3 +71,9 @@ def getURL():
     }
     response = requests.request("POST", url, data= json.dumps(payload), headers=headers)
     print(response.text)
+    
+    return json.loads(response.text)
+
+def logout(request):
+    request.session['authenticated'] = False
+    return redirect("https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://skillsearch.westeurope.cloudapp.azure.com/")

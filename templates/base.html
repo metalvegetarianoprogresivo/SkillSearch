@@ -61,13 +61,16 @@
                </li>
            </ul>
            
-            <form class="form-inline my-2 my-lg-0 search-form" action="/search">
+            <form class="form-inline my-2 my-lg-0 search-form justify-content-center" action="/search">
             <input id="input-search" class="form-control mr-sm-2" type="text" name="q" placeholder="Search skills" {% if q %}value="{{ q }}"{% endif %}>
             <button  class="btn btn-success my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass"></span> Search</button>
                 <a id="buttonCart" class="btn btn-info mx-1 sm-block d-sm-none d-md-block d-none" href="{% url 'roster_detail' %}">
                 <span id="roster_count2" class="badge badge-sm badge-pill badge-info">0</span>
-                <span class="oi oi-cart"></span>
-                </a>
+		<span class="oi oi-cart"></span>
+		<a href="https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://skillsearch.westeurope.cloudapp.azure.com/" class="btn btn-info btn-dark ml-1 mr-4">
+		     <span class="glyphicon glyphicon-log-out"></span> Log out
+		 </a>
+		</a>
             </form>
            </div>
         </nav>

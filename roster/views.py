@@ -6,6 +6,7 @@ from django.views.decorators.http import require_POST
 
 @require_POST
 @csrf_exempt
+
 def get_roster_bios(request):
     roster = request.session.setdefault('roster', [])
     response = {
@@ -51,6 +52,8 @@ def remove_from_roster(request):
     return JsonResponse(response)
 
 def roster_detail(request):
+    if(request.session["authenticated"] == None or request.session["authenticated"] == False):
+                return redirect("https://skillsearch.westeurope.cloudapp.azure.com/")
     roster = request.session.get('roster')
     bios = Bio.objects.filter(pk__in=roster).order_by('name')
 

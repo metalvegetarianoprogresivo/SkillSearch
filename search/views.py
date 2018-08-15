@@ -6,6 +6,8 @@ from django.http import Http404
 from bios.models import Bio
 
 def search(request):
+    if(request.session["authenticated"] == None or request.session["authenticated"] == False):
+                return redirect("https://skillsearch.westeurope.cloudapp.azure.com/")
     try:
         q = request.GET["q"]
     except:
