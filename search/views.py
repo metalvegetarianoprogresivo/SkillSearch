@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.http import Http404
 from bios.models import Bio
+from django.shortcuts import redirect
 
 def search(request):
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):

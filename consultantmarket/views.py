@@ -4,16 +4,17 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
 from django.shortcuts import redirect
+
 # Use this just as example
 @csrf_exempt
 def index(request):
+    access_tok=""
+    urlProfile="https://graph.microsoft.com/v1.0/me/"
     '''
     print(dir(request))
     print("------POST") 
     '''
     print(dir(request.POST))
-    
-    '''
     print("-----")
     print(request.POST.keys())
     print("---")
@@ -21,9 +22,17 @@ def index(request):
     print("--GTE")
     print(request.GET.keys())
     print("LLaves y valores")
-    for key, val in request.POST.items():
-        print(key+"--"+val+"\n")
-    '''
+    access_tok=(request.POST['access_token'])
+     #   print(type(val))
+    print("Hola------------------------------------------------------------------")
+    print(access_tok)    
+    print("Hola------------------------------------------------------------------")
+    user=(getData(access_tok,urlProfile))
+    request.session['displayName'] = user['displayName']
+    request.session['mail'] =user['mail']
+    print("Hola------------------------------------------------------------------")
+    for key in request.session.keys():
+        print ("key:=>" + str(request.session[key]))
     proxyURL = getURL()
     if(request.POST.keys()):
         request.session['authenticated'] = True
@@ -37,7 +46,7 @@ def index(request):
     #full_path = request.get_full_path()
     #current_path = full_path[full_path.index('/', 1):]
     #print(full_path)
-    #if request.GET.get('access_token'):
+    #if requiest.GET.get('access_token'):
     #    message = 'You submitted: %r' % request.GET['access_token']
     #else:
     #    message = 'You submitted nothing!'
@@ -50,6 +59,14 @@ def index(request):
         "title" : "Home"
     }
     return render(request, "templates/index.html", context)
+
+def getData(ac_t,url_ac):
+    r=requests.get(url_ac, headers={
+        'Content-type': "application/json",
+
+        'Authorization': "Bearer "+ac_t,
+        })
+    return json.loads(r.text)
 
 def getURL():
     url = "https://simple-sign-on.azurewebsites.net/auth"
