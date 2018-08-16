@@ -10,10 +10,6 @@ from django.shortcuts import redirect
 def index(request):
     access_tok=""
     urlProfile="https://graph.microsoft.com/v1.0/me/"
-    '''
-    print(dir(request))
-    print("------POST") 
-    '''
     print(dir(request.POST))
     print("-----")
     print(request.POST.keys())
@@ -22,7 +18,7 @@ def index(request):
     print("--GTE")
     print(request.GET.keys())
     print("LLaves y valores")
-    access_tok=(request.POST['access_token'])
+    access_tok=request.POST['access_token']
      #   print(type(val))
     print("Hola------------------------------------------------------------------")
     print(access_tok)    
@@ -41,17 +37,7 @@ def index(request):
         request.session['authenticated'] = False
         print("False")
         return redirect(proxyURL["authurl"])
-    #if(request.session['authenticated'] == False):
-    #    return redirect(proxyURL)
-    #full_path = request.get_full_path()
-    #current_path = full_path[full_path.index('/', 1):]
-    #print(full_path)
-    #if requiest.GET.get('access_token'):
-    #    message = 'You submitted: %r' % request.GET['access_token']
-    #else:
-    #    message = 'You submitted nothing!'
-    #print(message)
-    #print(access_token)
+   
     """
     Landing page
     """
@@ -59,6 +45,9 @@ def index(request):
         "title" : "Home"
     }
     return render(request, "templates/index.html", context)
+
+def noAccess(request):
+    return render(request, "templates/noaccess.html")
 
 def getData(ac_t,url_ac):
     r=requests.get(url_ac, headers={

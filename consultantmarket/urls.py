@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from .views import index
+from .views import index, noAccess
 
 urlpatterns = [
     path('', index, name='index'),
@@ -23,4 +23,5 @@ urlpatterns = [
     path('bios/', include('bios.urls')),
     path('roster/', include('roster.urls')),
     path('admin/', admin.site.urls),
+    path('noaccess/', noAccess, name="noAccess")
 ]
