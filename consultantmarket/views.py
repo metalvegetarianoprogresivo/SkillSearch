@@ -4,40 +4,28 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
 from django.shortcuts import redirect
-
+from bios.models import EmailAuth
 # Use this just as example
 @csrf_exempt
 def index(request):
-    access_tok=""
+    print(EmailAuth.objects.all())
     urlProfile="https://graph.microsoft.com/v1.0/me/"
-    print(dir(request.POST))
-    print("-----")
-    print(request.POST.keys())
-    print("---")
-    print(dir(request.GET))
-    print("--GTE")
-    print(request.GET.keys())
-    print("LLaves y valores")
-    access_tok=request.POST['access_token']
-     #   print(type(val))
-    print("Hola------------------------------------------------------------------")
-    print(access_tok)    
-    print("Hola------------------------------------------------------------------")
-    user=(getData(access_tok,urlProfile))
-    request.session['displayName'] = user['displayName']
-    request.session['mail'] =user['mail']
-    print("Hola------------------------------------------------------------------")
-    for key in request.session.keys():
-        print ("key:=>" + str(request.session[key]))
+
+    '''    
     proxyURL = getURL()
+    
     if(request.POST.keys()):
         request.session['authenticated'] = True
+        access_tok=request.POST['access_token']
+        user=(getData(access_tok,urlProfile))
+        request.session['displayName'] = user['displayName']
+        request.session['mail'] =user['mail']
         print("POST")
     else:
         request.session['authenticated'] = False
         print("False")
         return redirect(proxyURL["authurl"])
-   
+   '''
     """
     Landing page
     """
