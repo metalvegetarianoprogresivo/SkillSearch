@@ -13,14 +13,13 @@ def comparison_validator(function):
     return wrapper
 
 class Skill(models.Model):
-    title = models.CharField(max_length=60)
     description = models.TextField()
 
     class Meta:
         abstract = True
 
 class Technical(models.Model):
-    name = models.CharField(max_length=30, unique=True)
+    name = models.TextField()
 
     def __str__(self):
         return self.name
@@ -59,8 +58,7 @@ class CapabilityExpertise(models.Model):
 
 class Bio(models.Model):
     # TODO: skills, experience array fields: cannot create as empty as of now
-    name = models.CharField(max_length=100)
-    title = models.CharField(max_length=60, blank=True, null=True)
+    name_and_title = models.CharField(max_length=100)
     profile = models.TextField(blank=True, null=True)
     #skills = models.ArrayModelField(model_container=Skill, blank=True, null=True)
     technical_skills = models.ArrayReferenceField(
@@ -73,6 +71,13 @@ class Bio(models.Model):
     #experience = models.ArrayModelField(model_container=Experience, blank=True, null=True)
     capabilities = models.ArrayReferenceField(
         to=CapabilityExpertise,
+        on_delete=models.DO_NOTHING,
+        blank=True,
+        null=True
+    )
+
+    skills = models.ArrayReferenceField(
+        to=Skill,
         on_delete=models.DO_NOTHING,
         blank=True,
         null=True
