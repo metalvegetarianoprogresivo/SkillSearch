@@ -20,11 +20,13 @@ def search(request):
     for bio in Bio.objects.all():
         count = 0
         skills = list(map(
-            lambda ts: ts.name.lower(), bio.technical_skills.all()
+            lambda ts: ts.name_and_title.lower(), bio.technical_skills.all()
         ))
         capabilities = list(map(
-            lambda c: c.name.lower(), bio.capabilities.all()
+            lambda c: c.name_and_title.lower(), bio.capabilities.all()
         ))
+        print(skills)
+        print(type(skills))
         for tag in tags:
             count += (tag in capabilities) or (tag in skills)
         if count:
