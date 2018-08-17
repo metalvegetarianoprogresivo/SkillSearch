@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 # Use this just as example
 @csrf_exempt
 def index(request):
+    '''
     access_tok=""
     urlProfile="https://graph.microsoft.com/v1.0/me/"
     print(dir(request.POST))
@@ -38,6 +39,7 @@ def index(request):
         print("False")
         return redirect(proxyURL["authurl"])
    
+   '''
     """
     Landing page
     """
