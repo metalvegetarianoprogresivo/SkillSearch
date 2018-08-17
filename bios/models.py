@@ -12,55 +12,66 @@ def comparison_validator(function):
 
     return wrapper
 
+class Profile(models.Model):
+    profile = models.TextField()
+
+     def __str__(self):
+        return self.profile
+
+    @comparison_validator
+    def __lt__(self, other):
+        return self.profile < other.profile
+
+    @comparison_validator
+    def __gt__(self, other):
+        return self.profile > other.profile
+
+    class Meta:
+        abstract = True
+
 class Skill(models.Model):
-    title = models.CharField(max_length=60)
-    description = models.TextField()
+    skill = models.TextField()
+
+    def __str__(self):
+        return self.skill
+
+    @comparison_validator
+    def __lt__(self, other):
+        return self.skill < other.skill
+
+    @comparison_validator
+    def __gt__(self, other):
+        return self.skill > other.skill
 
     class Meta:
         abstract = True
 
 class Technical(models.Model):
-    name = models.CharField(max_length=30, unique=True)
-
-    def __str__(self):
-        return self.name
-
-    @comparison_validator
-    def __lt__(self, other):
-        return self.name < other.name
-
-    @comparison_validator
-    def __gt__(self, other):
-        return self.name > other.name
-
-class Experience(models.Model):
-    company = models.CharField(max_length=100)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField(null=True, blank=True)
-    title = models.CharField(max_length=255)
-    description = models.TextField()
+    technical = models.TextField()
 
     class Meta:
         abstract = True
 
-class Capability(models.Model):
-    group = models.CharField(max_length=20)
-    name = models.CharField(max_length=255)
-
     def __str__(self):
-        return '{0}: {1}'.format(self.group, self.name)
+        return self.technical
 
-class CapabilityExpertise(models.Model):
-    capability = models.EmbeddedModelField(model_container=Capability)
-    rating = models.PositiveSmallIntegerField()
+    @comparison_validator
+    def __lt__(self, other):
+        return self.technical < other.technical
+
+    @comparison_validator
+    def __gt__(self, other):
+        return self.technical > other.technical
+
+class Education(models.Model):
+    education = models.TextField()
 
     class Meta:
-        unique_together = ('capability', 'rating')
+        abstract = True
 
 class Bio(models.Model):
     # TODO: skills, experience array fields: cannot create as empty as of now
-    name = models.CharField(max_length=100)
-    title = models.CharField(max_length=60, blank=True, null=True)
+    nameAndTitle = models.CharField(max_length=100)
     profile = models.TextField(blank=True, null=True)
     #skills = models.ArrayModelField(model_container=Skill, blank=True, null=True)
     technical_skills = models.ArrayReferenceField(
@@ -79,12 +90,12 @@ class Bio(models.Model):
     )
 
     def __str__(self):
-        return '{0}, {1}'.format(self.name, self.title)
+        return self.nameAndTitle
 
     @comparison_validator
     def __lt__(self, other):
-        return self.name < other.name
+        return self.nameAndTitle < other.nameAndTitle
 
     @comparison_validator
     def __gt__(self, other):
-        return self.name > other.name
+        return self.nameAndTitle > other.nameAndTitle
