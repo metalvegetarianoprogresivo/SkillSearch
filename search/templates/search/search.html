@@ -33,7 +33,7 @@
 
 <div class="container my-4 pb-5">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header text-center">
             <h5 class="mt-2 float-left">
                 {% if bios %}
                 {{ title }} {% if q %} for {{ q }} {% endif %}
@@ -42,6 +42,50 @@
                 {% endif %}
             </h5>
         </div>
+        <div class="card d-block d-sm-none">
+                  {% for bio in bios %}
+                        <div class="container card d-block d-sm-none" style="width: 18rem;">
+                        <div class="card-body">
+                            <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
+                                {{ bio.1.name }} 
+                            </a>
+                            <h6 class="card-subtitle mb-2 text-center">{{ bio.1.title }}</h6>
+                            <div class="text-center">
+                            <p class="card-text" >{% get_importance bio.1.technical_skills.all tags %}</p>
+                            </div>
+                             <div class="text-center">
+                             <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.1.pk }}" data-bio="{{ bio.1.pk }}" data-action="{% if bio.1.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.1.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                        </div>
+                        </div>
+                        </div>
+                
+                        <hr><hr>
+                    {% endfor %}
+        <nav class="float-right pr-5" aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if bios.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link paginator-link" href="?q={{ q }}&page=1">&laquo; first</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link paginator-link" href="?q={{ q }}&page={{ bios.previous_page_number }}">{{ bios.previous_page_number }}</a>
+                    </li>
+                    {% endif %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{ bios.number }}</a>
+                    </li>
+                    {% if bios.has_next %}
+                    <li class="page-item">
+                        <a class="page-link paginator-link" href="?q={{ q }}&page={{ bios.next_page_number }}">{{ bios.next_page_number }}</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link paginator-link" href="?q={{ q }}&page={{ bios.paginator.num_pages }}">last &raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <div class="card d-none d-sm-block">
         <div class="table-responsive">
             {% if bios %}
             <table class="table table-hover">
@@ -93,6 +137,7 @@
                 </ul>
             </nav>
             {% endif %}
+        </div>
         </div>
     </div>
 </div>

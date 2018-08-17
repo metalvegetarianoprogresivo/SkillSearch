@@ -20,7 +20,7 @@
                         get_roster_bios();
                         var buttons = $('[data-bio='+bio_id+']');
                         buttons.attr('data-action', data.added ? remove_from_roster_action : add_to_roster_action);
-                        buttons.html(data.added ? 'Remove from cart' : 'Add to cart');
+                        buttons.html(data.added ? 'Remove' : 'Add');
                     }
                 );
             });
@@ -32,10 +32,30 @@
 {% block content %}
 
 <div class="container my-4 pb-5">
-    <div class="card">
+    <div class="card ">
         <div class="card-header">
             <h5 class="mt-2 float-left">{{ title }} {% if q %} for {{ q }} {% endif %}</h5>
         </div>
+        <div class="card d-block d-sm-none">
+                  {% for bio in bios %}
+                        <div class="container card d-block d-sm-none" style="width: 18rem;">
+                        <div class="card-body">
+                            <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
+                                {{ bio.name }} 
+                            </a>
+                            <h6 class="card-subtitle mb-2 text-center">{{ bio.title }}</h6>
+                            <div class="text-center">
+                            <p class="card-text">{% get_importance bio.technical_skills.all tags %}</p>
+                            </div>
+                            <div class="text-center">
+                            <button class="btn btn-sm btn-outline-success d-none roster-cart " data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove{% else %}Add{% endif %}</button>
+                            </div>
+                        </div>
+                        </div>
+                        <hr><hr>
+                    {% endfor %}
+        </div>
+        <div class="card d-none d-sm-block">
         <div class="table-responsive">
             <table class="table table-hover">
                 <tbody>
@@ -46,6 +66,7 @@
                         <th style="width: 70px">Action</th>
                     </tr>
                     {% for bio in bios %}
+                    <div class"container">
                     <tr>
                         <td class="align-middle" style="width: 300px;">
                             <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
@@ -56,12 +77,14 @@
                         <td class="align-middle" style="width: 450px;">{% get_importance bio.technical_skills.all tags %}</td>
                         {% comment %}<td class="align-middle" style="width: 450px;">{% get_importance bio.capabilities.all tags %}</td>{% endcomment %}
                        <td class="align-middle">
-                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove{% else %}Add{% endif %}</button>
                         </td>
                     </tr>
+                    </div>
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
         </div>
     </div>
 </div>
@@ -79,7 +102,7 @@
                 {{ bio.profile }}
             </div>
             <div class="modal-footer">
-                <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.pk }}" data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.pk }}" data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove{% else %}Add{% endif %}</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Open Bio</button>
             </div>

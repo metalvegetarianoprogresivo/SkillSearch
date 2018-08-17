@@ -14,7 +14,7 @@
         <div class="mx-auto pb-5">
             <form class="form-inline my-2 my-lg-0 search-form" action="/search">
                 <img height="40" src="{% static 'img/intersys_mini_logo.jpeg' %}" alt="Intersys Consulting, Inc." style="margin-right:5px;">
-                <input id="input-search" class="form-control mr-sm-2" type="text" name="q" placeholder="Search skills" {% if q %}value="{{ q }}"{% endif %}>
+                <input id="input-search" style="width: inherit" class="ok form-control mr-sm-2" type="text" name="q" placeholder="Search skills" {% if q %}value="{{ q }}"{% endif %}>
                 <button class="btn btn-success my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass"></span></button>
             </form>
         </div>
