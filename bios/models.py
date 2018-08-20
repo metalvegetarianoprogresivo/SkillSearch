@@ -1,5 +1,7 @@
 from djongo import models
 
+
+
 def comparison_validator(function):
     def wrapper(instance, other_instance):
         if not isinstance(other_instance, models.Model):
@@ -11,6 +13,11 @@ def comparison_validator(function):
         return function(instance, other_instance)
 
     return wrapper
+
+class EmailAuth(models.Model):
+    email = models.EmailField(max_length=100, blank=False, unique=True)
+    def __srt__(self):
+        return self.email
 
 class Skill(models.Model):
     description = models.TextField()

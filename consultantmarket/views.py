@@ -4,42 +4,70 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
 from django.shortcuts import redirect
-
+from bios.models import EmailAuth
 # Use this just as example
 @csrf_exempt
 def index(request):
+<<<<<<< HEAD
     '''
     access_tok=""
+=======
+    print(EmailAuth.objects.all())
+>>>>>>> master
     urlProfile="https://graph.microsoft.com/v1.0/me/"
-    print(dir(request.POST))
-    print("-----")
-    print(request.POST.keys())
-    print("---")
-    print(dir(request.GET))
-    print("--GTE")
-    print(request.GET.keys())
-    print("LLaves y valores")
-    access_tok=request.POST['access_token']
-     #   print(type(val))
-    print("Hola------------------------------------------------------------------")
-    print(access_tok)    
-    print("Hola------------------------------------------------------------------")
-    user=(getData(access_tok,urlProfile))
-    request.session['displayName'] = user['displayName']
-    request.session['mail'] =user['mail']
-    print("Hola------------------------------------------------------------------")
-    for key in request.session.keys():
-        print ("key:=>" + str(request.session[key]))
+    request.session['authenticated'] = False
     proxyURL = getURL()
+    '''
+    if('authenticated' in request.session.keys()):
+        print('access in post')
+        if(request.session['authenticated'] != False):
+            return redirect(proxyURL["authurl"])
+        else:
+            if('access_token' in request.POST.keys()):
+                access_tok=request.POST['access_token']
+                user=(getData(access_tok,urlProfile))
+                request.session['displayName'] = user['displayName']
+                request.session['mail'] =user['mail']
+                print("POST")
+                query = EmailAuth.objects.all()
+                for obj in query:
+                    print(request.session['mail']+"  "+obj.email)
+                    if(request.session['mail'] == obj.email):
+                        print("youhaveaccess")
+                        request.session['authenticated'] = True
+                    else:
+                        print("youdonthaveaccess")
+                        return redirect('noAccess')
+            else:
+                request.session['authenticated'] = False
+                print("False")
+                return redirect(proxyURL["authurl"])
+    else:
+    '''
     if(request.POST.keys()):
-        request.session['authenticated'] = True
+        access_tok=request.POST['access_token']
+        user=(getData(access_tok,urlProfile))
+        request.session['displayName'] = user['displayName']
+        request.session['mail'] =user['mail']
         print("POST")
+        query = EmailAuth.objects.all()
+        access = False
+        for obj in query:
+            print(request.session['mail']+"  "+obj.email)
+            if(request.session['mail'] == obj.email):
+                print("youhaveaccess")
+                request.session['authenticated'] = True
+                access = True
+            #else:
+                #print("youdonthaveaccess")
+        if(access == False):
+            return redirect('noAccess')
     else:
         request.session['authenticated'] = False
         print("False")
         return redirect(proxyURL["authurl"])
    
-   '''
+    '''
     """
     Landing page
     """
