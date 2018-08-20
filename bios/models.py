@@ -20,14 +20,12 @@ class EmailAuth(models.Model):
         return self.email
 
 class Skill(models.Model):
-    title = models.CharField(max_length=60)
     description = models.TextField()
-
-    class Meta:
-        abstract = True
+    def __str__(self):
+        return self.description
 
 class Technical(models.Model):
-    name = models.CharField(max_length=30, unique=True)
+    name = models.TextField()
 
     def __str__(self):
         return self.name
@@ -66,17 +64,23 @@ class CapabilityExpertise(models.Model):
 
 class Bio(models.Model):
     # TODO: skills, experience array fields: cannot create as empty as of now
-    name = models.CharField(max_length=100)
-    title = models.CharField(max_length=60, blank=True, null=True)
+    name = models.CharField(max_length=100, default='')
+    title = models.CharField(max_length=100, default='')
+    name_and_title = models.CharField(max_length=100, default='')
     profile = models.TextField(blank=True, null=True)
-    #skills = models.ArrayModelField(model_container=Skill, blank=True, null=True)
+    technical_skills = models.TextField(blank=True, null=True) 
+    skills = models.TextField(blank=True, null=True)
+    education = models.TextField(blank=True, null=True)
+    url = models.TextField(blank=True, null=True)
+    '''
     technical_skills = models.ArrayReferenceField(
         to=Technical,
         on_delete=models.DO_NOTHING,
         blank=True,
         null=True
     )
-    education = models.TextField(blank=True, null=True)
+
+    
     #experience = models.ArrayModelField(model_container=Experience, blank=True, null=True)
     capabilities = models.ArrayReferenceField(
         to=CapabilityExpertise,
@@ -85,8 +89,15 @@ class Bio(models.Model):
         null=True
     )
 
+    skills = models.ArrayReferenceField(
+        to=Skill,
+        on_delete=models.DO_NOTHING,
+        blank=True,
+        null=True
+    )
+    '''
     def __str__(self):
-        return '{0}, {1}'.format(self.name, self.title)
+        return '{0},{1}'.format(self.name, self.title)
 
     @comparison_validator
     def __lt__(self, other):
