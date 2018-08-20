@@ -9,11 +9,13 @@ def get_importance(*args, **kwargs):
     bold_strings = ""
     normal_strings = ""
     queryset, tags = args[0], args[1]
+    queryset = queryset.split()
+
     for object in queryset:
-        if object.name.lower() in tags:
+        if object.lower() in tags:
             bold_strings += '<span class="font-weight-bold">%s</span> ' % (
-                object.name,
+                object,
             )
         else:
-            normal_strings += '<span>%s</span> ' % (object.name,)
+            normal_strings += '<span>%s</span> ' % (object,)
     return mark_safe("<p>%s %s</p>" % (bold_strings, normal_strings))

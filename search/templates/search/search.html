@@ -98,7 +98,8 @@
                                 <center class="font-weight-bold">{{ bio.1.title }}</center>
 
                             </td>
-                            <td class="align-middle" style="width: 450px;">{{bio.1.technical_skills}}</td>
+                            {% comment %}<td class="align-middle" style="width: 450px;">{{bio.1.technical_skills}}</td>{% endcomment %}
+                            <td class="align-middle" style="width: 450px;">{% get_importance bio.1.technical_skills tags %}</td>
                             {% comment %}
                             <td class="align-middle" style="width: 450px;">{% get_importance bio.1.capabilities.all tags %}</td>{% endcomment %}
                             <td class="align-middle">
