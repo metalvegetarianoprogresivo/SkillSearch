@@ -11,15 +11,10 @@ from .models import Bio, Technical, Skill
 
 
 def index(request):
-    '''
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
         return redirect("https://skillsearch.westeurope.cloudapp.azure.com/")
-    '''
-    context = {
-    'title':'Update the bios'
-    }
 
-    return render(request, 'bios/index.html', context)
+    return render(request, 'bios/index.html')
 
 
 def get_documents(request):
