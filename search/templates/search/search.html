@@ -1,5 +1,6 @@
 {% extends "templates/base.html" %} {% load static search_extras %} {% block extra_headers %}
 <script src="{% static 'js/modal.js' %}"></script>
+
 <script>
     $(document).ready(function() {
         var roster_cart_buttons = $('.roster-cart');
@@ -46,16 +47,14 @@
 
                     <tbody>
                         <tr>
-                            <th>Consultant</th>
+                            <th class="text-center align-middle" style="width: 30%;">Consultant</th>
 
-                            <th>Skills</th>
+                            <th class="text-center align-middle" style="width: 55%;">Skills</th>
                             {% comment %}
                             <th>Kimble</th>{% endcomment %}
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>Action</th>
+                            <th class="text-center align-middle" >Action</th>
                         </tr>
+</div><div>
                     </tbody>
                 </table>
             </div>
@@ -87,7 +86,7 @@
                 <table class="table table-hover">
                     <tbody>
                         <tr>
-                            <td class="align-middle" style="width: 300px;">
+                            <td class="align-middle" style="width: 30%;">
                                 <h5>
                                 <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.1.id }}">
                                 {{ bio.1.name }}
@@ -98,7 +97,7 @@
                                 <center class="font-weight-bold">{{ bio.1.title }}</center>
 
                             </td>
-                            <td class="align-middle" style="width: 450px;">{% get_importance bio.1.technical_skills.all tags %}</td>
+                            <td class="align-middle" style="width: 55%;">{% get_importance bio.1.technical_skills.all tags %}</td>
                             {% comment %}
                             <td class="align-middle" style="width: 450px;">{% get_importance bio.1.capabilities.all tags %}</td>{% endcomment %}
                             <td class="align-middle">
@@ -111,6 +110,7 @@
             </div>
         </div>
         {% endif %} {% endfor %}
+       <div class="float-right"> 
         <nav class="float-right pr-5" aria-label="Page navigation">
             <ul class="pagination">
                 {% if bios.has_previous %}
@@ -134,6 +134,7 @@
                 {% endif %}
             </ul>
         </nav>
+        </div>
     </div>
 </div>
 {% for bio in bios %}
