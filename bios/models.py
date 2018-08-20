@@ -57,11 +57,14 @@ class CapabilityExpertise(models.Model):
 
 class Bio(models.Model):
     # TODO: skills, experience array fields: cannot create as empty as of now
+    name = models.CharField(max_length=100, default='')
+    title = models.CharField(max_length=100, default='')
     name_and_title = models.CharField(max_length=100, default='')
     profile = models.TextField(blank=True, null=True)
     technical_skills = models.TextField(blank=True, null=True) 
     skills = models.TextField(blank=True, null=True)
     education = models.TextField(blank=True, null=True)
+    url = models.TextField(blank=True, null=True)
     '''
     technical_skills = models.ArrayReferenceField(
         to=Technical,
@@ -87,12 +90,12 @@ class Bio(models.Model):
     )
     '''
     def __str__(self):
-        return str(self.name_and_title)
+        return '{0},{1}'.format(self.name, self.title)
 
     @comparison_validator
     def __lt__(self, other):
-        return self.name_and_title < other.name_and_title
+        return self.name < other.name
 
     @comparison_validator
     def __gt__(self, other):
-        return self.name_and_title > other.name_and_title
+        return self.name > other.name

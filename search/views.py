@@ -17,18 +17,14 @@ def search(request):
         raise Http404
     result_set = []
     tags = list(map(lambda word: word.strip().lower(), q.split(",")))
+    print(tags)
+    
     for bio in Bio.objects.all():
+        skills=[]
         count = 0
-        skills = list(map(
-            lambda ts: ts.name_and_title.lower(), bio.technical_skills.all()
-        ))
-        capabilities = list(map(
-            lambda c: c.name_and_title.lower(), bio.capabilities.all()
-        ))
-        print(skills)
-        print(type(skills))
+        skills=bio.technical_skills.lower().split()
         for tag in tags:
-            count += (tag in capabilities) or (tag in skills)
+            count += (tag in skills)
         if count:
             result_set.append((count, bio))
     # TODO: uncomment next lines when loggin implementation

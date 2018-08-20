@@ -21,10 +21,7 @@ def index(request):
 
 def get_documents(request):
         process_documents()
-        context = {
-        'title':'Updated bios'
-        }
-        return redirect('index', context)
+        return redirect('index')
 
 def process_documents():
         headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
@@ -48,31 +45,35 @@ def process_documents():
         usa = wb['US']
         mx = wb['MDC']
         all_links = wb['US']['B'] + wb['MDC']['B']
+        all_names = wb['US']['A'] + wb['MDC']['A']
+        names = []
         links = []
 
-        for link in all_links:
-                if link.value is not None and 'https' in link.value:
-                        links.append(link.value)
+        for consultant in range(len(all_links)):
+                if all_links[consultant].value is not None and 'https' in all_links[consultant].value:
+                        links.append(all_links[consultant].value)
+                        names.append(all_names[consultant].value)
                 else:
                         pass
 
-        for url in links:
-
-                response = requests.get(url,headers=headers)
-                name = 'Bio.pdf'
+        for consultant in range(len(links)):
+                response = requests.get(links[consultant], headers=headers)
+                filename = 'Bio.pdf'
                 soup = BeautifulSoup(response.text, 'html.parser')
 
                 regex = re.compile('.*.pdf')
                 link = soup.find(href = regex)
                 pdf_link = 'https://www.intersysconsulting.com' + link.get('href')
                 pdf_file = requests.get(pdf_link, headers=headers)
+                print(pdf_link,pdf_file.status_code)
 
-                with open(name, 'wb') as f:
+                with open(filename, 'wb') as f:
                         f.write(pdf_file.content)
                         f.close()
 
-                pdf = parser.from_file(name)
+                pdf = parser.from_file(filename)
                 pdf_text = pdf['content'].replace('\t','\n').replace('\n',' ').split()
+
                 clean_text = ''
 
                 for word in pdf_text:
@@ -84,15 +85,26 @@ def process_documents():
                 except:
                         pass
 
-
                 if name_title is None:
                         try:
                                 name_title = re.search(r"(.*?) Profile ", clean_text).group(1)
                                 print(name_title)
                         except:
                                 pass
+                
+                bio, created = Bio.objects.get_or_create(name=names[consultant])
+                bio.name_and_title = name_title
+                bio.url = pdf_link
+                job_titles = ['Senior Consultant', 'Consultant', 'Technical Lead', 'Practice Director',
+                 'Technical Manager', 'Delivery Lead', 'Delivery Manager']
 
-                bio, created = Bio.objects.get_or_create(name_and_title=name_title)
+                for title in job_titles:
+                        try:
+                                if title in name_title.title():
+                                        bio.title = title
+                                        break
+                        except:
+                                pass
 
                 try:
                         profile = re.search(r" Profile (.*?)Skills ", clean_text).group(1)
