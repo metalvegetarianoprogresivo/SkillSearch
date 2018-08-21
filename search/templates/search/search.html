@@ -72,7 +72,7 @@
                     </h4>
                     <h5 class="card-subtitle mb-2 text-center">{{ bio.1.title }}</h5>
                     <div class="text-center">
-                        <p class="card-text">{% get_importance bio.1.technical_skills.all tags %}</p>
+                        <p class="card-text">{% get_importance bio.1.technical_skills tags %}</p>
                     </div>
                     <div class="text-center">
                         <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.1.pk }}" data-bio="{{ bio.1.pk }}" data-action="{% if bio.1.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.1.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
