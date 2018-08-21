@@ -111,6 +111,7 @@
                 </table>
             </div>
         </div>
+	
         {% endif %} {% endfor %}
        <div class="float-right"> 
         <nav class="float-right pr-5" aria-label="Page navigation">
@@ -155,7 +156,7 @@
             <div class="modal-footer">
                 <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.1.pk }}" data-bio="{{ bio.1.pk }}" data-action="{% if bio.1.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.1.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Open Bio</button>
+                <a class="btn btn-primary" href="{{ bio.1.url }}">Open Bio</a>
             </div>
         </div>
     </div>
