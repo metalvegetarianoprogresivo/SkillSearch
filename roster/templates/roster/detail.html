@@ -68,7 +68,7 @@
                     </h4>
                     <h6 class="card-subtitle mb-2 text-center">{{ bio.title }}</h6>
                     <div class="text-center">
-                        <p class="card-text">{% get_importance bio.technical_skills.all tags %}</p>
+                        <p class="card-text">{% get_importance bio.technical_skills tags %}</p>
                     </div>
                     <div class="text-center">
                         <button class="btn btn-sm btn-outline-success d-none roster-cart " data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove{% else %}Add{% endif %}</button>
