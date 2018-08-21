@@ -90,7 +90,7 @@
                                 <br>
                                 <center class="font-weight-bold">{{ bio.title }}</center>
                             </td>
-                            <td class="align-middle" style="width: 450px;">{% get_importance bio.technical_skills.all tags %}</td>
+                            <td class="align-middle" style="width: 450px;">{% get_importance bio.technical_skills tags %}</td>
                             {% comment %}
                             <td class="align-middle" style="width: 450px;">{% get_importance bio.capabilities.all tags %}</td>{% endcomment %}
                             <td class="align-middle">
