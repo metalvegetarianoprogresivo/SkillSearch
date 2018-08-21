@@ -10,6 +10,8 @@ from bios.models import EmailAuth
 def index(request):
     print(EmailAuth.objects.all())
     urlProfile="https://graph.microsoft.com/v1.0/me/"
+    #if(request.session.get('authenticateid')):
+        
     request.session['authenticated'] = False
     proxyURL = getURL()
     if(request.POST.keys()):
@@ -38,6 +40,7 @@ def index(request):
     context = {
         "title" : "Home"
     }
+    #assert(False, request.session['authenticated'])
     return render(request, "templates/index.html", context)
 def noAccess(request):
     return render(request, "templates/noaccess.html")

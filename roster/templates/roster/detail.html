@@ -41,15 +41,12 @@
 
                     <tbody>
                         <tr>
-                            <th>Consultant</th>
+                            <th class="text-center align-middle" style="width: 30%;">Consultant</th>
 
-                            <th>Skills</th>
+                            <th class="text-center align-middle" style="width: 55%;">Skills</th>
                             {% comment %}
                             <th>Kimble</th>{% endcomment %}
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>Action</th>
+                            <th class="text-center align middle">Action</th>
                         </tr>
                     </tbody>
                 </table>
@@ -83,14 +80,14 @@
                 <table class="table table-hover">
                     <tbody>
                         <tr>
-                            <td class="align-middle" style="width: 300px;">
+                            <td class="align-middle" style="width: 30%;">
                                 <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
                                 {{ bio.name }} 
                             </a>
                                 <br>
                                 <center class="font-weight-bold">{{ bio.title }}</center>
                             </td>
-                            <td class="align-middle" style="width: 450px;">{% get_importance bio.technical_skills tags %}</td>
+                            <td class="align-middle" style="width: 55%;">{% get_importance bio.technical_skills tags %}</td>
                             {% comment %}
                             <td class="align-middle" style="width: 450px;">{% get_importance bio.capabilities.all tags %}</td>{% endcomment %}
                             <td class="align-middle">
