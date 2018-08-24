@@ -60,7 +60,7 @@ def getURL():
             "id": "a67b9eaf-4a58-40b9-be6d-e7b597d8c004",
             "secret": "ibGJSG864$ezaovEBW02]#%",
             "scope": ["openid", "profile", "User.Read"],
-            "redirect": "https://skillsearch.westeurope.cloudapp.azure.com/",
+            "redirect": "https://skillssearcher.centralus.cloudapp.azure.com/",
             "response": "form_post"
             }
     headers = {
