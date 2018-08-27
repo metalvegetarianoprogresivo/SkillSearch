@@ -58,7 +58,7 @@ def remove_from_roster(request):
 def roster_detail(request):
     '''
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-                return redirect("https://skillsearch.westeurope.cloudapp.azure.com/")
+        return redirect("https://skillsearch.westeurope.cloudapp.azure.com/")
     '''
     roster = request.session.get('roster')
     bios = Bio.objects.filter(pk__in=roster).order_by('name')
