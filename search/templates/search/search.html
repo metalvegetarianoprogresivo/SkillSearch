@@ -27,6 +27,7 @@
             bio.removeClass('d-none');
         });
     });
+    
 </script>
 {% endblock %} {% block content %}
 
@@ -35,12 +36,13 @@
         <div class="card-header ">
             <h5 class="mt-2 float-left">
                 {% if bios %}
-                {{ title }} {% if q %} for {{ q }} {% endif %}
+                    {{max}} {{ title }} {% if q %} for {{ q }}  {% endif %}
                 {% else %}
                 No matches for {{ q }}
                 {% endif %}
             </h5>
         </div>
+        {% if bios %}
         <div class="card d-none d-sm-block">
             <div class="table-responsive">
                 <table class="table table-hover">
@@ -54,11 +56,11 @@
                             <th>Kimble</th>{% endcomment %}
                             <th class="text-center align-middle" >Action</th>
                         </tr>
-</div><div>
                     </tbody>
                 </table>
             </div>
         </div>
+        
         {% for bio in bios %} {% if bios %}
         <br class="d-block d-sm-none">
         <div class="card d-block d-sm-none">
@@ -111,8 +113,8 @@
                 </table>
             </div>
         </div>
-	
-        {% endif %} {% endfor %}
+        {% endif %} {% endfor %} 
+       
        <div class="float-right"> 
         <nav class="float-right pr-5" aria-label="Page navigation">
             <ul class="pagination">
@@ -138,8 +140,10 @@
             </ul>
         </nav>
         </div>
+{% endif %}
     </div>
 </div>
+ 
 {% for bio in bios %}
 <div class="modal fade mt-5 pt-5" id="theModal{{ bio.1.id }}" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
