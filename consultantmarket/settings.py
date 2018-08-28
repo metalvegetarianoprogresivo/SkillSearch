@@ -161,3 +161,9 @@ try:
     from .localsettings import *
 except:
     pass
+
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_HOST_USER = 'internalapp@intersysconsulting.com'
+EMAIL_HOST_PASSWORD = 'Internal2018!'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

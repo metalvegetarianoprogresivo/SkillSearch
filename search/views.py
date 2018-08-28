@@ -9,19 +9,19 @@ from django.shortcuts import redirect
 def search(request):
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
         return redirect("https://skillssearcher.centralus.cloudapp.azure.com/")
-
     try:
         q = request.GET["q"]
     except:
         raise Http404
-    result_set = []
-    tags = list(map(lambda word: word.strip().lower(), q.split(",")))
-    print(tags)
     
+    q = q.replace(', ', ' ').replace(',',' ')
+    result_set = []
+    tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
+
     for bio in Bio.objects.all():
         skills=[]
         count = 0
-        skills=bio.technical_skills.lower().split()
+        skills = bio.technical_skills.lower().replace('/',' ').split()
         for tag in tags:
             count += (tag in skills)
         if count:

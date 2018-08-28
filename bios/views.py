@@ -13,7 +13,6 @@ from .models import Bio, Technical, Skill
 def index(request):
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
         return redirect("https://skillssearcher.centralus.cloudapp.azure.com/")
-
     return render(request, 'bios/index.html')
 
 
