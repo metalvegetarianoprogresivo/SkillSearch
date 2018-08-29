@@ -56,9 +56,8 @@ def remove_from_roster(request):
     return JsonResponse(response)
 
 def roster_detail(request):
-    '''
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-        return redirect("https://skillssearcher.centralus.cloudapp.azure.com/")
+        return redirect("https://http://skillssearcher.centralus.cloudapp.azure.com")
 
     roster = request.session.get('roster')
     bios = Bio.objects.filter(pk__in=roster).order_by('name')
@@ -72,10 +71,10 @@ def roster_detail(request):
 
 
 def send_roster(request):
-    '''
+    
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-                return redirect("https://skillsearch.westeurope.cloudapp.azure.com/")
-    '''
+        return redirect("https://http://skillssearcher.centralus.cloudapp.azure.com")
+
 #confirm from_mail in 'consultantmarket/settings.py'
     if request.method == 'POST':
         form = sendForm(request.POST)
@@ -85,8 +84,7 @@ def send_roster(request):
             bios = Bio.objects.filter(pk__in=roster).order_by('name')
             
             project_title = form.cleaned_data['title']
-            #name = request.session['displayName']
-            name = 'Eduardo Gamboa'
+            name = request.session['displayName']
             message = 'Hello {},\n\nYour roster for the project {} is the following.\nPlease feel free to select on the links of each consultant to see their bios.\n\nRoster:\n'.format(name, project_title)
             
             for bio in bios:
@@ -95,8 +93,7 @@ def send_roster(request):
             message += '\nGreetings from the Skill Search Team.'
             subject = 'Roster for {}'.format(project_title)
             from_mail = 'internalapp@intersysconsulting.com'
-            #to_mail = [request.session['mail']]
-            to_mail = ['egamboa@intersysconsulting.com']
+            to_mail = [request.session['mail']]
             response = send_mail(subject, message, from_mail, to_mail, fail_silently=False)
             if response:
                 print('sent succesfully')
