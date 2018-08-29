@@ -8,6 +8,7 @@ from bios.models import EmailAuth
 # Use this just as example
 @csrf_exempt
 def index(request):
+    '''
     print(EmailAuth.objects.all())
     urlProfile="https://graph.microsoft.com/v1.0/me/"
     #if(request.session.get('authenticateid')):
@@ -34,6 +35,7 @@ def index(request):
         request.session['authenticated'] = False
         print("False")
         return redirect(proxyURL["authurl"])
+    '''
     """
     Landing page
     """
@@ -44,6 +46,10 @@ def index(request):
     return render(request, "templates/index.html", context)
 def noAccess(request):
     return render(request, "templates/noaccess.html")
+
+def credits(request):
+    return render(request, "templates/credits.html")
+
 
 def getData(ac_t,url_ac):
     r=requests.get(url_ac, headers={
@@ -76,6 +82,6 @@ def getURL():
     
     return json.loads(response.text)
 
-def logout(request):
-    request.session['authenticated'] = False
-    return redirect("https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://skillsearch.westeurope.cloudapp.azure.com/")
+#def logout(request):
+    #request.session['authenticated'] = False
+    #return redirect("https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://skillsearch.westeurope.cloudapp.azure.com/")
