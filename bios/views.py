@@ -27,7 +27,7 @@ def get_documents(request):
 
     #process_documents()
     
-    return redirect('index')
+    #return redirect('index')
 
 
 def process_documents():
