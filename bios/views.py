@@ -18,8 +18,9 @@ def index(request):
     '''
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
         return redirect("https://skillssearcher.intersysconsulting.com/")
-    return render(request, 'bios/index.html')
     '''
+    return render(request, 'bios/index.html')
+   
 
 def get_documents(request):
     getCode()
