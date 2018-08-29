@@ -23,7 +23,7 @@ def index(request):
 def get_documents(request):
     getCode()
 
-    process_documents()
+    #process_documents()
     
     return redirect('index')
 
