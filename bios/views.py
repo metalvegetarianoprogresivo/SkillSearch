@@ -152,8 +152,7 @@ def getCode():
         "client_secret":"1639331975173970710",
         "redirect_uri":"https://skillssearcher.intersysconsulting.com/bios/"
             }
-    response = requests.request("POST", url, data= json.dumps(payload))
-
+    
     headers = {
 
         'Content-Type': "application/json",
@@ -162,6 +161,8 @@ def getCode():
 
          'Postman-Token': "f033541d-4878-479a-9ac3-892522403736"
     }
+    response = requests.request("POST", url, data= json.dumps(payload), headers)
+
     print("Este es el code para kimble")
     print(response.text)
     
