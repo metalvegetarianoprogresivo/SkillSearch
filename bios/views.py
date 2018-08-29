@@ -166,7 +166,7 @@ def test(code):
             "code": code
                 }
     headers = {
-            'content-type':"application/x-www-form-urlencoded",
+            'content-type':"application/json",
             'user-agent':"PostmanRuntime/7.2.0",        
             'accept':"*/*",
             'host':"intersys.my.salesforce.com",
