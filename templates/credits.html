@@ -1,0 +1,150 @@
+{% extends "templates/base.html" %}
+{% load static %}
+{% block extra_headers %}
+<!-- Base statuc -->
+<link rel="stylesheet" href="{% static 'css/credits.css' %}">
+<link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
+<script>
+    function get_roster_bios(){
+        $.post(
+            "{% url 'get_roster_bios' %}",
+            function(data){
+                //roster_bios = data.bios;
+                $('#roster_count2').html(data.bios.length);
+                $('#roster_count1').html(data.bios.length);
+            }
+        );
+    }
+
+    $(document).ready(function(){
+        get_roster_bios();
+    });
+</script>
+{% endblock %}
+<title>{{ title }}</title>
+    <body>
+    {% block content %}
+
+<h3 class="note text-center">SKILL SEARCH TEAM</h3>
+
+<section>
+	<div class="container">
+		<div class="row flex-center sm-no-flex">
+
+			<div class="pull-right sm-no-float col-md-8">
+				<ul class="team-members">
+					<!-- single member row starts -->
+					<li class="clearfix">
+						<div class="member-details">
+							<div>
+								<img src="{% static 'img/alan.png' %}" alt="UI Designer">
+								<div class="member-info">
+									<h3>Alan</h3>
+									<p>Muñoz</p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="member-details">
+							<div>
+								<img src="{% static 'img/alex.png' %}" alt="UI Designer">
+								<div class="member-info">
+									<h3>Alex</h3>
+									<p>Gomez</p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="member-details">
+							<div>
+								<img src="{% static 'img/eduardo.png' %}" alt="UI Designer">
+								<div class="member-info">
+									<h3>Eduardo</h3>
+									<p>Gamboa</p>
+								</div>
+							</div>
+						</div>
+					</li><!-- /single member row ends -->
+					
+					<!-- single member row starts -->
+					<li class="clearfix">
+						<div class="member-details">
+							<div>
+								<img src="{% static 'img/andy.png' %}" alt="UI Designer">
+								<div class="member-info">
+									<h3>Andrea</h3>
+									<p>Barba</p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="member-details">
+							<div>
+								<img src="{% static 'img/logo1.png' %}" alt="UI Designer">
+								<div class="member-info">
+									<h3>Team</h3>
+									<p>Skill Searcher</p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="member-details">
+							<div>
+								<img src="{% static 'img/hector.png' %}" alt="UI Designer">
+								<div class="member-info">
+									<h3>Hector</h3>
+									<p>Rodriguez</p>
+								</div>
+							</div>
+						</div>
+					</li><!-- /single member row ends -->
+
+					<!-- single member row starts -->
+					<li class="clearfix">
+						<div class="member-details">
+							<div>
+								<img src="{% static 'img/heloel.png' %}" alt="UI Designer">
+								<div class="member-info">
+									<h3>Heloel</h3>
+									<p>Hernandez</p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="member-details">
+							<div>
+								<img src="{% static 'img/tony.png' %}" alt="UI Designer">
+								<div class="member-info">
+									<h3>Eduardo</h3>
+									<p>Davalos</p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="member-details">
+							<div>
+								<img src="{% static 'img/mau.png' %}" alt="UI Designer">
+								<div class="member-info">
+									<h3>Mauricio</h3>
+									<p>Saavedra</p>
+								</div>
+							</div>
+						</div>
+					</li><!-- /single member row ends -->
+
+				</ul><!-- /end team-photos -->
+			</div><!-- /end col-md-8 -->
+			
+			<div class="pull-left col-md-4 sm-text-center">
+				<div class="team-overview">
+					<h2>Who Are We?</h2>
+					<p><div>Our team is integrated by app developers who love python and we more choro. </div></p>
+                    <a href="https://skillssearcher.centralus.cloudapp.azure.com">Return to Skill search</a>
+				</div>
+			</div><!-- /end col-md-4 -->
+		</div><!-- /end row -->
+	</div><!-- /end container -->
+</section>
+        {% endblock %}
+    </body>
+</html>
