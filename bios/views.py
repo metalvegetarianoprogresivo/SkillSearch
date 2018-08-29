@@ -161,7 +161,7 @@ def getCode():
 
          'Postman-Token': "f033541d-4878-479a-9ac3-892522403736"
     }
-    response = requests.request("POST", url, data= json.dumps(payload), headers)
+    response = requests.request("POST", url, data= json.dumps(payload), headers=headers)
 
     print("Este es el code para kimble")
     print(response.text)
