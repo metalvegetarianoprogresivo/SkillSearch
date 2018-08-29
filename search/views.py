@@ -7,8 +7,10 @@ from bios.models import Bio
 from django.shortcuts import redirect
 
 def search(request):
+    '''
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
         return redirect("https://skillssearcher.centralus.cloudapp.azure.com/")
+    '''
     try:
         q = request.GET["q"]
     except:
@@ -22,8 +24,9 @@ def search(request):
         skills=[]
         count = 0
         skills = bio.technical_skills.lower().replace('/',' ').split()
+        names = bio.name.lower().split()
         for tag in tags:
-            count += (tag in skills)
+            count += (tag in skills or tag in names)
         if count:
             result_set.append((count, bio))
     # TODO: uncomment next lines when loggin implementation
