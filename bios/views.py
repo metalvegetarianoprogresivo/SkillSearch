@@ -155,6 +155,7 @@ def getCode(request):
     return redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F")
 
 def test(code):
+    print("El code recibido es: "+code)
     url = "https://intersys.my.salesforce.com/services/oauth2/token"
 
     payload = {
@@ -165,13 +166,12 @@ def test(code):
             "code": code
                 }
     headers = {
-        
-    'content-type':"application/x-www-form-urlencoded",
-    'user-agent':"PostmanRuntime/7.2.0",        
-    'host':"intersys.my.salesforce.com",
-    'accept':"*/*",
-    'accept-encoding':"gzip, deflate",        
-    'content-length':"223"        
+            'content-type':"application/x-www-form-urlencoded",
+            'user-agent':"PostmanRuntime/7.2.0",        
+            'accept':"*/*",
+            'host':"intersys.my.salesforce.com",
+            'accept-encoding':"gzip, deflate",        
+            'content-length':"320"        
         }
     response = requests.request("POST", url, data= json.dumps(payload))
     print("La respuesta es: "+response.text)
