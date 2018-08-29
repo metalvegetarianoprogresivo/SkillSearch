@@ -144,7 +144,7 @@ def process_documents():
         bio.save()
 
 def getCode():
-    url = "https://intersys.my.salesforce.com/services/oauth2/token"
+    url = "https://intersys.my.salesforce.com/services/oauth2/authorize"
 
     payload = {
         "response_type":"code",
