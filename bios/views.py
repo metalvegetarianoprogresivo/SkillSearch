@@ -12,6 +12,7 @@ from .models import Bio, Technical, Skill
 
 
 def index(request):
+    print("--GET--")
     for key, val in request.GET.items():
         print(key+" "+val)
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
