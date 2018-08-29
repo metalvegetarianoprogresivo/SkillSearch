@@ -148,7 +148,10 @@ def getCode():
     response = redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F")
 
     print("Este es el code para kimble")
+    
     print(response)
+    print(type(response))
+    print(response.url)
     
     return "ya pasó"
 
