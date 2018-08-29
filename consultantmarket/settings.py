@@ -25,7 +25,7 @@ SECRET_KEY = 'o&nx!s$tilel2kn7^$1%4vdo*g5zpu9+e4d8*668w(oj!99jde'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["104.45.11.89","localhost","127.0.0.1","skillsearch.westeurope.cloudapp.azure.com"]
+ALLOWED_HOSTS = ["104.45.11.89","localhost","127.0.0.1","skillssearcher.centralus.cloudapp.azure.com","django"]
 
 
 # Application definition
@@ -161,3 +161,9 @@ try:
     from .localsettings import *
 except:
     pass
+
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_HOST_USER = 'internalapp@intersysconsulting.com'
+EMAIL_HOST_PASSWORD = 'Internal2018!'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

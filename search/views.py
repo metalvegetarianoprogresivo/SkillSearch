@@ -7,23 +7,26 @@ from bios.models import Bio
 from django.shortcuts import redirect
 
 def search(request):
+    
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-                return redirect("https://skillsearch.westeurope.cloudapp.azure.com/")
-
+        return redirect("https://skillssearcher.centralus.cloudapp.azure.com/")
+    
     try:
         q = request.GET["q"]
     except:
         raise Http404
-    result_set = []
-    tags = list(map(lambda word: word.strip().lower(), q.split(",")))
-    print(tags)
     
+    q = q.replace(', ', ' ').replace(',',' ')
+    result_set = []
+    tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
+
     for bio in Bio.objects.all():
         skills=[]
         count = 0
-        skills=bio.technical_skills.lower().split()
+        skills = bio.technical_skills.lower().replace('/',' ').split()
+        names = bio.name.lower().split()
         for tag in tags:
-            count += (tag in skills)
+            count += (tag in skills or tag in names)
         if count:
             result_set.append((count, bio))
     # TODO: uncomment next lines when loggin implementation
@@ -38,10 +41,11 @@ def search(request):
     page = request.GET.get('page')
     bios = paginator.get_page(page)
     context = {
-        "title": "Search results",
+        "title": "results",
         "bios": bios,
         "tags": tags,
         "q": q,
-        "roster": request.session.setdefault('roster', [])
+        "roster": request.session.setdefault('roster', []),
+        "max" : len(result_set)
     }
     return render(request, "search/search.html", context)
