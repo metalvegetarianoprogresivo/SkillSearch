@@ -1,6 +1,7 @@
 import os
 from django.shortcuts import redirect, render, reverse
 from django.conf import settings
+import json
 import requests
 import re
 from bs4 import BeautifulSoup
@@ -17,6 +18,8 @@ def index(request):
 
 
 def get_documents(request):
+    getCode()
+
     process_documents()
     
     return redirect('index')
@@ -139,4 +142,28 @@ def process_documents():
         bio.education = education
 
         bio.save()
+
+def getCode():
+    url = "https://intersys.my.salesforce.com/services/oauth2/token"
+
+    payload = {
+        "response_type":"code",
+        "client_id":"3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW",
+        "client_secret":"1639331975173970710",
+        "redirect_uri":"https://skillssearcher.intersysconsulting.com/bios/"
+            }
+    response = requests.request("POST", url, data= json.dumps(payload))
+
+    headers = {
+
+        'Content-Type': "application/json",
+
+        'Cache-Control': "no-cache",
+
+         'Postman-Token': "f033541d-4878-479a-9ac3-892522403736"
+    }
+    print("Este es el code para kimble")
+    print(response.text)
+    
+    return json.loads(response.text)
 
