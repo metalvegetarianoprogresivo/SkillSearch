@@ -173,6 +173,6 @@ def test(code):
             'accept-encoding':"gzip, deflate",        
             'content-length':"320"        
         }
-    response = requests.request("POST", url, data= json.dumps(payload))
+    response = requests.request("POST", url, data= json.dumps(payload), headers = headers)
     print("La respuesta es: "+response.text)
 
