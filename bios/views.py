@@ -23,7 +23,7 @@ def index(request):
    
 
 def get_documents(request):
-    getCode(request)
+    return getCode(request)
 
     #process_documents()
     
