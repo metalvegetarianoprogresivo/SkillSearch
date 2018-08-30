@@ -1,3 +1,4 @@
+import datetime
 import os
 from django.shortcuts import redirect, render, reverse
 from django.conf import settings
@@ -13,6 +14,10 @@ from .models import Bio, Technical, Skill
 
 def index(request):
     print("--GET--")
+    f = open ('../logdate.txt','a')
+    today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"bio"
+    f.write(today+"\n")
+    f.close()
     for key, val in request.GET.items():
         print(key+" "+val)
     '''
@@ -21,6 +26,7 @@ def index(request):
     '''
     if("code" in request.GET.keys()):
         test(request.GET.get("code"))
+    today = datetime.date.today()  
     return render(request, 'bios/index.html')
    
 

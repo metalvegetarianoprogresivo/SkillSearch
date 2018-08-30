@@ -1,3 +1,5 @@
+import datetime
+import os
 from decimal import Decimal
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -48,4 +50,9 @@ def search(request):
         "roster": request.session.setdefault('roster', []),
         "max" : len(result_set)
     }
+    today = datetime.date.today()   
+    f = open ('../logdate.txt','a')
+    today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"search"
+    f.write(today+"\n")
+    f.close()
     return render(request, "search/search.html", context)
