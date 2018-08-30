@@ -11,10 +11,12 @@ from .models import Bio, Technical, Skill
 
 
 def index(request):
+    '''
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
         return redirect("https://skillssearcher.intersysconsulting.com/")
+    '''
     return render(request, 'bios/index.html')
-
+    
 
 def get_documents(request):
     process_documents()
@@ -44,26 +46,25 @@ def process_documents():
     mx = wb['MDC']
     all_links = wb['US']['B'] + wb['MDC']['B']
     all_names = wb['US']['A'] + wb['MDC']['A']
-    names = []
-    links = []
+    names_links = {}
 
     for consultant in range(len(all_links)):
         if all_links[consultant].value is not None and 'https' in all_links[consultant].value:
-            links.append(all_links[consultant].value)
-            names.append(all_names[consultant].value)
+            names_links[all_names[consultant].value] = all_links[consultant].value
         else:
             pass
 
-    for consultant in range(len(links)):
-
-        response = requests.get(links[consultant], headers=headers)
+    for consultant_name, consultant_link in names_links.items():
+        response = requests.get(consultant_link, headers=headers)
         filename = 'Bio.pdf'
         soup = BeautifulSoup(response.text, 'html.parser')
         regex = re.compile('.*.pdf')
         link = soup.find(href = regex)
         pdf_link = 'https://www.intersysconsulting.com' + link.get('href')
+        print('final_link', pdf_link)
         pdf_file = requests.get(pdf_link, headers=headers)
 
+        template_error = 'Update Bio, standard format needed' 
         with open(filename, 'wb') as f:
             f.write(pdf_file.content)
             f.close()
@@ -76,25 +77,25 @@ def process_documents():
         for word in pdf_text:
             clean_text += (word + ' ')
         
-        name_title = None                
+        name_title = template_error               
         try:
             name_title = re.search(r".docx(.*?) Profile ", clean_text).group(1)
         except:
             pass
 
-        if name_title is None:
+        if name_title is template_error:
             try:
                 name_title = re.search(r"(.*?) Profile ", clean_text).group(1)
-                print(name_title)
             except:
                 pass
                 
-        bio, created = Bio.objects.get_or_create(name=names[consultant])
+        bio, created = Bio.objects.get_or_create(name=consultant_name)
         bio.name_and_title = name_title
         bio.url = pdf_link
         job_titles = ['Senior Consultant', 'Consultant', 'Technical Lead', 'Practice Director',
         'Technical Manager', 'Delivery Lead', 'Delivery Manager']
 
+        title = template_error   
         for title in job_titles:
             try: 
                 if title in name_title.title():
@@ -103,40 +104,50 @@ def process_documents():
             except:
                 pass
 
+        profile = template_error
         try:
             profile = re.search(r" Profile (.*?)Skills ", clean_text).group(1)
         except:
             pass
         bio.profile = profile
 
+        skills_field = template_error
         try:
             skills_field = re.search(r"Skills (.*?)Education ", clean_text).group(0)
         except:
             pass
+        Skills = template_error
         try:
             skills = re.search(r"Skills ([^']*)Technical ", skills_field).group(1)
-        except Exception as e:
-            skills=""
-
+        except:
+            pass
         bio.skills = skills
 
+        technical = template_error
         try:
             technical = re.search(r"Technical(.*?)Education ", skills_field).group(1)
         except:
-            technical = ""
+            pass
         bio.technical_skills = technical
             
-        education = None
+        education = template_error
         try:
             education = re.search(r" Education (.*?) Certifications ", clean_text).group(1)
         except:
             pass
-        if education is None:
+        if education is template_error:
             try:
                 education = re.search(r" Education (.*?) Experience ", clean_text).group(1)
             except:
                 pass
         bio.education = education
+
+        experience = template_error
+        try:
+            experience = re.search(r" Experience ([^']*) ", clean_text).group(1)
+        except:
+            pass
+        bio.experience = experience
 
         bio.save()
 
