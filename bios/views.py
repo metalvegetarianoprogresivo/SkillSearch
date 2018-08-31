@@ -38,7 +38,7 @@ def get_token(code):
     resJson = json.loads(response.text)
     print(resJson)
     print(type(resJson))
-    process_documents(json.loads(response.text)["access_token"])
+    process_documents(resJson["access_token"])
 
     return()
 
