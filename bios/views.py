@@ -35,7 +35,7 @@ def get_token(code):
     }
     response = requests.request("POST", url, data= payload, headers = headers)
 
-    process_documents(response.token)
+    process_documents(json.loads(response.text)["access_token"])
 
     return()
 
