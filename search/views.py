@@ -7,10 +7,10 @@ from bios.models import Bio
 from django.shortcuts import redirect
 
 def search(request):
-    ''' 
+    
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
         return redirect("https://skillssearcher.intersysconsulting.com/")
-    '''
+    
     try:
         q = request.GET["q"]
     except:
@@ -64,6 +64,6 @@ def search(request):
         "tags": tags,
         "q": q,
         "roster": request.session.setdefault('roster', []),
-        "max" : len(result_set),
+        "max" : len(result_set)
     }
     return render(request, "search/search.html", context)
