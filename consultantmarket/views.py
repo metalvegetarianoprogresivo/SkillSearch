@@ -9,6 +9,7 @@ from bios.models import EmailAuth
 @csrf_exempt
 
 def index(request):
+    
     print(EmailAuth.objects.all())
     urlProfile="https://graph.microsoft.com/v1.0/me/"
     #if(request.session.get('authenticateid')):     
@@ -34,6 +35,7 @@ def index(request):
         request.session['authenticated'] = False
         print("False")
         return redirect(proxyURL["authurl"])
+       
     """
     Landing page
     """
