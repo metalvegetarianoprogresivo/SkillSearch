@@ -72,7 +72,7 @@
                                 {{ bio.3.name }}
                             </a>
                     </h4>
-                    <h5 class="card-subtitle mb-2 text-center">{{ bio.3.title }}</h5>
+		    <h5 class="card-subtitle mb-2 text-center">{{ bio.3.title }} <br> {{ bio.3.location }} </h5>
                     <div class="text-center">
                         <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
                     </div>
@@ -96,8 +96,8 @@
                             </h5>
                                 <br>
 
-                                <center class="font-weight-bold">{{ bio.3.title }}</center>
-
+				<center class="font-weight-bold">{{ bio.3.title }} <br> {{ bio.3.location }}</center>
+				
                             </td>
                             <td class="align-middle" style="width: 55%;">{% get_importance bio.3.technical_skills tags %}
                             {% for skill,count in bio.0.items %}

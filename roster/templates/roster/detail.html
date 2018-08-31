@@ -97,7 +97,7 @@
                                 {{ bio.name }} 
                             </a>
                     </h4>
-                    <h6 class="card-subtitle mb-2 text-center">{{ bio.title }}</h6>
+		    <h6 class="card-subtitle mb-2 text-center">{{ bio.title }} <br>  {{bio.location}}</h6>
                     <div class="text-center">
                         <p class="card-text">{% get_importance bio.technical_skills tags %}</p>
                     </div>
@@ -119,10 +119,9 @@
 				<a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
                                 {{ bio.name }} 
                             </a>
-
 			    	</h4>
                                 <br>
-                                <center class="font-weight-bold">{{ bio.title }}</center>
+				<center class="font-weight-bold">{{ bio.title }} <br>  {{bio.location}} </center>
                             </td>
                             <td class="align-middle" style="width: 55%;">{% get_importance bio.technical_skills tags %}</td>
                             {% comment %}
