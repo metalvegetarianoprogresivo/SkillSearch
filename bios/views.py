@@ -35,8 +35,9 @@ def get_token(code):
             "content-type":"application/x-www-form-urlencoded"  
     }
     response = requests.request("POST", url, data= payload, headers = headers)
-    print(response.text)
-    print(type(response.text))
+    resJson = json.loads(response.text)
+    print(resJson)
+    print(type(resJson))
     process_documents(json.loads(response.text)["access_token"])
 
     return()
