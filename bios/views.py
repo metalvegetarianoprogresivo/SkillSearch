@@ -12,7 +12,6 @@ from .models import Bio, Technical, Skill
 
 
 def index(request):
-    
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
         return redirect("https://skillssearcher.intersysconsulting.com/")
     if("code" in request.GET.keys()):
@@ -36,7 +35,8 @@ def get_token(code):
             "content-type":"application/x-www-form-urlencoded"  
     }
     response = requests.request("POST", url, data= payload, headers = headers)
-
+    print(response.text)
+    print(type(response.text))
     process_documents(json.loads(response.text)["access_token"])
 
     return()
