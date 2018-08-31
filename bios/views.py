@@ -36,8 +36,8 @@ def get_token(code):
     }
     response = requests.request("POST", url, data= payload, headers = headers)
     resJson = json.loads(response.text)
-    print(resJson)
-    print(type(resJson))
+    #print(resJson)
+    #print(type(resJson))
     process_documents(resJson["access_token"])
 
     return()
@@ -48,10 +48,16 @@ def get_location(token, name):
     headers = {
             "authorization":"Bearer "+token
     }
-    
-    response = requests.request("GET", url+"SELECT region__c FROM user WHERE name LIKE '%"+name+"%'", headers = headers)
-
-    return(response['records'][0]['Region__c'])
+    try:
+        response = requests.request("GET", url+"SELECT region__c FROM user WHERE name LIKE '%"+name+"%'", headers = headers)
+        response_json=json.loads(response.text)
+    except:
+        pass
+    try:
+        location = response_json['records'][0]['Region__c']
+    except:
+        location = ""
+    return(location)
 
 
 
@@ -121,6 +127,7 @@ def process_documents(token):
                 pass
                 
         bio, created = Bio.objects.get_or_create(name=consultant_name)
+        print(consultant_name)
         bio.name_and_title = name_title
         bio.url = pdf_link
         bio.location = get_location(token, consultant_name)
