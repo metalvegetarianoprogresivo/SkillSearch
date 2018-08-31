@@ -48,7 +48,7 @@ def get_location(token, name):
     
     response = requests.request("GET", url+"SELECT region__c FROM user WHERE name LIKE '%"+name+"%'", headers = headers)
 
-    return(response)
+    return(response['records'][0]['Region__c'])
 
 
 
