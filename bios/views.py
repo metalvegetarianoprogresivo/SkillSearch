@@ -1,3 +1,4 @@
+import json
 import os
 from django.shortcuts import redirect, render, reverse
 from django.conf import settings
@@ -121,7 +122,7 @@ def process_documents(token):
         bio, created = Bio.objects.get_or_create(name=consultant_name)
         bio.name_and_title = name_title
         bio.url = pdf_link
-        bio.location = get_location(token, names[consultant])
+        bio.location = get_location(token, consultant_name)
         job_titles = ['Senior Consultant', 'Consultant', 'Technical Lead', 'Practice Director',
         'Technical Manager', 'Delivery Lead', 'Delivery Manager']
 
