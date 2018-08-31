@@ -39,6 +39,18 @@ def get_token(code):
 
     return()
 
+def get_location(token, name):
+    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+
+    headers = {
+            "authorization":"Bearer "+token
+    }
+    
+    response = requests.request("GET", url+"SELECT region__c FROM user WHERE name LIKE '%"+name+"%'", headers = headers)
+
+    return(response)
+
+
 
 
 def process_documents(token):
@@ -111,6 +123,7 @@ def process_documents(token):
         bio, created = Bio.objects.get_or_create(name=names[consultant])
         bio.name_and_title = name_title
         bio.url = pdf_link
+        bio.location = get_location(token, names[consultant])
         job_titles = ['Senior Consultant', 'Consultant', 'Technical Lead', 'Practice Director',
         'Technical Manager', 'Delivery Lead', 'Delivery Manager']
 
