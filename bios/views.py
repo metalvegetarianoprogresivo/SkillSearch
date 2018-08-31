@@ -14,17 +14,47 @@ def index(request):
     
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
         return redirect("https://skillssearcher.intersysconsulting.com/")
-    
+    if("code" in request.GET.keys()):
+        get_token(request.GET.get("code"))
     return render(request, 'bios/index.html')
-    
 
 def get_documents(request):
-    process_documents()
+    #process_documents()
     
-    return redirect('index')
+    return get_code(request)
+
+def get_code(request):
+    return redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F")
+
+def get_token(code):
+    url = "https://intersys.my.salesforce.com/services/oauth2/token"
+
+    payload = "grant_type=authorization_code&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
+      
+    headers = {
+            "content-type":"application/x-www-form-urlencoded"  
+    }
+    response = requests.request("POST", url, data= payload, headers = headers)
+
+    process_documents(json.loads(response.text)["access_token"])
+
+    return()
+
+def get_location(token, name):
+    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+
+    headers = {
+            "authorization":"Bearer "+token
+    }
+    
+    response = requests.request("GET", url+"SELECT region__c FROM user WHERE name LIKE '%"+name+"%'", headers = headers)
+
+    return(response['records'][0]['Region__c'])
 
 
-def process_documents():
+
+
+def process_documents(token):
     
     headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
     '''
@@ -91,6 +121,7 @@ def process_documents():
         bio, created = Bio.objects.get_or_create(name=consultant_name)
         bio.name_and_title = name_title
         bio.url = pdf_link
+        bio.location = get_location(token, names[consultant])
         job_titles = ['Senior Consultant', 'Consultant', 'Technical Lead', 'Practice Director',
         'Technical Manager', 'Delivery Lead', 'Delivery Manager']
 
