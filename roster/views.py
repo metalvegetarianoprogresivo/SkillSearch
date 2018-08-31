@@ -56,10 +56,10 @@ def remove_from_roster(request):
     return JsonResponse(response)
 
 def roster_detail(request):
-    '''
+    
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
         return redirect("https://skillssearcher.intersysconsulting.com/")
-    '''
+    
     roster = request.session.get('roster')
     bios = Bio.objects.filter(pk__in=roster).order_by('name')
 
@@ -72,10 +72,10 @@ def roster_detail(request):
 
 
 def send_roster(request):
-    '''
+    
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
         return redirect("https://skillssearcher.intersysconsulting.com/")
-    '''
+    
 #confirm from_mail in 'consultantmarket/settings.py'
     if request.method == 'POST':
         form = sendForm(request.POST)
