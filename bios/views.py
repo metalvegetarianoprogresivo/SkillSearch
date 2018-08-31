@@ -61,7 +61,6 @@ def process_documents():
         regex = re.compile('.*.pdf')
         link = soup.find(href = regex)
         pdf_link = 'https://www.intersysconsulting.com' + link.get('href')
-        print('final_link', pdf_link)
         pdf_file = requests.get(pdf_link, headers=headers)
 
         template_error = 'Update Bio, standard format needed' 
