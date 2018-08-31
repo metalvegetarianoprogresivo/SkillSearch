@@ -14,10 +14,13 @@ from .models import Bio, Technical, Skill
 
 def index(request):
     print("--GET--")
-    f = open ('../logdate.txt','a')
-    today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"bio"
-    f.write(today+"\n")
-    f.close()
+    try:
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"bio"
+        f.write(today+"\n")
+        f.close()
+    except: 
+        pass
     for key, val in request.GET.items():
         print(key+" "+val)
     '''

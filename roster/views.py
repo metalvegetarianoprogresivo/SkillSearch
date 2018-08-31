@@ -18,12 +18,14 @@ def get_roster_bios(request):
     response = {
         'bios': roster
     }
-    today = datetime.date.today() 
-    f = open ('../logdate.txt','a')
-    today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"roster"
-    f.write(today+"\n")
-    f.close()
-
+    try:
+        today = datetime.date.today() 
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"roster"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
     return JsonResponse(response)
 
 @require_POST

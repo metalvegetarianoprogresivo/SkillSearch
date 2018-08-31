@@ -42,29 +42,37 @@ def index(request):
     context = {
         "title" : "Home"
     }
-    today = datetime.date.today()      
-    f = open ('../logdate.txt','a')
-    today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"home"
-    f.write(today+"\n")
-    f.close()
-
+    try:
+        today = datetime.date.today()      
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"home"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
     #assert(False, request.session['authenticated'])
     return render(request, "templates/index.html", context)
   
 def noAccess(request):
-    today = datetime.date.today()
-    f = open ('../logdate.txt','a')
-    today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"no access"
-    f.write(today+"\n")
-    f.close()
+    try:
+        today = datetime.date.today()
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"no access"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
     return render(request, "templates/noaccess.html")
 
 def credits(request):
-    today = datetime.date.today()
-    f = open ('../logdate.txt','a')
-    today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"credits"
-    f.write(today+"\n")
-    f.close()
+    try:
+        today = datetime.date.today()
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"credits"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
     return render(request, "templates/credits.html")
 
 def getData(ac_t,url_ac):
