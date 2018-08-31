@@ -1,3 +1,4 @@
+import datetime
 import os
 from django.shortcuts import redirect, render, reverse
 from django.conf import settings
@@ -16,6 +17,14 @@ def index(request):
         return redirect("https://skillssearcher.intersysconsulting.com/")
     
     return render(request, 'bios/index.html')
+     try:
+        today = datetime.date.today() 
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"bio"
+        f.write(today+"\n")
+        f.close()
+    except: 
+        pass
     
 
 def get_documents(request):

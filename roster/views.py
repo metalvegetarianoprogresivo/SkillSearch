@@ -1,3 +1,5 @@
+import datetime
+import os
 from bios.models import Bio
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -16,7 +18,14 @@ def get_roster_bios(request):
     response = {
         'bios': roster
     }
-
+    try:
+        today = datetime.date.today() 
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"roster"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
     return JsonResponse(response)
 
 @require_POST
