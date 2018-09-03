@@ -8,6 +8,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from consultantmarket.views import index
 from .forms import sendForm
+from django.contrib import messages
+
 @require_POST
 @csrf_exempt
 
@@ -96,9 +98,10 @@ def send_roster(request):
             from_mail = 'internalapp@intersysconsulting.com'
             to_mail = [request.session['mail']]
             response = send_mail(subject, message, from_mail, to_mail, fail_silently=False)
+            messages.seccess(request, "The roster was successfully sent.")
             if response:
                 print('sent succesfully')
-            return redirect('/roster/detail')
+            #return redirect('/roster/detail')
     else:
         form = sendForm()
-    return render(request, 'roster/detail.html', {'form': form})
+    #return render(request, 'roster/detail.html', {'form': form})
