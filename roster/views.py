@@ -10,6 +10,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from consultantmarket.views import index
 from .forms import sendForm
+from django.contrib import messages
+
 @require_POST
 @csrf_exempt
 
@@ -100,9 +102,8 @@ def send_roster(request):
             response = send_mail(subject, message, from_mail, to_mail, fail_silently=False)
             if response:
                 print('sent succesfully')
-              
-                messages.success(request,"The email was sended successfully")
+                messages.success(request,"The email was sent successfully")
             return HttpResponseRedirect('/roster/detail')
     else:
         form = sendForm()
-    return render(request, 'roster/detail.html', {'form': form})
+    #return render(request, 'roster/detail.html', {'form': form})
