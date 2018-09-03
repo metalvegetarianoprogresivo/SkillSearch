@@ -60,7 +60,7 @@ def get_location(token, name):
             location = "No location Found"
     except:
         location = "No location Found"
-
+    print("location ",location)
     return(location)
 
 

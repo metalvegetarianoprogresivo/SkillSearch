@@ -72,10 +72,13 @@
                                 {{ bio.3.name }}
                             </a>
                     </h4>
-                    <h5 class="card-subtitle mb-2 text-center">{{ bio.3.title }}</h5>
+		    <h5 class="card-subtitle mb-2 text-center">{{ bio.3.title }} <br> {{bio.3.location}}</h5>
                     <div class="text-center">
                         <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
-                    </div>
+                    	<p>
+			{% for skill,count in bio.0.items %} <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br> {% endfor %}
+			</p>
+		    </div>
                     <div class="text-center">
                         <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
                     </div>
@@ -96,8 +99,8 @@
                             </h5>
                                 <br>
 
-                                <center class="font-weight-bold">{{ bio.3.title }}</center>
-
+				<center class="font-weight-bold">{{ bio.3.title }} <br> {{bio.3.location}}</center>
+				
                             </td>
                             <td class="align-middle" style="width: 55%;">{% get_importance bio.3.technical_skills tags %}
                             {% for skill,count in bio.0.items %}
