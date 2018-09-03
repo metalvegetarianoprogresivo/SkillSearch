@@ -53,10 +53,10 @@ def get_location(token, name):
         response = requests.request("GET", url+"SELECT region__c FROM user WHERE name LIKE '%"+name+"%'", headers = headers)
         response_json=json.loads(response.text)
     except:
-        pass
+        location = "No location Found"
     try:
         location = response_json['records'][0]['Region__c']
-        if location not in locations:
+        if not location:
             location = "No location Found"
     except:
         location = "No location Found"
