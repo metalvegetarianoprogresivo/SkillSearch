@@ -2,6 +2,7 @@
 <script src="{% static 'js/modal.js' %}"></script>
 
 <script>
+	
     $(document).ready(function() {
         var roster_cart_buttons = $('.roster-cart');
 
@@ -41,7 +42,7 @@
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <div class="modal-header" id="exampleModalCenter1">
                             <h5 class="modal-title">Send me the roster</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -50,6 +51,15 @@
                         <div class="modal-body">
                             <form method="POST" action="{% url 'send_roster' %}">
                                 <div class="form-group">
+					<script>
+					{% if messages %}
+					{% for message in messages %}
+						$(document).ready(function(){
+	      						 $("#myModal").modal("show");
+						});
+					{% endfor %}
+					{% endif %}
+					</script>
                                     <label for="project_title" class="col-form-label">Project:</label>
                                     <input for="{{ form.title }}" type="text" class="form-control" id="project_title" value="" name="title">
                                     {% csrf_token %}
@@ -70,8 +80,6 @@
         <div class="card d-none d-sm-block">
             <div class="table-responsive">
                 <table class="table table-hover">
-
-
                     <tbody>
                         <tr>
                             <th class="text-center align-middle" style="width: 30%;">Consultant</th>
@@ -89,7 +97,7 @@
         {% for bio in bios %}
         <br class="d-block d-sm-none">
         <div class="card d-block d-sm-none">
-            <br>
+            <br >
             <div class="container card d-block d-sm-none" style="width: 18rem;">
                 <div class="card-body">
                     <h4>
@@ -160,4 +168,30 @@
         </div>
     </div>
 </div>
-{% endfor %} {% endblock %}
+{% endfor %} 
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+														                     <div class="modal-dialog modal-dialog-centered" role="document">
+										                      <div class="modal-content">
+												                             <div class="modal-header">
+					                                 <h5 class="modal-title">Message sent successfully</h5>
+									                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										                                  <span aria-hidden="true">&times;</span>
+														                             </button>
+																	                            </div>
+																				                           <div class="modal-body">
+																								                              <form method="POST" action="{% url 'send_roster' %}">
+																												                                     <div class="form-group">
+																																	                                     
+																																										                                      {% csrf_token %}
+																																																			                                    <button class="btn btn-secondary float-right mt-2" data-dismiss="modal">Ok</button>
+																																																							                                   </div>
+																																																											                                  <div class="modal-footer"></div>
+																																																															                             </form>
+																																																																		                            </div>
+																																																																					                       </div>
+																																																																							                      </div>
+																																																																									                 </div>
+
+{% endblock %}

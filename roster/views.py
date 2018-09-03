@@ -1,3 +1,5 @@
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 from bios.models import Bio
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -98,7 +100,9 @@ def send_roster(request):
             response = send_mail(subject, message, from_mail, to_mail, fail_silently=False)
             if response:
                 print('sent succesfully')
-            return redirect('/roster/detail')
+              
+                messages.success(request,"The email was sended successfully")
+            return HttpResponseRedirect('/roster/detail')
     else:
         form = sendForm()
     return render(request, 'roster/detail.html', {'form': form})
