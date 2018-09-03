@@ -43,6 +43,7 @@ def get_token(code):
     return()
 
 def get_location(token, name):
+    locations = ['MDC','Central', 'West', 'East']
     url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
 
     headers = {
@@ -55,8 +56,11 @@ def get_location(token, name):
         pass
     try:
         location = response_json['records'][0]['Region__c']
+        if location not in locations:
+            location = "No location Found"
     except:
-        location = ""
+        location = "No location Found"
+
     return(location)
 
 
@@ -134,7 +138,7 @@ def process_documents(token):
         job_titles = ['Senior Consultant', 'Consultant', 'Technical Lead', 'Practice Director',
         'Technical Manager', 'Delivery Lead', 'Delivery Manager']
 
-        title = template_error   
+        bio.title = template_error   
         for title in job_titles:
             try: 
                 if title in name_title.title():
