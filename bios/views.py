@@ -1,4 +1,5 @@
 import json
+import datetime
 import os
 from django.shortcuts import redirect, render, reverse
 from django.conf import settings
@@ -17,6 +18,15 @@ def index(request):
     if("code" in request.GET.keys()):
         get_token(request.GET.get("code"))
     return render(request, 'bios/index.html')
+
+    try:
+        today = datetime.date.today() 
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"bio"
+        f.write(today+"\n")
+        f.close()
+    except: 
+        pass
 
 def get_documents(request):
     #process_documents()

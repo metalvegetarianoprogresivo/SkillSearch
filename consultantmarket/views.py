@@ -3,6 +3,8 @@ from django.http import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
+import datetime
+import os
 from django.shortcuts import redirect
 from bios.models import EmailAuth
 # Use this just as example
@@ -46,12 +48,37 @@ def index(request):
             print("False")
             return redirect(proxyURL["authurl"])
        
+    try:
+        today = datetime.date.today()      
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"home"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
+    #assert(False, request.session['authenticated'])
     return render(request, "templates/index.html", context)
   
 def noAccess(request):
+    try:
+        today = datetime.date.today()
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"no access"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
     return render(request, "templates/noaccess.html")
 
 def credits(request):
+    try:
+        today = datetime.date.today()
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"credits"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
     return render(request, "templates/credits.html")
 
 def getData(ac_t,url_ac):
