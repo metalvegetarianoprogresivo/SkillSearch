@@ -95,7 +95,7 @@ def send_roster(request):
             for bio in bios:
                 message += '{}:\n\t{}\n'.format(bio.name,bio.url)
             
-            message += '\nGreetings from the Skill Search Team.'
+            message += '\nGreetings from the Skills Searcher Team.'
             subject = 'Roster for {}'.format(project_title)
             from_mail = 'internalapp@intersysconsulting.com'
             to_mail = [request.session['mail']]
