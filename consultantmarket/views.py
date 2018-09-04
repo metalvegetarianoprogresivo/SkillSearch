@@ -27,10 +27,16 @@ def index(request):
     else:
         if(request.POST.keys()):
             print("Entro al POST")
-            access_tok=request.POST['access_token']
+            access_tok=request.POST.get('access_token')
+            if(access_tok is None):
+                request.session['authenticated'] = False
+                return redirect('noAccess')
             user=(getData(access_tok,urlProfile))
             request.session['displayName'] = user['displayName']
             request.session['mail'] =user['mail']
+            if ("@intersysconsulting.com" not in user['userPrincipalName']):
+                request.session['authenticated'] = False
+                return redirect('noAccess')
             query = EmailAuth.objects.all()
             access = False
             for obj in query:
@@ -41,6 +47,7 @@ def index(request):
                     access = True
             
             if(access == False):
+                request.session['authenticated'] = False
                 return redirect('noAccess')
         else:
             print("Entro al no post")
@@ -60,6 +67,9 @@ def index(request):
     return render(request, "templates/index.html", context)
   
 def noAccess(request):
+    context = {
+         "title" : "NoAccess"
+    }
     try:
         today = datetime.date.today()
         f = open ('../logdate.txt','a')
@@ -68,9 +78,12 @@ def noAccess(request):
         f.close()
     except:
         pass
-    return render(request, "templates/noaccess.html")
+    return render(request, "templates/noaccess.html", context)
 
 def credits(request):
+    context = {
+         "title" : "Credits"
+    }
     try:
         today = datetime.date.today()
         f = open ('../logdate.txt','a')
@@ -79,7 +92,7 @@ def credits(request):
         f.close()
     except:
         pass
-    return render(request, "templates/credits.html")
+    return render(request, "templates/credits.html", context)
 
 def getData(ac_t,url_ac):
     r=requests.get(url_ac, headers={
