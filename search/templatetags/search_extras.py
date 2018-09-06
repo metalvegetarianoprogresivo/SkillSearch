@@ -10,12 +10,21 @@ def get_importance(*args, **kwargs):
     normal_strings = ""
     queryset, tags = args[0], args[1]
     queryset = queryset.split()
-
-    for object in queryset:
-        if object.lower() in tags:
-            bold_strings += '<span class="font-weight-bold">%s</span> ' % (
-                object,
-            )
+    temporary = []
+    
+    for skill in queryset:
+        if '/' in skill:
+            joined_skill = skill.split('/')
+            for i in joined_skill:
+                temporary.append(i)
         else:
-            normal_strings += '<span>%s</span> ' % (object,)
+            temporary.append(skill)
+
+    for skill in temporary:
+        if skill.lower() in tags:
+            bold_strings += '<span class="font-weight-bold">%s</span> ' % (skill)
+        else:
+            normal_strings += '<span>%s</span> ' % (skill)
+
     return mark_safe("<p>%s %s</p>" % (bold_strings, normal_strings))
+    

@@ -1,3 +1,5 @@
+import datetime
+import os
 from decimal import Decimal
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -7,25 +9,46 @@ from bios.models import Bio
 from django.shortcuts import redirect
 
 def search(request):
+    
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-                return redirect("https://skillsearch.westeurope.cloudapp.azure.com/")
-
+        return redirect("https://skillssearcher.intersysconsulting.com/")
+    
     try:
         q = request.GET["q"]
     except:
         raise Http404
-    result_set = []
-    tags = list(map(lambda word: word.strip().lower(), q.split(",")))
-    print(tags)
     
+    q = q.replace(', ', ' ').replace(',',' ')
+    result_set = []
+    tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
+
     for bio in Bio.objects.all():
-        skills=[]
-        count = 0
-        skills=bio.technical_skills.lower().split()
+
+        try:
+            names = bio.name.lower().split()
+            skills = bio.skills.lower().replace('/',' ').split()
+            tech_skills = bio.technical_skills.lower().replace('/',' ').split()
+            profile = bio.profile.lower().replace('/',' ').split()
+            experience = bio.experience.lower().replace('/',' ').split()
+        except:
+            pass
+        fields = names + profile + skills + tech_skills + experience
+
+        total_count = 0
+        diff_skill_flag = False 
+        skills = {}
         for tag in tags:
-            count += (tag in skills)
-        if count:
-            result_set.append((count, bio))
+            skill_count = 0 
+            for word in fields:
+                if word == tag:
+                    diff_skill_flag = True
+                    total_count += 1
+                    skill_count += 1
+            if diff_skill_flag is True:
+                skills[tag.title()] = skill_count
+                diff_skill_flag = False
+        if total_count:
+            result_set.append((skills, len(skills), total_count, bio))
     # TODO: uncomment next lines when loggin implementation
     """
     if request.session.get('logged'):
@@ -33,15 +56,24 @@ def search(request):
     else:
         raise Http404
     """
-    result_set = sorted(result_set, key=lambda x:(-x[0], x[1]))
+    result_set = sorted(result_set, key=lambda x:(-x[1], -x[2], x[3]))
     paginator = Paginator(result_set, 10)
     page = request.GET.get('page')
     bios = paginator.get_page(page)
     context = {
-        "title": "Search results",
+        "title": "results",
         "bios": bios,
         "tags": tags,
         "q": q,
-        "roster": request.session.setdefault('roster', [])
+        "roster": request.session.setdefault('roster', []),
+        "max" : len(result_set)
     }
+    try:
+        today = datetime.date.today()   
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"search"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass    
     return render(request, "search/search.html", context)

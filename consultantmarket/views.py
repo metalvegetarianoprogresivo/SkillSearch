@@ -3,47 +3,83 @@ from django.http import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 import requests
 import json
+import datetime
+import os
 from django.shortcuts import redirect
 from bios.models import EmailAuth
 # Use this just as example
 @csrf_exempt
+
 def index(request):
-    print(EmailAuth.objects.all())
+    
+    #print(EmailAuth.objects.all())
     urlProfile="https://graph.microsoft.com/v1.0/me/"
-    #if(request.session.get('authenticateid')):
-        
-    request.session['authenticated'] = False
     proxyURL = getURL()
-    if(request.POST.keys()):
-        access_tok=request.POST['access_token']
-        user=(getData(access_tok,urlProfile))
-        request.session['displayName'] = user['displayName']
-        request.session['mail'] =user['mail']
-        print("POST")
-        query = EmailAuth.objects.all()
-        access = False
-        for obj in query:
-            print(request.session['mail']+"  "+obj.email)
-            if(request.session['mail'] == obj.email):
-                print("youhaveaccess")
-                request.session['authenticated'] = True
-                access = True
-        if(access == False):
-            return redirect('noAccess')
-    else:
-        request.session['authenticated'] = False
-        print("False")
-        return redirect(proxyURL["authurl"])
     """
     Landing page
     """
     context = {
         "title" : "Home"
     }
+
+    if(request.session.get('authenticated') == True):     
+        return render(request, "templates/index.html", context)
+    else:
+        if(request.POST.keys()):
+            print("Entro al POST")
+            access_tok=request.POST['access_token']
+            user=(getData(access_tok,urlProfile))
+            request.session['displayName'] = user['displayName']
+            request.session['mail'] =user['mail']
+            query = EmailAuth.objects.all()
+            access = False
+            for obj in query:
+                print(request.session['mail']+"  "+obj.email)
+                if(request.session['mail'] == obj.email):
+                    print("youhaveaccess")
+                    request.session['authenticated'] = True
+                    access = True
+            
+            if(access == False):
+                return redirect('noAccess')
+        else:
+            print("Entro al no post")
+            request.session['authenticated'] = False
+            print("False")
+            return redirect(proxyURL["authurl"])
+       
+    try:
+        today = datetime.date.today()      
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"home"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
     #assert(False, request.session['authenticated'])
     return render(request, "templates/index.html", context)
+  
 def noAccess(request):
+    try:
+        today = datetime.date.today()
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"no access"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
     return render(request, "templates/noaccess.html")
+
+def credits(request):
+    try:
+        today = datetime.date.today()
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"credits"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
+    return render(request, "templates/credits.html")
 
 def getData(ac_t,url_ac):
     r=requests.get(url_ac, headers={
@@ -60,7 +96,7 @@ def getURL():
             "id": "a67b9eaf-4a58-40b9-be6d-e7b597d8c004",
             "secret": "ibGJSG864$ezaovEBW02]#%",
             "scope": ["openid", "profile", "User.Read"],
-            "redirect": "https://skillsearch.westeurope.cloudapp.azure.com/",
+            "redirect": "https://skillssearcher.intersysconsulting.com/",
             "response": "form_post"
             }
     headers = {
@@ -78,4 +114,4 @@ def getURL():
 
 def logout(request):
     request.session['authenticated'] = False
-    return redirect("https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://skillsearch.westeurope.cloudapp.azure.com/")
+    return redirect("https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://skillssearcher.intersysconsulting.com/")

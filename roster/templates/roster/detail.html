@@ -2,6 +2,7 @@
 <script src="{% static 'js/modal.js' %}"></script>
 
 <script>
+	
     $(document).ready(function() {
         var roster_cart_buttons = $('.roster-cart');
 
@@ -33,12 +34,54 @@
 <div class="container my-4 pb-5">
     <div class="card ">
         <div class="card-header">
+            {% if bios %}
             <h5 class="mt-2 float-left">{{ title }} {% if q %} for {{ q }} {% endif %}</h5>
+            <button type="button" class="btn btn-primary float-right btn-info" data-toggle="modal" data-target="#exampleModalCenter">
+                Send Roster
+            </button>
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header" id="exampleModalCenter1">
+                            <h5 class="modal-title">Send me the roster</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="{% url 'send_roster' %}">
+                                <div class="form-group">
+					<script>
+					{% if messages %}
+					{% for message in messages %}
+						$(document).ready(function(){
+	      						 $("#myModal").modal("show");
+						});
+					{% endfor %}
+					{% endif %}
+					</script>
+                                    <label for="project_title" class="col-form-label">Project:</label>
+                                    <input for="{{ form.title }}" type="text" class="form-control" id="project_title" value="" name="title">
+                                    {% csrf_token %}
+                                    <button class="btn btn-outline-success mt-2 ml-2 float-right" type="submit" value="OK">Send</button>
+                                    <button class="btn btn-secondary float-right mt-2" data-dismiss="modal">Cancel</button>
+                                </div> 
+                                <div class="modal-footer"></div>
+			
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+	  
+            {% else %}
+            <h5 class="mt-2 float-left"> You do not have roster to show </h5>
+            {% endif %}
         </div>
+  {% if bios %}
         <div class="card d-none d-sm-block">
             <div class="table-responsive">
                 <table class="table table-hover">
-
                     <tbody>
                         <tr>
                             <th class="text-center align-middle" style="width: 30%;">Consultant</th>
@@ -52,10 +95,11 @@
                 </table>
             </div>
         </div>
+        {% endif %}
         {% for bio in bios %}
         <br class="d-block d-sm-none">
         <div class="card d-block d-sm-none">
-            <br>
+            <br >
             <div class="container card d-block d-sm-none" style="width: 18rem;">
                 <div class="card-body">
                     <h4>
@@ -63,7 +107,7 @@
                                 {{ bio.name }} 
                             </a>
                     </h4>
-                    <h6 class="card-subtitle mb-2 text-center">{{ bio.title }}</h6>
+		    <h6 class="card-subtitle mb-2 text-center">{{ bio.title }} <br>  {{bio.location}}</h6>
                     <div class="text-center">
                         <p class="card-text">{% get_importance bio.technical_skills tags %}</p>
                     </div>
@@ -81,11 +125,13 @@
                     <tbody>
                         <tr>
                             <td class="align-middle" style="width: 30%;">
-                                <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
+				 <h4>
+				<a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
                                 {{ bio.name }} 
                             </a>
+			    	</h4>
                                 <br>
-                                <center class="font-weight-bold">{{ bio.title }}</center>
+				<center class="font-weight-bold">{{ bio.title }}<br> {{bio.location}}</center>
                             </td>
                             <td class="align-middle" style="width: 55%;">{% get_importance bio.technical_skills tags %}</td>
                             {% comment %}
@@ -124,4 +170,30 @@
         </div>
     </div>
 </div>
-{% endfor %} {% endblock %}
+{% endfor %} 
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+														                     <div class="modal-dialog modal-dialog-centered" role="document">
+										                      <div class="modal-content">
+												                             <div class="modal-header">
+					                                 <h5 class="modal-title">Message sent successfully</h5>
+									                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										                                  <span aria-hidden="true">&times;</span>
+														                             </button>
+																	                            </div>
+																				                           <div class="modal-body">
+																								                              <form method="POST" action="{% url 'send_roster' %}">
+																												                                     <div class="form-group">
+																																	                                     
+																																										                                      {% csrf_token %}
+																																																			                                    <button class="btn btn-secondary float-right mt-2" data-dismiss="modal">Ok</button>
+																																																							                                   </div>
+																																																											                                  <div class="modal-footer"></div>
+																																																															                             </form>
+																																																																		                            </div>
+																																																																					                       </div>
+																																																																							                      </div>
+																																																																									                 </div>
+
+{% endblock %}

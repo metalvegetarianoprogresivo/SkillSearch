@@ -72,6 +72,9 @@ class Bio(models.Model):
     skills = models.TextField(blank=True, null=True)
     education = models.TextField(blank=True, null=True)
     url = models.TextField(blank=True, null=True)
+    experience = models.TextField(blank=True, null=True)
+    location = models.CharField(max_length=50, default='')
+
     '''
     technical_skills = models.ArrayReferenceField(
         to=Technical,
