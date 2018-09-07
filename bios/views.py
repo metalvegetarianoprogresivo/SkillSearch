@@ -53,7 +53,7 @@ def get_token(code):
     return()
 
 def get_location(token, name):
-    locations = ['MDC','Central', 'West', 'East']
+    locations = ['Mexico Delivery Center','Central', 'West', 'East']
     url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
 
     headers = {
