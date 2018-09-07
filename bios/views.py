@@ -60,10 +60,16 @@ def get_location(token, name):
             "authorization":"Bearer "+token
     }
     try:
-        response = requests.request("GET", url+"SELECT region__c FROM user WHERE name LIKE '%"+name+"%'", headers = headers)
+        response = requests.request("GET", url+"SELECT region__c FROM user WHERE name ='" + name + "'", headers = headers)
         response_json=json.loads(response.text)
     except:
-        location = "No location Found"
+        location = "No location Found - 1"
+    if 'No location Found' in location:
+        try:
+            response = requests.request("GET", url+"SELECT region__c FROM user WHERE name LIKE '%"+name+"%'", headers = headers)
+            response_json=json.loads(response.text)
+        except:
+            location = "No location Found - 2"
     try:
         location = response_json['records'][0]['Region__c']
         if not location:
