@@ -59,6 +59,7 @@ def get_location(token, name):
     headers = {
             "authorization":"Bearer "+token
     }
+    location = "No location Found"
     try:
         response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__BusinessUnit__r.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
         response_json=json.loads(response.text)
