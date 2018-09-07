@@ -60,7 +60,7 @@ def get_location(token, name):
             "authorization":"Bearer "+token
     }
     try:
-        response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__BusinessUnit__r.Name FROM KimbleOne__Resource__c WHERE name LIKE '%"+name+"%'", headers = headers)
+        response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__BusinessUnit__r.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
         response_json=json.loads(response.text)
     except:
         location = "No location Found"
