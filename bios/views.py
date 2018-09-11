@@ -34,12 +34,12 @@ def get_documents(request):
     return get_code(request)
 
 def get_code(request):
-    return redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F")
+    return redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearchertest.centralus.cloudapp.azure.com%2Fbios%2F")
 
 def get_token(code):
     url = "https://intersys.my.salesforce.com/services/oauth2/token"
 
-    payload = "grant_type=authorization_code&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
+    payload = "grant_type=authorization_code&redirect_uri=https%3A%2F%2Fskillssearchertest.centralus.cloudapp.azure.com%2Fbios%2F&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
       
     headers = {
             "content-type":"application/x-www-form-urlencoded"  
