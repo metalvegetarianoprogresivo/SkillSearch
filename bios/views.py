@@ -85,7 +85,7 @@ def send_logs(request):
     #msg.attach_alternative('../logdate.txt', "text/html")
     msg.attach_file('../logdate.txt')
     msg.send()
-    return redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F")
+    return redirect("https://skillssearchertest.centralus.cloudapp.azure.com/bios/")
 
 
 
