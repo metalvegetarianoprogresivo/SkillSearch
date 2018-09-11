@@ -29,8 +29,6 @@ def index(request):
         pass
 
 def get_documents(request):
-    #process_documents()
-    
     return get_code(request)
 
 def get_code(request):
@@ -46,11 +44,10 @@ def get_token(code):
     }
     response = requests.request("POST", url, data= payload, headers = headers)
     resJson = json.loads(response.text)
-    #print(resJson)
-    #print(type(resJson))
-    process_documents(resJson["access_token"])
+    get_bios(resJson["access_token"])
 
     return()
+
 
 def get_location(token, name):
     locations = ['Mexico Delivery Center','Central', 'West', 'East']
@@ -77,137 +74,102 @@ def get_location(token, name):
             location = "No location Found"
     except:
         location = "No location Found"
-    print("location ",location)
     return(location)
 
 
-
-
-def process_documents(token):
-    
+def get_bios(token):
     headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
-    '''
-    excel_url = 'https://intersysconsulting.sharepoint.com/:x:/r/salesandmarketing/_layouts/15/Doc.aspx?sourcedoc=%7BEE714148-B6C1-49EA-B94A-4EA31E13A807%7D&file=1%20Consultant%20Bio%20Links.xlsx&action=default&mobileredirect=true'
-    excel_user = 'internalapp@intersysconsulting.com'
-    excel_pass = 'Internal2018!'
-
-    response = requests.get(excel_url, auth=excel_user, excel_url, headers=headers)
-    name = 'consultants.xlsx'
-
-    with open(name. 'wb') as f:
-        f.write(response.content)
-        f.close()
-
-    wb = load_workbook(name)
-    '''
     wb = load_workbook('allemployees.xlsx')
-    usa = wb['US']
-    mx = wb['MDC']
     all_links = wb['US']['B'] + wb['MDC']['B']
     all_names = wb['US']['A'] + wb['MDC']['A']
     names_links = {}
+    regex = re.compile('.*.pdf')
 
     for consultant in range(len(all_links)):
         if all_links[consultant].value is not None and 'https' in all_links[consultant].value:
             names_links[all_names[consultant].value] = all_links[consultant].value
         else:
             pass
-
+    
     for consultant_name, consultant_link in names_links.items():
         response = requests.get(consultant_link, headers=headers)
-        filename = 'Bio.pdf'
-        soup = BeautifulSoup(response.text, 'html.parser')
-        regex = re.compile('.*.pdf')
+        soup = BeautifulSoup(response.text, 'html.parser')  
         link = soup.find(href = regex)
+
         pdf_link = 'https://www.intersysconsulting.com' + link.get('href')
         pdf_file = requests.get(pdf_link, headers=headers)
 
-        template_error = 'Update Bio, standard format needed' 
+        filename = 'Bio.pdf'
+
         with open(filename, 'wb') as f:
             f.write(pdf_file.content)
             f.close()
-        
+
         pdf = parser.from_file(filename)
         pdf_text = pdf['content'].replace('\t','\n').replace('\n',' ').split()
 
         clean_text = ''
-
         for word in pdf_text:
             clean_text += (word + ' ')
-        
-        name_title = template_error               
+
+        process_documents(token, consultant_name, clean_text, pdf_link)
+
+def process_documents(token, consultant_name, clean_text, pdf_link):
+    bio, created = Bio.objects.get_or_create(name=consultant_name)
+    bio.location = get_location(token, consultant_name)
+    bio.url = pdf_link
+
+    print(bio.name) #keep track of progress in command line
+    template_error = 'Update Bio, standard format needed' 
+                 
+    try:
+        name_title = re.search(r".docx(.*?) Profile ", clean_text).group(1)
+    except:
         try:
-            name_title = re.search(r".docx(.*?) Profile ", clean_text).group(1)
+            name_title = re.search(r"(.*?) Profile ", clean_text).group(1)
         except:
-            pass
+            name_title = template_error  
+ 
+    job_titles = ['Senior Consultant', 'Consultant', 'Technical Lead', 'Practice Director',
+    'Technical Manager', 'Delivery Lead', 'Delivery Manager']
+   
+    bio.title = template_error
+    for title in job_titles:
+        if title in name_title.title():
+            bio.title = title
+            break
 
-        if name_title is template_error:
-            try:
-                name_title = re.search(r"(.*?) Profile ", clean_text).group(1)
-            except:
-                pass
-                
-        bio, created = Bio.objects.get_or_create(name=consultant_name)
-        print(consultant_name)
-        bio.name_and_title = name_title
-        bio.url = pdf_link
-        bio.location = get_location(token, consultant_name)
-        job_titles = ['Senior Consultant', 'Consultant', 'Technical Lead', 'Practice Director',
-        'Technical Manager', 'Delivery Lead', 'Delivery Manager']
+    try:
+        bio.profile = re.search(r" Profile (.*?)Skills ", clean_text).group(1) 
+    except:
+        bio.profile = template_error
 
-        bio.title = template_error   
-        for title in job_titles:
-            try: 
-                if title in name_title.title():
-                    bio.title = title
-                    break
-            except:
-                pass
-
-        profile = template_error
-        try:
-            profile = re.search(r" Profile (.*?)Skills ", clean_text).group(1)
-        except:
-            pass
-        bio.profile = profile
-
+    try:
+        skills_field = re.search(r"Skills (.*?)Education ", clean_text).group(0)
+    except:
         skills_field = template_error
-        try:
-            skills_field = re.search(r"Skills (.*?)Education ", clean_text).group(0)
-        except:
-            pass
-        Skills = template_error
-        try:
-            skills = re.search(r"Skills ([^']*)Technical ", skills_field).group(1)
-        except:
-            pass
-        bio.skills = skills
 
-        technical = template_error
-        try:
-            technical = re.search(r"Technical(.*?)Education ", skills_field).group(1)
-        except:
-            pass
-        bio.technical_skills = technical
-            
-        education = template_error
-        try:
-            education = re.search(r" Education (.*?) Certifications ", clean_text).group(1)
-        except:
-            pass
-        if education is template_error:
-            try:
-                education = re.search(r" Education (.*?) Experience ", clean_text).group(1)
-            except:
-                pass
-        bio.education = education
+    try:
+        bio.skills = re.search(r"Skills ([^']*)Technical ", skills_field).group(1)
+    except:
+        bio.skills = template_error
 
-        experience = template_error
+    try:
+        bio.technical_skills = re.search(r"Technical(.*?)Education ", skills_field).group(1)
+    except:
+        bio.technical_skills = template_error
+
+    try:
+        bio.education = re.search(r" Education (.*?) Certifications ", clean_text).group(1)
+    except:
         try:
-            experience = re.search(r" Experience ([^']*) ", clean_text).group(1)
+            bio.education = re.search(r" Education (.*?) Experience ", clean_text).group(1)
         except:
-            pass
-        bio.experience = experience
+            bio.education = template_error
 
-        bio.save()
+    try:
+        bio.experience = re.search(r" Experience ([^']*) ", clean_text).group(1)
+    except:
+        bio.experience = template_error
 
+    bio.save()
