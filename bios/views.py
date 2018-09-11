@@ -75,7 +75,7 @@ def get_location(token, name):
     return(location)
 
 
-def send_logs():
+def send_logs(request):
     today = datetime.date.today()
     today=str(datetime.datetime.now())
     subject, from_email, to = 'Logs: '+today,'intersysinternalapplication@intersysconsulting.com', [request.session['mail']]
@@ -85,7 +85,9 @@ def send_logs():
     msg.attach_alternative('../logdate.txt', "text/html")
     #message.attach_file('/images/weather_map.png')
     msg.send()
-    
+    return redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F")
+
+
 
 
 def process_documents(token):
