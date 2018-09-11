@@ -11,7 +11,7 @@ from django.shortcuts import redirect
 def search(request):
     
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-        return redirect("https://skillssearcher.intersysconsulting.com/")
+        return redirect("https://skillssearchertest.centralus.cloudapp.azure.com/")
     
     try:
         q = request.GET["q"]
