@@ -106,7 +106,7 @@ def get_bios(token):
             f.close()
 
         pdf = parser.from_file(filename)
-        pdf_text = pdf['content'].replace('\t','\n').replace('\n',' ').split()
+        pdf_text = pdf['content'].replace('\t','\n').replace('\n',' ').replace(',',' ').split()
 
         clean_text = ''
         for word in pdf_text:
