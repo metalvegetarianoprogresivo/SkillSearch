@@ -5,12 +5,8 @@
 }
 
 body {
-	font-family: 'Roboto Slab', serif;
-	font-size: 14px;
-	line-height: 1.67;
-	color: #444;
 	padding: 60px 0;
-	background-color: #eee;
+	background-color: white;
 }
 
 a {

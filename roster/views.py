@@ -106,7 +106,7 @@ def send_roster(request):
             
             message += '\nGreetings from the Skills Searcher Team.'
             subject = 'Roster for {}'.format(project_title)
-            from_mail = 'internalapp@intersysconsulting.com'
+            from_mail = 'intersysinternalapplication@intersysconsulting.com'
             to_mail = [request.session['mail']]
             response = send_mail(subject, message, from_mail, to_mail, fail_silently=False)
             if response:
