@@ -128,7 +128,7 @@ def process_documents(token):
             f.close()
         
         pdf = parser.from_file(filename)
-        pdf_text = pdf['content'].replace('\t','\n').replace('\n',' ').split()
+        pdf_text = pdf['content'].replace('\t','\n').replace('\n',' ').replace(',',' ').split()
 
         clean_text = ''
 
