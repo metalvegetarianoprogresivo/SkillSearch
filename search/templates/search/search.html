@@ -35,53 +35,36 @@
     <div class="card">
         <div class="card-header ">
             <h5 class="mt-2 float-left">
-                {% if bios %}
-		            {{ max }} {{ title }} {% if q %} for {{ q }}  {% endif %}
-                {% else %}
-                No matches for {{ q }}
-                {% endif %}
+                {% if bios %}{{ max }} {{ title }} {% if q %} for {{ q }}  {% endif %}
+                {% else %}No matches for {{ q }}{% endif %}
             </h5>
         </div>
         {% if bios %}
         <div class="card d-none d-sm-block">
             <div class="table-responsive">
                 <table class="table table-hover">
-
                     <tbody>
                         <tr>
                             <th class="text-center align-middle" style="width: 30%;">Consultant</th>
-
                             <th class="text-center align-middle" style="width: 55%;">Skills</th>
-                            {% comment %}
-                            <th>Kimble</th>{% endcomment %}
                             <th class="text-center align-middle" >Action</th>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        
         {% for bio in bios %} {% if bios %}
         <br class="d-block d-sm-none">
-        <div class="card d-block d-sm-none">
-            <br>
+        <div class="card d-block d-sm-none"><br>
             <div class="container card d-block d-sm-none" style="width: 18rem;">
-                <div class="card-body">
+                <div class="card-body text-center">
                     <h4>
-                    <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">
-                                {{ bio.3.name }}
-                            </a>
+                        <a href="#theModal" class="nav-link " data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
                     </h4>
-		    <h5 class="card-subtitle mb-2 text-center">{{ bio.3.title }} <br> {{ bio.3.location }} </h5>
-                    <div class="text-center">
+		            <h5 class="card-subtitle mb-2 ">{{ bio.3.title }} <br> {{ bio.3.location }} </h5>
                         <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
-                    	<p>
-			{% for skill,count in bio.0.items %} <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br> {% endfor %}
-			</p>
-		    </div>
-                    <div class="text-center">
+                    	<p>{% for skill,count in bio.0.items %} <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br> {% endfor %}</p>
                         <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
-                    </div>
                 </div>
             </div>
             <br>
