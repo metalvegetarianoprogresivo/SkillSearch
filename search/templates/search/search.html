@@ -32,7 +32,8 @@
 {% endblock %} {% block content %}
 
 <div class="container my-4 pb-5">
-    <div class="card-header">
+    <div class="card">
+        <div class="card-header ">
             <h5 class="mt-2 float-left">
                 {% if bios %}
 		            {{ max }} {{ title }} {% if q %} for {{ q }}  {% endif %}
@@ -40,6 +41,7 @@
                 No matches for {{ q }}
                 {% endif %}
             </h5>
+        </div>
         {% if bios %}
         <div class="card d-none d-sm-block">
             <div class="table-responsive">
