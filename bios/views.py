@@ -28,25 +28,20 @@ def index(request):
     except: 
         pass
 
-def get_documents(request):
-    return get_code(request)
 
-def get_code(request):
+def get_documents(request):
     return redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F")
+
 
 def get_token(code):
     url = "https://intersys.my.salesforce.com/services/oauth2/token"
-
     payload = "grant_type=authorization_code&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
-      
-    headers = {
-            "content-type":"application/x-www-form-urlencoded"  
-    }
+    headers = {"content-type":"application/x-www-form-urlencoded"}
+
     response = requests.request("POST", url, data= payload, headers = headers)
     resJson = json.loads(response.text)
-    get_bios(resJson["access_token"])
 
-    return()
+    get_bios(resJson["access_token"])
 
 
 def get_location(token, name):
@@ -89,6 +84,7 @@ def get_bios(token):
     headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
     names_links = get_name_title(token)
     regex = re.compile('.*.pdf')
+    filename = 'Bio.pdf'
 
     for consultant_name, consultant_link in names_links.items():
         response = requests.get(consultant_link, headers=headers)
@@ -97,8 +93,6 @@ def get_bios(token):
 
         pdf_link = 'https://www.intersysconsulting.com' + link.get('href')
         pdf_file = requests.get(pdf_link, headers=headers)
-
-        filename = 'Bio.pdf'
 
         with open(filename, 'wb') as f:
             f.write(pdf_file.content)
@@ -115,12 +109,15 @@ def get_bios(token):
 
 
 def process_documents(token, consultant_name, clean_text, pdf_link):
+    job_titles = ['Senior Consultant', 'Consultant', 'Technical Lead', 'Practice Director',
+    'Technical Manager', 'Delivery Lead', 'Delivery Manager']
+    template_error = 'Update Bio, standard format needed' 
+
     bio, created = Bio.objects.get_or_create(name=consultant_name)
     bio.location = get_location(token, consultant_name)
     bio.url = pdf_link
 
     print(bio.name) #keep track of progress in command line
-    template_error = 'Update Bio, standard format needed' 
                  
     try:
         name_title = re.search(r".docx(.*?) Profile ", clean_text).group(1)
@@ -129,9 +126,6 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
             name_title = re.search(r"(.*?) Profile ", clean_text).group(1)
         except:
             name_title = template_error  
- 
-    job_titles = ['Senior Consultant', 'Consultant', 'Technical Lead', 'Practice Director',
-    'Technical Manager', 'Delivery Lead', 'Delivery Manager']
    
     bio.title = template_error
     for title in job_titles:
