@@ -65,7 +65,7 @@ def get_location(token, name):
     return(location)
 
 
-def get_name_title(token):
+def get_name_link(token):
     url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
     headers = {"authorization":"Bearer " + token}
     names_link = {}
@@ -78,6 +78,19 @@ def get_name_title(token):
             names_link[consultant['Name']] = consultant['Resource_Bio__r']['Bio_Url__c']
     
     return names_link
+
+
+def get_title(token, name):
+    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    headers = {"authorization":"Bearer " + token}
+
+    try:
+        response = requests.request("GET", url+"SELECT Name,KimbleOne__Resource__c.KimbleOne__Grade__r.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
+        consultants=json.loads(response.text)
+    except:
+        None
+
+    return title
 
 
 def get_bios(token):
@@ -109,8 +122,6 @@ def get_bios(token):
 
 
 def process_documents(token, consultant_name, clean_text, pdf_link):
-    job_titles = ['Senior Consultant', 'Consultant', 'Technical Lead', 'Practice Director',
-    'Technical Manager', 'Delivery Lead', 'Delivery Manager']
     template_error = 'Update Bio, standard format needed' 
 
     bio, created = Bio.objects.get_or_create(name=consultant_name)
@@ -118,20 +129,13 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     bio.url = pdf_link
 
     print(bio.name) #keep track of progress in command line
-                 
-    try:
-        name_title = re.search(r".docx(.*?) Profile ", clean_text).group(1)
-    except:
-        try:
-            name_title = re.search(r"(.*?) Profile ", clean_text).group(1)
-        except:
-            name_title = template_error  
-   
-    bio.title = template_error
-    for title in job_titles:
-        if title in name_title.title():
-            bio.title = title
-            break
+
+    title = get_title(token, bio.name)
+    if title is None:           
+        title = template_error
+    elif 'MDC' in title:
+        title = replace('MDC ','')
+    bio.title = title
 
     try:
         bio.profile = re.search(r" Profile (.*?)Skills ", clean_text).group(1) 
