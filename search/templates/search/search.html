@@ -32,7 +32,7 @@
 {% endblock %} {% block content %}
 <div class="container my-4 pb-5">
     <div class="card">
-        <div class="card-header ">
+        <div class="card-header "> {% comment %} validate if exist a result  {% endcomment %}
             <h5 class="mt-2 float-left">
                 {% if bios %}{{ max }} {{ title }} {% if q %} for {{ q }}  {% endif %}
                 {% else %}No matches for {{ q }}{% endif %}
@@ -53,7 +53,7 @@
             </div>
         </div>
         {% for bio in bios %} {% if bios %}
-        <br class="d-block d-sm-none">
+        <br class="d-block d-sm-none"> {% comment %} start Smartphone view  {% endcomment %}
         <div class="card d-block d-sm-none"><br>
             <div class="container card d-block d-sm-none" style="width: 18rem;">
                 <div class="card-body text-center">
@@ -66,8 +66,8 @@
                     <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
                 </div>
             </div><br>
-        </div>
-        <div class="card d-none d-sm-block">
+        </div> {% comment %} End Smartphone view  {% endcomment %}
+        <div class="card d-none d-sm-block"> {% comment %} start pc view  {% endcomment %}
             <div class="table-responsive">
                 <table class="table table-hover">
                     <tbody>
@@ -87,9 +87,9 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div> {% comment %} End pc view  {% endcomment %}
         {% endif %} {% endfor %} 
-        <div class="float-right"> 
+        <div class="float-right"> {% comment %} start paginator {% endcomment %}
         <nav class="float-right pr-5" aria-label="Page navigation">
             <ul class="pagination">
                 {% if bios.has_previous %}
@@ -113,12 +113,12 @@
                 {% endif %}
             </ul>
         </nav>
-        </div>
+        </div> {% comment %} finish paginator {% endcomment %}
         {% endif %}
     </div>
 </div>
  
-{% for bio in bios %}
+{% for bio in bios %} {% comment %} start open a bio view  {% endcomment %}
 <div class="modal fade mt-5 pt-5" id="theModal{{ bio.3.id }}" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -137,4 +137,4 @@
         </div>
     </div>
 </div>
-{% endfor %} {% endblock %}
+{% endfor %} {% endblock %} {% comment %} finish open a bio   {% endcomment %}
