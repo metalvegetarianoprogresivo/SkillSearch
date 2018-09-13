@@ -50,47 +50,46 @@ def get_token(code):
 
 
 def get_location(token, name):
-    locations = ['Mexico Delivery Center','Central', 'West', 'East']
     url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
-
-    headers = {
-            "authorization":"Bearer "+token
-    }
+    headers = {"authorization":"Bearer "+token}
     location = "No location Found"
+
     try:
         response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__BusinessUnit__r.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
         response_json=json.loads(response.text)
     except:
-        location = "No location Found - 1"
-    if 'No location Found' in location:
-        try:
-            response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__BusinessUnit__r.Name FROM KimbleOne__Resource__c WHERE name LIKE '%"+name+"%'", headers = headers)
-            response_json=json.loads(response.text)
-        except:
-            location = "No location Found - 2"
+        pass
+        
     try:
         location = response_json['records'][0]['KimbleOne__BusinessUnit__r']['Name']
-        if not location:
+        if location is None:
             location = "No location Found"
     except:
-        location = "No location Found"
+        pass
+
     return(location)
+
+
+def get_name_title(token):
+    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    headers = {"authorization":"Bearer " + token}
+    names_link = {}
+
+    response = requests.request("GET", url+"SELECT Name,KimbleOne__Resource__c.Resource_Bio__r.Bio_Url__c FROM KimbleOne__Resource__c WHERE KimbleOne__ResourceType__c = 'a7J0c000002VD4LEAW' AND KimbleOne__Grade__c != 'a5G0c000000g2IXEAY' AND KimbleOne__StartDate__c <= TODAY AND KimbleOne__EndDate__c = Null"", headers = headers)
+    consultants=json.loads(response.text)
+    
+    for consultant in consultants:
+        if consultant['Resource_Bio__r']['Bio_Url__c'] is not None:
+            names_link[consultant['Name']] = consultant['Resource_Bio__r']['Bio_Url__c']
+    
+    return names_link
 
 
 def get_bios(token):
     headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
-    wb = load_workbook('allemployees.xlsx')
-    all_links = wb['US']['B'] + wb['MDC']['B']
-    all_names = wb['US']['A'] + wb['MDC']['A']
-    names_links = {}
+    names_links = get_name_title(token)
     regex = re.compile('.*.pdf')
 
-    for consultant in range(len(all_links)):
-        if all_links[consultant].value is not None and 'https' in all_links[consultant].value:
-            names_links[all_names[consultant].value] = all_links[consultant].value
-        else:
-            pass
-    
     for consultant_name, consultant_link in names_links.items():
         response = requests.get(consultant_link, headers=headers)
         soup = BeautifulSoup(response.text, 'html.parser')  
@@ -113,6 +112,7 @@ def get_bios(token):
             clean_text += (word + ' ')
 
         process_documents(token, consultant_name, clean_text, pdf_link)
+
 
 def process_documents(token, consultant_name, clean_text, pdf_link):
     bio, created = Bio.objects.get_or_create(name=consultant_name)
