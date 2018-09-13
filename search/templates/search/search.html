@@ -41,13 +41,13 @@
         </div>
         {% if bios %}
         <div class="card d-none d-sm-block">
-            <div class="table-responsive">
+            <div class="table-responsive text-center">
                 <table class="table table-hover">
                     <tbody>
                         <tr>
-                            <th class="text-center align-middle" style="width: 30%;">Consultant</th>
-                            <th class="text-center align-middle" style="width: 55%;">Skills</th>
-                            <th class="text-center align-middle" >Action</th>
+                            <th class=" align-middle" style="width: 30%;">Consultant</th>
+                            <th class=" align-middle" style="width: 55%;">Skills</th>
+                            <th class=" align-middle" >Action</th>
                         </tr>
                     </tbody>
                 </table>
@@ -62,12 +62,11 @@
                         <a href="#theModal" class="nav-link " data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
                     </h4>
 		            <h5 class="card-subtitle mb-2 ">{{ bio.3.title }} <br> {{ bio.3.location }} </h5>
-                        <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
-                    	<p>{% for skill,count in bio.0.items %} <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br> {% endfor %}</p>
-                        <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                    <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
+                    <p>{% for skill,count in bio.0.items %} <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br> {% endfor %}</p>
+                    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
                 </div>
-            </div>
-            <br>
+            </div><br>
         </div>
         <div class="card d-none d-sm-block">
             <div class="table-responsive">
@@ -76,32 +75,22 @@
                         <tr>
                             <td class="align-middle" style="width: 30%;">
                                 <h5>
-                                <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">
-                                {{ bio.3.name }}
-                            </a>
-                            </h5>
-                                <br>
-
-				<center class="font-weight-bold">{{ bio.3.title }} <br> {{ bio.3.location }}</center>
-				
+                                    <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
+                                </h5><br>
+				                <center class="font-weight-bold">{{ bio.3.title }} <br> {{ bio.3.location }}</center>
                             </td>
-                            <td class="align-middle" style="width: 55%;">{% get_importance bio.3.technical_skills tags %}
-                            {% for skill,count in bio.0.items %}
-                            <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br>
-                            {% endfor %}    
+                                <td class="align-middle" style="width: 55%;">{% get_importance bio.3.technical_skills tags %}{% for skill,count in bio.0.items %}<strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br>{% endfor %}    
                             </td>    
                             <td class="align-middle">
                                 <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
                             </td>
                         </tr>
-
                     </tbody>
                 </table>
             </div>
         </div>
         {% endif %} {% endfor %} 
-       
-       <div class="float-right"> 
+        <div class="float-right"> 
         <nav class="float-right pr-5" aria-label="Page navigation">
             <ul class="pagination">
                 {% if bios.has_previous %}
@@ -126,7 +115,7 @@
             </ul>
         </nav>
         </div>
-{% endif %}
+        {% endif %}
     </div>
 </div>
  
@@ -140,9 +129,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">
-                {{ bio.3.profile }}
-            </div>
+            <div class="modal-body">{{ bio.3.profile }}</div>
             <div class="modal-footer">
                 <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
