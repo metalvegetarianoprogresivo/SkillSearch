@@ -139,7 +139,7 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     if title is None:           
         title = template_error
     elif 'MDC' in title:
-        title = replace('MDC ','')
+        title = title.replace('MDC ','')
     bio.title = title
 
     try:
