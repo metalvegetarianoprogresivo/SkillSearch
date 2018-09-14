@@ -7,9 +7,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 from tika import parser
-from openpyxl import load_workbook
-from openpyxl import workbook
-from .models import Bio, Technical, Skill
+from .models import Bio
 
 
 def index(request):
