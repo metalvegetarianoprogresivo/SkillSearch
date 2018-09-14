@@ -70,7 +70,7 @@ def get_name_link(token):
     headers = {"authorization":"Bearer " + token}
     names_link = {}
 
-    response = requests.request("GET", url+"SELECT Name,KimbleOne__Resource__c.Resource_Bio__r.Bio_Url__c FROM KimbleOne__Resource__c WHERE KimbleOne__ResourceType__c = 'a7J0c000002VD4LEAW' AND KimbleOne__Grade__c != 'a5G0c000000g2IXEAY' AND KimbleOne__StartDate__c <= TODAY AND KimbleOne__EndDate__c = Null"", headers = headers)
+    response = requests.request("GET", url+"SELECT Name,KimbleOne__Resource__c.Resource_Bio__r.Bio_Url__c FROM KimbleOne__Resource__c WHERE KimbleOne__ResourceType__c = 'a7J0c000002VD4LEAW' AND KimbleOne__Grade__c != 'a5G0c000000g2IXEAY' AND KimbleOne__StartDate__c <= TODAY AND KimbleOne__EndDate__c = Null", headers = headers)
     consultants=json.loads(response.text)
     
     for consultant in consultants:
@@ -86,16 +86,16 @@ def get_title(token, name):
 
     try:
         response = requests.request("GET", url+"SELECT Name,KimbleOne__Resource__c.KimbleOne__Grade__r.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
-        consultants=json.loads(response.text)
+        title = json.loads(response.text)
     except:
-        None
+        title = None
 
     return title
 
 
 def get_bios(token):
     headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
-    names_links = get_name_title(token)
+    names_links = get_name_link(token)
     regex = re.compile('.*.pdf')
     filename = 'Bio.pdf'
 
