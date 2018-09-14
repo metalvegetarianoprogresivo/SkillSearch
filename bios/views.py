@@ -14,7 +14,7 @@ from .models import Bio, Technical, Skill
 
 def index(request):
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-        return redirect("https://skillssearcher.intersysconsulting.com/")
+        return redirect("https://skillssearchertest.centralus.cloudapp.azure.com/")
     if("code" in request.GET.keys()):
         get_token(request.GET.get("code"))
     return render(request, 'bios/index.html')
@@ -28,7 +28,7 @@ def index(request):
     except: 
         pass
 
-
+      
 def get_documents(request):
     return redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F")
 
