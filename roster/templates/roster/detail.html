@@ -2,21 +2,16 @@
 <script src="{% static 'js/modal.js' %}"></script>
 
 <script>
-	
     $(document).ready(function() {
         var roster_cart_buttons = $('.roster-cart');
-
         $('.roster-cart').each(function() {
             var bio = $(this);
             var add_to_roster_action = "{% url 'add_to_roster' %}";
             var remove_from_roster_action = "{% url 'remove_from_roster' %}";
-
             bio.on('click', function() {
                 var bio_id = bio.attr('data-bio');
                 $.post(
-                    bio.attr('data-action'), {
-                        "bio_id": bio_id
-                    },
+                    bio.attr('data-action'), { "bio_id": bio_id },
                     function(data) {
                         get_roster_bios();
                         var buttons = $('[data-bio=' + bio_id + ']');
@@ -33,12 +28,11 @@
 
 <div class="container my-4 pb-5">
     <div class="card ">
-        <div class="card-header">
+        <div class="card-header">{% comment %} validate if exist a result  {% endcomment %}
             {% if bios %}
             <h5 class="mt-2 float-left">{{ title }} {% if q %} for {{ q }} {% endif %}</h5>
-            <button type="button" class="btn btn-primary float-right btn-info" data-toggle="modal" data-target="#exampleModalCenter">
-                Send Roster
-            </button>
+            {% comment %} start Send roster  {% endcomment %}
+            <button type="button" class="btn btn-primary float-right btn-info" data-toggle="modal" data-target="#exampleModalCenter">Send Roster</button>
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -51,91 +45,97 @@
                         <div class="modal-body">
                             <form method="POST" action="{% url 'send_roster' %}">
                                 <div class="form-group">
-					<script>
-					{% if messages %}
-					{% for message in messages %}
-						$(document).ready(function(){
-	      						 $("#myModal").modal("show");
-						});
-					{% endfor %}
-					{% endif %}
-					</script>
+                                    {% comment %} this script charge only the messege from views {% endcomment %}
+                                    <script> 
+                                        { %
+                                            if messages %
+                                        } { %
+                                            for message in messages %
+                                        }
+                                        $(document).ready(function() {
+                                            $("#myModal").modal("show");
+                                        }); { % endfor %
+                                        } { % endif %
+                                        }
+                                    </script>
                                     <label for="project_title" class="col-form-label">Project:</label>
-                                    <input for="{{ form.title }}" type="text" class="form-control" id="project_title" value="" name="title">
-                                    {% csrf_token %}
+                                    <input for="{{ form.title }}" type="text" class="form-control" id="project_title" value="" name="title"> {% csrf_token %}
                                     <button class="btn btn-outline-success mt-2 ml-2 float-right" type="submit" value="OK">Send</button>
                                     <button class="btn btn-secondary float-right mt-2" data-dismiss="modal">Cancel</button>
-                                </div> 
+                                </div>
                                 <div class="modal-footer"></div>
-			
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> {% comment %} finish Send roster  {% endcomment %}
+            {% comment %} start feedback Send roster  {% endcomment %}
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Message sent successfully</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="{% url 'send_roster' %}">
+                                <div class="form-group">
+
+                                    {% csrf_token %}
+                                    <button class="btn btn-secondary float-right mt-2" data-dismiss="modal">Ok</button>
+                                </div>
+                                <div class="modal-footer"></div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-	  
+            {% comment %} finish feedback Send roster  {% endcomment %}
             {% else %}
-            <h5 class="mt-2 float-left"> You do not have roster to show </h5>
-            {% endif %}
+            <h5 class="mt-2 float-left"> You do not have roster to show </h5> {% endif %}
         </div>
-  {% if bios %}
+        {% if bios %}
         <div class="card d-none d-sm-block">
             <div class="table-responsive">
                 <table class="table table-hover">
                     <tbody>
                         <tr>
                             <th class="text-center align-middle" style="width: 30%;">Consultant</th>
-
                             <th class="text-center align-middle" style="width: 55%;">Skills</th>
-                            {% comment %}
-                            <th>Kimble</th>{% endcomment %}
                             <th class="text-center align middle">Action</th>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        {% endif %}
-        {% for bio in bios %}
-        <br class="d-block d-sm-none">
-        <div class="card d-block d-sm-none">
-            <br >
+        {% endif %} {% for bio in bios %}
+        <br class="d-block d-sm-none"> {% comment %} start Smartphone view  {% endcomment %}
+        <div class="card d-block d-sm-none"><br>
             <div class="container card d-block d-sm-none" style="width: 18rem;">
-                <div class="card-body">
+                <div class="card-body text-center">
                     <h4>
-                    <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
-                                {{ bio.name }} 
-                            </a>
+                        <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">{{ bio.name }} </a>
                     </h4>
-		    <h6 class="card-subtitle mb-2 text-center">{{ bio.title }} <br>  {{bio.location}}</h6>
-                    <div class="text-center">
-                        <p class="card-text">{% get_importance bio.technical_skills tags %}</p>
-                    </div>
-                    <div class="text-center">
-                        <button class="btn btn-sm btn-outline-success d-none roster-cart " data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove{% else %}Add{% endif %}</button>
-                    </div>
+                    <h6 class="card-subtitle mb-2 text-center">{{ bio.title }} <br>  {{bio.location}}</h6>
+                    <p class="card-text">{% get_importance bio.technical_skills tags %}</p>
+                    <button class="btn btn-sm btn-outline-success d-none roster-cart " data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove{% else %}Add{% endif %}</button>
                 </div>
-            </div>
-            <br>
-        </div>
-
+            </div><br>
+        </div> {% comment %} End Smartphone view  {% endcomment %}
         <div class="card d-none d-sm-block">
             <div class="table-responsive">
                 <table class="table table-hover">
                     <tbody>
                         <tr>
                             <td class="align-middle" style="width: 30%;">
-				 <h4>
-				<a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
-                                {{ bio.name }} 
-                            </a>
-			    	</h4>
-                                <br>
-				<center class="font-weight-bold">{{ bio.title }}<br> {{bio.location}}</center>
+                                </h5>
+				                    <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">{{ bio.name }} </a>
+			    	            </h5><br>
+                                <center class="font-weight-bold">{{ bio.title }}<br> {{bio.location}}</center>
                             </td>
                             <td class="align-middle" style="width: 55%;">{% get_importance bio.technical_skills tags %}</td>
-                            {% comment %}
-                            <td class="align-middle" style="width: 450px;">{% get_importance bio.capabilities.all tags %}</td>{% endcomment %}
                             <td class="align-middle">
                                 <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove{% else %}Add{% endif %}</button>
                             </td>
@@ -143,25 +143,20 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-
+        </div> {% comment %} End pc view  {% endcomment %}
         {% endfor %}
     </div>
 </div>
 
-{% for bio in bios %}
+{% for bio in bios %}  {% comment %} start open a bio view  {% endcomment %}
 <div class="modal fade mt-5 pt-5" id="theModal{{ bio.id }}" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{ bio.name }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
-            <div class="modal-body">
-                {{ bio.profile }}
-            </div>
+            <div class="modal-body">{{ bio.profile }}</div>
             <div class="modal-footer">
                 <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.pk }}" data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove{% else %}Add{% endif %}</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -170,30 +165,6 @@
         </div>
     </div>
 </div>
-{% endfor %} 
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-														                     <div class="modal-dialog modal-dialog-centered" role="document">
-										                      <div class="modal-content">
-												                             <div class="modal-header">
-					                                 <h5 class="modal-title">Message sent successfully</h5>
-									                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										                                  <span aria-hidden="true">&times;</span>
-														                             </button>
-																	                            </div>
-																				                           <div class="modal-body">
-																								                              <form method="POST" action="{% url 'send_roster' %}">
-																												                                     <div class="form-group">
-																																	                                     
-																																										                                      {% csrf_token %}
-																																																			                                    <button class="btn btn-secondary float-right mt-2" data-dismiss="modal">Ok</button>
-																																																							                                   </div>
-																																																											                                  <div class="modal-footer"></div>
-																																																															                             </form>
-																																																																		                            </div>
-																																																																					                       </div>
-																																																																							                      </div>
-																																																																									                 </div>
+{% endfor %}  {% comment %} finish open a bio view  {% endcomment %}
 
 {% endblock %}
