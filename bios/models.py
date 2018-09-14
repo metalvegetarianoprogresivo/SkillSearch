@@ -22,7 +22,7 @@ class EmailAuth(models.Model):
         return self.email
 
 
-class Bio(models.Model):}
+class Bio(models.Model):
 #kimble information
     name = models.CharField(max_length=100, default='')
     title = models.CharField(max_length=100, default='')
