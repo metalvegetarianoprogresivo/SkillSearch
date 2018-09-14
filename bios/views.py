@@ -134,13 +134,7 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     bio.url = pdf_link
 
     print(bio.name) #keep track of progress in command line
-
-    title = get_title(token, bio.name)
-    if title is None:           
-        title = template_error
-    elif 'MDC' in title:
-        title = title.replace('MDC ','')
-    bio.title = title
+    bio.title = get_title(token, bio.name)
 
     try:
         bio.profile = re.search(r" Profile (.*?)Skills ", clean_text).group(1) 
