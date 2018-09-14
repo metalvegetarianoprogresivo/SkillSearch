@@ -96,7 +96,7 @@ def getURL():
             "id": "a67b9eaf-4a58-40b9-be6d-e7b597d8c004",
             "secret": "ibGJSG864$ezaovEBW02]#%",
             "scope": ["openid", "profile", "User.Read"],
-            "redirect": "https://skillssearchertest.centralus.cloudapp.azure.com/",
+            "redirect": "https://skillssearcher.intersysconsulting.com/",
             "response": "form_post"
             }
     headers = {
@@ -114,4 +114,4 @@ def getURL():
 
 def logout(request):
     request.session['authenticated'] = False
-    return redirect("https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://skillssearchertest.centralus.cloudapp.azure.com/")
+    return redirect("https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://skillssearcher.intersysconsulting.com/")
