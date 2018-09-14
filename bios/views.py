@@ -73,7 +73,7 @@ def get_name_link(token):
     response = requests.request("GET", url+"SELECT Name,KimbleOne__Resource__c.Resource_Bio__r.Bio_Url__c FROM KimbleOne__Resource__c WHERE KimbleOne__ResourceType__c = 'a7J0c000002VD4LEAW' AND KimbleOne__Grade__c != 'a5G0c000000g2IXEAY' AND KimbleOne__StartDate__c <= TODAY AND KimbleOne__EndDate__c = Null", headers = headers)
     consultants=json.loads(response.text)
     
-    for consultant in consultants:
+    for consultant in consultants['records']:
         if consultant['Resource_Bio__r']['Bio_Url__c'] is not None:
             names_link[consultant['Name']] = consultant['Resource_Bio__r']['Bio_Url__c']
     
@@ -85,12 +85,12 @@ def get_title(token, name):
     headers = {"authorization":"Bearer " + token}
 
     try:
-        response = requests.request("GET", url+"SELECT Name,KimbleOne__Resource__c.KimbleOne__Grade__r.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
+        response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__Grade__r.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
         title = json.loads(response.text)
     except:
         title = None
 
-    return title
+    return title['records']['KimbleOne__Grade__r']['Name']
 
 
 def get_bios(token):
