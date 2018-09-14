@@ -90,7 +90,12 @@ def get_title(token, name):
     except:
         title = None
 
-    return title['records']['KimbleOne__Grade__r']['Name']
+    try:
+        export_title = title['records'][0]['KimbleOne__Grade__r']['Name']
+    except:
+        export_title = None
+
+    return export_title
 
 
 def get_bios(token):
