@@ -36,7 +36,7 @@ class Bio(models.Model):
     education = models.TextField(blank=True, null=True)
     experience = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=50, default='')
-    email = models.TextField(blank=True, null=True, endswith='@intersysconsulting.com')
+    email = models.TextField(blank=True, null=True)
 
 
     def __str__(self):
