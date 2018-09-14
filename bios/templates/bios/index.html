@@ -1,21 +1,17 @@
-{% extends 'templates/base.html' %}
-{% load static %}
-{% block content %}
+{% extends 'templates/base.html' %} {% load static %} {% block content %}
 <div class="container my-4 pb-5">
-  <div class="card">
-  <div class="card-header">
-  <h1 class="text-center">Welcome to Consultantmarket</h1>
-  </div>
-  <div class="mx-auto card-body">
-          <p class="lead text-muted">Click on this button to update the profiles information</p>    
-  </div>
-  <div class="mx-auto pb-5">
-    <div>
-      <a class="btn btn-outline-primary" href="{% url 'get_documents' %}">Update bios</a>
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-center">Welcome to Consultantmarket</h1>
+        </div>
+        <div class="mx-auto card-body">
+            <p class="lead text-muted">Click on this button to update the profiles information</p>
+        </div>
+        <div class="mx-auto pb-5">
+            <div>
+                <a class="btn btn-outline-primary" href="{% url 'get_documents' %}">Update bios</a>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-</div>
-
-  
 {% endblock %}
