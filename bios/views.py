@@ -52,15 +52,14 @@ def get_location(token, name):
     try:
         response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__BusinessUnit__r.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
         response_json=json.loads(response.text)
+        try:
+            location = response_json['records'][0]['KimbleOne__BusinessUnit__r']['Name']
+            if location is None:
+                location = "No location Found"
+        except:
+            pass
     except:
-        pass
-        
-    try:
-        location = response_json['records'][0]['KimbleOne__BusinessUnit__r']['Name']
-        if location is None:
-            location = "No location Found"
-    except:
-        pass
+        pass  
 
     return(location)
 
@@ -87,15 +86,31 @@ def get_title(token, name):
     try:
         response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__Grade__r.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
         title = json.loads(response.text)
+        try:
+            export_title = title['records'][0]['KimbleOne__Grade__r']['Name']
+        except:
+            pass
     except:
-        title = None
-
-    try:
-        export_title = title['records'][0]['KimbleOne__Grade__r']['Name']
-    except:
-        export_title = None
+        export_title = 'No title available'
+    if 'MDC' in export_title:
+        export_title = export_title.replace('MDC ','')
 
     return export_title
+
+
+def get_email(token,name):
+    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    headers = {"authorization":"Bearer " + token}
+
+    response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__User__r.Email FROM KimbleOne__Resource__c WHEREname = '"+name+"'", headers = headers)
+    email = json.loads(response.text)
+
+    try:
+        email = email['records'][0]['KimbleOne__User__r']['Email']
+    except:
+        email = 'No email available'
+
+    return email
 
 
 def get_bios(token):
@@ -133,14 +148,11 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     bio.location = get_location(token, consultant_name)
     bio.url = pdf_link
 
+    bio.email = get_email(token, bio.name)
+
     print(bio.name) #keep track of progress in command line
 
     title = get_title(token, bio.name)
-    if title is None:           
-        title = template_error
-    elif 'MDC' in title:
-        title = title.replace('MDC ','')
-    bio.title = title
 
     try:
         bio.profile = re.search(r" Profile (.*?)Skills ", clean_text).group(1) 

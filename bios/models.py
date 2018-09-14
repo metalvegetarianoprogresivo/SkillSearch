@@ -74,6 +74,7 @@ class Bio(models.Model):
     url = models.TextField(blank=True, null=True)
     experience = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=50, default='')
+    email = models.TextField(blank=True, null=True, endswith='@intersysconsulting.com')
 
     '''
     technical_skills = models.ArrayReferenceField(
