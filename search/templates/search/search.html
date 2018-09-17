@@ -76,7 +76,7 @@
                                 <h5>
                                     <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
                                 </h5><br>
-				                <center class="font-weight-bold">{{ bio.3.title }} <br> {{ bio.3.location }}</center>
+				                <center class="font-weight-bold">{{ bio.3.title }} <br> {{ bio.3.location }} <br> {{ bio.4 }}</center>
                             </td>
                                 <td class="align-middle" style="width: 55%;">{% get_importance bio.3.technical_skills tags %}{% for skill,count in bio.0.items %}<strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br>{% endfor %}    
                             </td>    
