@@ -30,6 +30,7 @@ def search(request):
             availability = 'Available'
         elif days_until_available.days <= 30:
             availability = 'Available in {} days'.format(days_until_available.days)
+            days_until_available = days_until_available.days
         else:      
             availability = 'Not Available'
             days_until_available = 31
@@ -58,7 +59,7 @@ def search(request):
                 skills[tag.title()] = skill_count
                 diff_skill_flag = False
         if total_count:
-            result_set.append((skills, len(skills), total_count, bio, availability, days_until_available.days))
+            result_set.append((skills, len(skills), total_count, bio, availability, days_until_available))
     # TODO: uncomment next lines when loggin implementation
     """
     if request.session.get('logged'):
