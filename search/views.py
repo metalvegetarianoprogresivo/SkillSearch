@@ -1,4 +1,3 @@
-import datetime
 import os
 from decimal import Decimal
 from django.core.paginator import Paginator
@@ -7,6 +6,7 @@ from django.shortcuts import render
 from django.http import Http404
 from bios.models import Bio
 from django.shortcuts import redirect
+from datetime import datetime, date
 
 def search(request):
     
@@ -23,6 +23,17 @@ def search(request):
     tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
 
     for bio in Bio.objects.all():
+
+        days_until_available = datetime.strptime(bio.assignment_date,'%Y-%m-%d').date()  - date.today()
+        if days_until_available.days <= 0:
+            days_until_available = 0
+            availability = 'Available'
+        elif days_until_available.days <= 30:
+            availability = 'Available in {} days'.format(days_until_available.days)
+            days_until_available = days_until_available.days
+        else:      
+            availability = 'Not Available'
+            days_until_available = 31
 
         try:
             names = bio.name.lower().split()
@@ -48,7 +59,7 @@ def search(request):
                 skills[tag.title()] = skill_count
                 diff_skill_flag = False
         if total_count:
-            result_set.append((skills, len(skills), total_count, bio))
+            result_set.append((skills, len(skills), total_count, bio, availability, days_until_available))
     # TODO: uncomment next lines when loggin implementation
     """
     if request.session.get('logged'):
@@ -56,7 +67,7 @@ def search(request):
     else:
         raise Http404
     """
-    result_set = sorted(result_set, key=lambda x:(-x[1], -x[2], x[3]))
+    result_set = sorted(result_set, key=lambda x:(x[5], -x[1], -x[2], x[3]))
     paginator = Paginator(result_set, 10)
     page = request.GET.get('page')
     bios = paginator.get_page(page)
