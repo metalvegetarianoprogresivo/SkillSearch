@@ -100,7 +100,7 @@ def get_email(token,name):
     url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
     headers = {"authorization":"Bearer " + token}
 
-    response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__User__r.Email FROM KimbleOne__Resource__c WHEREname = '"+name+"'", headers = headers)
+    response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__User__r.Email FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
     email = json.loads(response.text)
 
     try:
