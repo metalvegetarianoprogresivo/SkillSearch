@@ -8,6 +8,7 @@ import re
 from bs4 import BeautifulSoup
 from tika import parser
 from .models import Bio
+from datetime import datetime
 
 
 def index(request):
@@ -111,6 +112,38 @@ def get_email(token,name):
     return email
 
 
+def get_last_assignment(token,name):
+    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    headers = {"authorization":"Bearer " + token}
+    assignment_date = None
+
+    response = requests.request("GET", url+"SELECT KimbleOne__LatestP1AssignmentEndDate__c FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
+    date_str = json.loads(response.text)
+
+    try:
+        assignment_date = date_str['records'][0]['KimbleOne__LatestP1AssignmentEndDate__c']
+    except:
+        pass
+
+    if assignment_date is None:
+        assignment_date = '1995-04-11'
+
+    date = datetime.strptime(assignment_date,'&Y-&m-&d').date()    
+
+    return date
+
+
+def get_availability(date):
+    days_until_available = date - date.today()
+
+    if days_until_available.days <= 0:
+        return 'Available'
+    elif days_until_available.days <= 30:
+        return 'Available in the next 30 days'
+    else:
+        return 'Not available' 
+
+
 def get_bios(token):
     headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
     names_links = get_name_link(token)
@@ -146,10 +179,9 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     bio.location = get_location(token, consultant_name)
     bio.url = pdf_link
 
+
     bio.email = get_email(token, bio.name)
-
-    print(bio.name) #keep track of progress in command line
-
+    bio.assignment_date = get_last_assignment(token, bio.name)
     title = get_title(token, bio.name)
 
     try:
