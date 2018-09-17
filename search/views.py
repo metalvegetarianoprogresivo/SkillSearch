@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.http import Http404
 from bios.models import Bio
 from django.shortcuts import redirect
-import datetime
+from datetime import datetime, date
 
 def search(request):
     
@@ -23,7 +23,7 @@ def search(request):
     tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
 
     for bio in Bio.objects.all():
-        days_until_available = bio.assignment_date - datetime.today()
+        days_until_available = bio.assignment_date - date.today()
         
         if days_until_available.days <= 0:
             availability = 'Available'
