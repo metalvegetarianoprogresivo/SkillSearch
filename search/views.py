@@ -55,7 +55,7 @@ def search(request):
                 skills[tag.title()] = skill_count
                 diff_skill_flag = False
         if total_count:
-            result_set.append((skills, len(skills), total_count, bio, availability))
+            result_set.append((skills, len(skills), total_count, bio, days_until_available.days))
     # TODO: uncomment next lines when loggin implementation
     """
     if request.session.get('logged'):
