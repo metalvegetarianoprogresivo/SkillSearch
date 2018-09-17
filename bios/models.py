@@ -29,7 +29,7 @@ class Bio(models.Model):
     url = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=50, default='')
     email = models.TextField(blank=True, null=True)
-    assignment_date = models.DateField(blank=True, null=True)
+    assignment_date = models.TextField(blank=True, null=True)
 
 #bio Information
     profile = models.TextField(blank=True, null=True)
