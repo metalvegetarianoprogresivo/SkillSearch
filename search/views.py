@@ -23,6 +23,7 @@ def search(request):
     tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
 
     for bio in Bio.objects.all():
+        
         days_until_available = datetime.strptime(bio.assignment_date,'%Y-%m-%d').date()  - date.today()
         if days_until_available.days <= 0:
             availability = 'Available'
