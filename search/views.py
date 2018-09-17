@@ -27,7 +27,7 @@ def search(request):
         if days_until_available.days <= 0:
             availability = 'Available'
         elif days_until_available.days <= 30:
-            availability = 'Available in {} days'.format(days_until_available)
+            availability = 'Available in {} days'.format(days_until_available.days)
         else:      
             availability = 'Not Available'
 
