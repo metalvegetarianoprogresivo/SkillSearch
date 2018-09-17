@@ -23,6 +23,14 @@ def search(request):
     tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
 
     for bio in Bio.objects.all():
+        days_until_available = bio.assignment_date - date.today()
+        
+        if days_until_available.days <= 0:
+            availability = 'Available'
+        elif days_until_available.days <= 30:
+            availability = 'Available within the next 30 days'
+        else:      
+            availability = 'Not Available'
 
         try:
             names = bio.name.lower().split()
@@ -48,7 +56,7 @@ def search(request):
                 skills[tag.title()] = skill_count
                 diff_skill_flag = False
         if total_count:
-            result_set.append((skills, len(skills), total_count, bio))
+            result_set.append((skills, len(skills), total_count, bio, availability))
     # TODO: uncomment next lines when loggin implementation
     """
     if request.session.get('logged'):
@@ -56,7 +64,7 @@ def search(request):
     else:
         raise Http404
     """
-    result_set = sorted(result_set, key=lambda x:(-x[1], -x[2], x[3]))
+    result_set = sorted(result_set, key=lambda x:(x[4], -x[1], -x[2], x[3]))
     paginator = Paginator(result_set, 10)
     page = request.GET.get('page')
     bios = paginator.get_page(page)
