@@ -23,39 +23,5 @@ class Migration(migrations.Migration):
                 ('skills', models.TextField(blank=True, null=True)),
                 ('education', models.TextField(blank=True, null=True)),
             ],
-        ),
-        migrations.CreateModel(
-            name='Capability',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('group', models.CharField(max_length=20)),
-                ('name', models.CharField(max_length=255)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='CapabilityExpertise',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('capability', djongo.models.fields.EmbeddedModelField(model_container=bios.models.Capability, null=True)),
-                ('rating', models.PositiveSmallIntegerField()),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Skill',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('description', models.TextField()),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Technical',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.TextField()),
-            ],
-        ),
-        migrations.AlterUniqueTogether(
-            name='capabilityexpertise',
-            unique_together={('capability', 'rating')},
-        ),
+        )
     ]
