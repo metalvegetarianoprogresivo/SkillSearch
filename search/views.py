@@ -23,14 +23,16 @@ def search(request):
     tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
 
     for bio in Bio.objects.all():
-        
+
         days_until_available = datetime.strptime(bio.assignment_date,'%Y-%m-%d').date()  - date.today()
         if days_until_available.days <= 0:
+            days_until_available.days = 0
             availability = 'Available'
         elif days_until_available.days <= 30:
             availability = 'Available in {} days'.format(days_until_available.days)
         else:      
             availability = 'Not Available'
+            days_until_available.days = 31
 
         try:
             names = bio.name.lower().split()

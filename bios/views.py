@@ -128,20 +128,7 @@ def get_last_assignment(token,name):
     if assignment_date is None:
         assignment_date = '1995-04-11'
 
-    date = datetime.strptime(assignment_date, '%Y-%m-%d').date()  
-
     return date
-
-
-def get_availability(date):
-    days_until_available = date - date.today()
-
-    if days_until_available.days <= 0:
-        return 'Available'
-    elif days_until_available.days <= 30:
-        return 'Available in the next 30 days'
-    else:
-        return 'Not available' 
 
 
 def get_bios(token):
@@ -178,7 +165,6 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     bio, created = Bio.objects.get_or_create(name=consultant_name)
     bio.location = get_location(token, consultant_name)
     bio.url = pdf_link
-
 
     bio.email = get_email(token, bio.name)
     bio.assignment_date = get_last_assignment(token, bio.name)
