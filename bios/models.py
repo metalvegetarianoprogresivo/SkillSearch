@@ -28,6 +28,8 @@ class Bio(models.Model):
     title = models.CharField(max_length=100, default='')
     url = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=50, default='')
+    email = models.TextField(blank=True, null=True)
+    assignment_date = models.TextField(blank=True, null=True)
 
 #bio Information
     profile = models.TextField(blank=True, null=True)
@@ -35,8 +37,6 @@ class Bio(models.Model):
     skills = models.TextField(blank=True, null=True)
     education = models.TextField(blank=True, null=True)
     experience = models.TextField(blank=True, null=True)
-    location = models.CharField(max_length=50, default='')
-    email = models.TextField(blank=True, null=True)
 
 
     def __str__(self):
