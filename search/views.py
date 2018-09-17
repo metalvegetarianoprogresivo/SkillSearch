@@ -55,7 +55,7 @@ def search(request):
                 skills[tag.title()] = skill_count
                 diff_skill_flag = False
         if total_count:
-            result_set.append((skills, len(skills), total_count, bio, days_until_available.days))
+            result_set.append(skills, len(skills), total_count, bio, availability, days_until_available.days)
     # TODO: uncomment next lines when loggin implementation
     """
     if request.session.get('logged'):
@@ -63,7 +63,7 @@ def search(request):
     else:
         raise Http404
     """
-    result_set = sorted(result_set, key=lambda x:(x[4], -x[1], -x[2], x[3]))
+    result_set = sorted(result_set, key=lambda x:(x[5], -x[1], -x[2], x[3]))
     paginator = Paginator(result_set, 10)
     page = request.GET.get('page')
     bios = paginator.get_page(page)
