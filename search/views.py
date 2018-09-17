@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 import os
 from decimal import Decimal
 from django.core.paginator import Paginator
@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.http import Http404
 from bios.models import Bio
 from django.shortcuts import redirect
+from datetime import datetime
 
 def search(request):
     
@@ -23,7 +24,7 @@ def search(request):
     tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
 
     for bio in Bio.objects.all():
-        days_until_available = bio.assignment_date - datetime.date.today()
+        days_until_available = bio.assignment_date - date.today()
         
         if days_until_available.days <= 0:
             availability = 'Available'
