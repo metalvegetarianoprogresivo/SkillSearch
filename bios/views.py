@@ -128,7 +128,7 @@ def get_last_assignment(token,name):
     if assignment_date is None:
         assignment_date = '1995-04-11'
 
-    date = datetime.strptime(assignment_date,'&Y-&m-&d').date()    
+    date = datetime.strptime(assignment_date, '%Y-%m-%d').date()  
 
     return date
 
