@@ -23,54 +23,20 @@ def search(request):
     tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
 
     for bio in Bio.objects.all():
+        fields = get_fields()
+        total_count, skills = get_skills_found(tags, fields)
 
-        days_until_available = datetime.strptime(bio.assignment_date,'%Y-%m-%d').date()  - date.today()
-        if days_until_available.days <= 0:
-            days_until_available = 0
-            availability = 'Available'
-        elif days_until_available.days <= 30:
-            availability = 'Available in {} days'.format(days_until_available.days)
-            days_until_available = days_until_available.days
-        else:      
-            availability = 'Not Available'
-            days_until_available = 31
-
-        try:
-            names = bio.name.lower().split()
-            skills = bio.skills.lower().replace('/',' ').split()
-            tech_skills = bio.technical_skills.lower().replace('/',' ').split()
-            profile = bio.profile.lower().replace('/',' ').split()
-            experience = bio.experience.lower().replace('/',' ').split()
-        except:
-            pass
-        fields = names + profile + skills + tech_skills + experience
-
-        total_count = 0
-        diff_skill_flag = False 
-        skills = {}
-        for tag in tags:
-            skill_count = 0 
-            for word in fields:
-                if word == tag:
-                    diff_skill_flag = True
-                    total_count += 1
-                    skill_count += 1
-            if diff_skill_flag is True:
-                skills[tag.title()] = skill_count
-                diff_skill_flag = False
         if total_count:
+            availability, days_until_available = get_availability()
             result_set.append((skills, len(skills), total_count, bio, availability, days_until_available))
-    # TODO: uncomment next lines when loggin implementation
-    """
-    if request.session.get('logged'):
-        pass
-    else:
-        raise Http404
-    """
+
+    #Set order of relevance using fields in result_set
     result_set = sorted(result_set, key=lambda x:(x[5], -x[1], -x[2], x[3]))
+
     paginator = Paginator(result_set, 10)
     page = request.GET.get('page')
     bios = paginator.get_page(page)
+
     context = {
         "title": "results",
         "bios": bios,
@@ -79,12 +45,65 @@ def search(request):
         "roster": request.session.setdefault('roster', []),
         "max" : len(result_set)
     }
+    send_log()
+
+    return render(request, "search/search.html", context)
+
+
+def get_availability():
+    days_of_difference = datetime.strptime(bio.assignment_date,'%Y-%m-%d').date()  - date.today()
+    days_until_available = days_of_difference.days
+
+    if days_until_available <= 0:
+        days_until_available = 0
+        availability = 'Available'
+    elif days_until_available <= 30:
+        availability = 'Available in {} days'.format(days_until_available)
+    else:      
+        availability = 'Not Available'
+        days_until_available = 31
+
+    return availability, days_until_available
+
+
+def get_fields():
+    names = bio.name.lower().split()
+    skills = bio.skills.lower().replace('/',' ').split()
+    tech_skills = bio.technical_skills.lower().replace('/',' ').split()
+    profile = bio.profile.lower().replace('/',' ').split()
+    experience = bio.experience.lower().replace('/',' ').split()
+
+    fields = names + profile + skills + tech_skills + experience
+
+    return fields
+
+
+def get_skills_found(tags, fields):
+    total_count = 0
+    diff_skill_flag = False 
+    skills = {}
+    
+    for tag in tags:
+        skill_count = 0 
+        for word in fields:
+            if word == tag:
+                diff_skill_flag = True
+                total_count += 1
+                skill_count += 1
+        if diff_skill_flag is True:
+            skills[tag.title()] = skill_count
+            diff_skill_flag = False
+
+    return total_count, skills
+
+
+def send_log():
     try:
-        today = datetime.date.today()   
+        today = date.today()   
         f = open ('../logdate.txt','a')
         today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"search"
         f.write(today+"\n")
         f.close()
     except:
-        pass    
-    return render(request, "search/search.html", context)
+        pass  
+
