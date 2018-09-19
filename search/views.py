@@ -51,7 +51,8 @@ def search(request):
 
 
 def get_availability():
-    days_of_difference = datetime.strptime(bio.assignment_date,'%Y-%m-%d').date()  - date.today()
+    end_date = datetime.strptime(bio.assignment_date,'%Y-%m-%d').date()
+    days_of_difference = end_date - date.today()
     days_until_available = days_of_difference.days
 
     if days_until_available <= 0:
@@ -60,8 +61,7 @@ def get_availability():
     elif days_until_available <= 30:
         availability = 'Available in {} days'.format(days_until_available)
     else:      
-        availability = 'Not Available'
-        days_until_available = 31
+        availability = 'Not Available until {}'.format(bio.assignment_date)
 
     return availability, days_until_available
 
