@@ -23,11 +23,11 @@ def search(request):
     tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
 
     for bio in Bio.objects.all():
-        fields = get_fields()
+        fields = get_fields(bio)
         total_count, skills = get_skills_found(tags, fields)
 
         if total_count:
-            availability, days_until_available = get_availability()
+            availability, days_until_available = get_availability(bio)
             result_set.append((skills, len(skills), total_count, bio, availability, days_until_available))
 
     #Set order of relevance using fields in result_set
@@ -50,7 +50,7 @@ def search(request):
     return render(request, "search/search.html", context)
 
 
-def get_availability():
+def get_availability(bio):
     end_date = datetime.strptime(bio.assignment_date,'%Y-%m-%d').date()
     days_of_difference = end_date - date.today()
     days_until_available = days_of_difference.days
@@ -66,7 +66,7 @@ def get_availability():
     return availability, days_until_available
 
 
-def get_fields():
+def get_fields(bio):
     names = bio.name.lower().split()
     skills = bio.skills.lower().replace('/',' ').split()
     tech_skills = bio.technical_skills.lower().replace('/',' ').split()
