@@ -98,12 +98,9 @@ def get_skills_found(tags, fields):
     return total_count, skills
 
 
-def send_log():
-    try:   
-        f = open ('../logdate.txt','a')
-        today="date :"+str(date.today())+"    "+str(request.session['mail'])+"    "+"search"
-        f.write(today+"\n")
-        f.close()
-    except:
-        pass  
+def send_log():   
+    f = open('../logdate.txt','a')
+    today= "date: {}    {}    search".format(date.today(), request.session['mail'])
+    f.write(today+"\n")
+    f.close()
 
