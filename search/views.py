@@ -18,7 +18,7 @@ def search(request):
     except:
         raise Http404
     
-    send_log()
+    send_log(request.session['mail'])
 
     q = q.replace(', ', ' ').replace(',',' ')
     result_set = []
@@ -98,9 +98,9 @@ def get_skills_found(tags, fields):
     return total_count, skills
 
 
-def send_log():   
+def send_log(mail):   
     f = open('../logdate.txt','a')
-    today= "date: {}    {}    search".format(date.today(), request.session['mail'])
+    today= "date: {}    {}    search".format(date.today(), mail)
     f.write(today+"\n")
     f.close()
 
