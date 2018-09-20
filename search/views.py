@@ -18,6 +18,8 @@ def search(request):
     except:
         raise Http404
     
+    send_log()
+
     q = q.replace(', ', ' ').replace(',',' ')
     result_set = []
     tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
@@ -45,7 +47,6 @@ def search(request):
         "roster": request.session.setdefault('roster', []),
         "max" : len(result_set)
     }
-    send_log()
 
     return render(request, "search/search.html", context)
 
