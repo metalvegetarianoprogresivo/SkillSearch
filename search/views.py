@@ -99,10 +99,9 @@ def get_skills_found(tags, fields):
 
 
 def send_log():
-    try:
-        today = date.today()   
+    try:   
         f = open ('../logdate.txt','a')
-        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"search"
+        today="date :"+str(date.today())+"    "+str(request.session['mail'])+"    "+"search"
         f.write(today+"\n")
         f.close()
     except:
