@@ -100,7 +100,7 @@ def get_skills_found(tags, fields):
 
 def send_log(mail):   
     f = open('../logdate.txt','a')
-    today= "date: {}    {}    search".format(date.today(), mail)
+    today= "date: {}    {}    search".format(datetime.today(), mail)
     f.write(today+"\n")
     f.close()
 
