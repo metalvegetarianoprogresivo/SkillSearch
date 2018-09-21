@@ -5,3 +5,7 @@
 .vcenter {
     vertical-align: middle !important;
 }
+figure.snip0069 > .image img {
+    border-radius: 50%;
+    border: 5px solid #BADA55;
+}

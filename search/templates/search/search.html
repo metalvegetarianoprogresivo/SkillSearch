@@ -60,6 +60,11 @@
                     <h4>
                         <a href="#theModal" class="nav-link " data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
                     </h4>
+                    <figure class="snip0069 yellow">
+                        <div class="image">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample1.jpg" alt="sample47"/
+                        ></div>
+                    </figure>
 		            <h5 class="card-subtitle mb-2 ">{{ bio.3.title }} <br> {{ bio.3.location }} </h5>
                     <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
                     <p>{% for skill,count in bio.0.items %} <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br> {% endfor %}</p>
