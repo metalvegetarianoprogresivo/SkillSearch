@@ -27,6 +27,35 @@
             bio.removeClass('d-none');
         });
     });
+
+    $(document).ready(function() {
+  $('#qrIos').qrcode({
+    width: 200,
+    height: 200,
+    text: "iOS_URL_HERE"
+  });
+  $('#qrAndroid').qrcode({
+    width: 200,
+    height: 200,
+    text: "DROID_URL_HERE"
+  });
+  $('#qrWeb').qrcode({
+    width: 200,
+    height: 200,
+    text: "WINDOWS_URL_HERE"
+  });
+});
+
+function rotateCard(btn) {
+  var $card = $(btn).closest('.card-container');
+  console.log($card);
+  if ($card.hasClass('hover')) {
+    $card.removeClass('hover');
+  } else {
+    $card.addClass('hover');
+  }
+}
+
 </script>
 
 {% endblock %} {% block content %}
@@ -53,6 +82,57 @@
             </div>
         </div>
         {% for bio in bios %} {% if bios %}
+
+
+<div class="container">
+  <div class="row">
+    <section class="card-holder">
+      <!-- Begin iOS -->
+      <div class="col-md-4 col-sm-6">
+        <div class="card-container manual-flip">
+          <div class="card">
+            <div class="front">
+              <div class="cover">
+                <img src="http://planetaradio.com.mx/guadalajara/wp-content/uploads/2015/06/gdl-150x100.jpg" />
+              </div>
+              <div class="branded">
+                <img src="http://0.gravatar.com/avatar/fa4df8540bab3cb38f7dfa60c6e0522c?size=2000" class="imagee"></img>
+              </div>
+              <div class="content">
+                <div class="main">
+                  <h3><a href="#theModal" class="nav-link " data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a></h3>
+                  <h5>class="card-subtitle mb-2 ">{{ bio.3.title }}</h5>
+                  <h4>Matches</h4>
+<p>{% for skill,count in bio.0.items %} <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br> {% endfor %}</p>
+                </div>
+                <div class="footer">
+                <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                  <button class="btn btn-flip btn-qr" onclick="rotateCard(this)">
+                    <i class="fa fa-mail-forward"></i> Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="back">
+              <div class="header">
+              </div>
+              <div class="content">
+                <div id="qrIos" class="qr text-center"></div>
+              </div>
+              <div class="footer">
+                <button class="btn btn-flip" onclick="rotateCard(this)">
+                  <i class="fa fa-reply"></i> Back
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+
         <br class="d-block d-sm-none"> {% comment %} start Smartphone view  {% endcomment %}
         <div class="card d-block d-sm-none"><br>
             <div class="container card d-block d-sm-none" style="width: 18rem;">
@@ -67,6 +147,14 @@
                 </div>
             </div><br>
         </div> {% comment %} End Smartphone view  {% endcomment %}
+
+
+
+
+
+
+
+
         <div class="card d-none d-sm-block"> {% comment %} start pc view  {% endcomment %}
             <div class="table-responsive">
                 <table class="table table-hover">
