@@ -68,46 +68,47 @@ card.addEventListener( 'click', function() {
 
 
 
-<div class="scene scene--card">         
-<div class="card d-block d-sm-none" id="wrapper">
-    <br>
-    <div class="card__face card__face--front">
-    <div class="container card d-block d-sm-none" style="width: 18rem;">
-        <div class="cover">
-            <img src="http://planetaradio.com.mx/guadalajara/wp-content/uploads/2015/06/gdl-150x100.jpg">
-        </div>
-        <div class="branded">
-            <img src="http://0.gravatar.com/avatar/fa4df8540bab3cb38f7dfa60c6e0522c?size=2000" class="imagee"></img>
-        </div>
-        <div class="card-body text-center">
-            <h4>
-                        <a href="#theModal" class="nav-link " data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
-                    </h4>
-            <h5 class="card-subtitle mb-2 ">{{ bio.3.title }} <br> {{ bio.3.location }} </h5>
-            <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
-            <p>{% for skill,count in bio.0.items %} <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio
-                <br> {% endfor %}</p>
-            <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
-        </div>
+<div class="scene scene--card">
+    <div class="card d-block d-sm-none" id="wrapper">
+        <br>
+        <div class="card__face card__face--front">
+            <div class="container card d-block d-sm-none" style="width: 18rem;">
+                <div class="cover">
+                    <img src="http://planetaradio.com.mx/guadalajara/wp-content/uploads/2015/06/gdl-150x100.jpg">
+                </div>
+                <div class="branded">
+                    <img src="http://0.gravatar.com/avatar/fa4df8540bab3cb38f7dfa60c6e0522c?size=2000" class="imagee"></img>
+                </div>
+                <div class="card-body text-center">
+                    <h4>
+								<a href="#theModal" class="nav-link " data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
+							</h4>
+                    <h5 class="card-subtitle mb-2 ">{{ bio.3.title }} 
+								<br> {{ bio.3.location }} 
+								</h5>
+                    <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
+                    <p>{% for skill,count in bio.0.items %}
+                        <strong>{{ skill}}</strong> found
+                        <strong>{{ count }}</strong> time(s) in Bio
 
-        <div id="social-bar">
-            <a href="javascript:void" class="more-info">
-                <span class="oi oi-person"></span>
-            </a>
+                        <br> {% endfor %}
+                    </p>
+                    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                </div>
+                <div id="social-bar">
+                    <a href="javascript:void" class="more-info">
+                        <span class="oi oi-person"></span>
+                    </a>
+                </div>
+            </div>
+            <br>
+        </div>
+        <div class="card__face card__face--back">
+            <div class="back-info">
+                <p>My name is Jesse Couch, and I am an award winning, intensely creative, coffee-fueled front-end web designer and developer. My style and approach are very straight-forward — I obsess about keeping things as simple as humanly possible. That's it. If you like bells and whistles for the sake of bells and whistles, look elsewhere - but if you want to remain laser-focused on the goals for your new website, it's time time to talk.</p>
+            </div>
         </div>
     </div>
-
-    <br>
-    </div>
-
-    <div class="card__face card__face--back">
-        <div class="back-info">
-          <p>My name is Jesse Couch, and I am an award winning, intensely creative, coffee-fueled front-end web designer and developer. My style and approach are very straight-forward — I obsess about keeping things as simple as humanly possible. That's it. If you like bells and whistles for the sake of bells and whistles, look elsewhere - but if you want to remain laser-focused on the goals for your new website, it's time time to talk.</p>
-        </div>
-    </div>
-</div>
-</div>
-
 
         {% comment %} 
         <div class="card d-block d-sm-none"><br>
