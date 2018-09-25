@@ -13,6 +13,7 @@ body {
   padding-top: 50px !important;
   padding-bottom: 20px !important;
   background: #F2F2F2 !important;
+  font-family: sans-serif; 
 }
 
 .faint {
@@ -43,83 +44,6 @@ body {
   font-size: 1.7em !important;
 }
 
-.btn-flip-extend, .btn-flip:hover, .btn-flip:focus {
-  background-color: transparent !important;
-  -moz-box-shadow: none !important;
-  -webkit-box-shadow: none !important;
-  box-shadow: none !important;
-  opacity: 1 !important;
-}
-
-.btn-flip {
-  opacity: 0.8 !important;
-  color: #666666 !important;
-  background-color: transparent !important;
-}
-.btn-flip i {
-  font-size: 16px !important;
-}
-
-.card-holder1 {
-  margin-top: 50px !important;
-}
-
-.card-container1 {
-  -moz-perspective: 800px !important;
-  -webkit-perspective: 800px !important; 
-  perspective: 800px !important;
-  -moz-transform-style: preserve-3d !important;
-  -webkit-transform-style: preserve-3d !important;
-  transform-style: preserve-3d !important;
-  -moz-border-radius: 4px !important;
-  -webkit-border-radius: 4px !important;
-  border-radius: 4px !important;
-  margin-bottom: 30px !important;
-  width: 100% !important;
-  height: 420px !important;
-}
-.card-container1:not(.manual-flip):hover .front {
-  -moz-transform: rotateY(180deg) !important;
-  -ms-transform: rotateY(180deg) !important;
-  -webkit-transform: rotateY(180deg) !important;
-  transform: rotateY(180deg) !important;
-}
-.card-container1:not(.manual-flip):hover .back {
-  -moz-transform: rotateY(0deg) !important;
-  -ms-transform: rotateY(0deg) !important;
-  -webkit-transform: rotateY(0deg) !important;
-  transform: rotateY(0deg) !important;
-}
-.card-container1.hover.manual-flip .front {
-  -moz-transform: rotateY(180deg) !important;
-  -ms-transform: rotateY(180deg) !important;
-  -webkit-transform: rotateY(180deg) !important;
-  transform: rotateY(180deg) !important;
-}
-.card-container1.hover.manual-flip .back {
-  -moz-transform: rotateY(0deg) !important;
-  -ms-transform: rotateY(0deg) !important;
-  -webkit-transform: rotateY(0deg) !important;
-  transform: rotateY(0deg) !important;
-}
-
-.card1 {
-  -moz-transform-style: preserve-3d !important;
-  -webkit-transform-style: preserve-3d !important;
-  transform-style: preserve-3d !important;
-  -moz-border-radius: 4px !important;
-  -webkit-border-radius: 4px !important;
-  border-radius: 4px !important;
-  -moz-transition: -moz-transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  -o-transition: -o-transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  -webkit-transition: -webkit-transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  position: relative !important;
-  background: none repeat scroll 0 0 #fff !important;
-  color: #444444 !important;
-  max-width: 320px !important;
-  margin: 0 auto !important;
-}
 .cover {
   -moz-border-radius: 4px 4px 0 0 !important;
   -webkit-border-radius: 4px !important;
@@ -168,64 +92,6 @@ body {
   height: 215px !important;
 }
 
-.front {
-  -moz-backface-visibility: hidden !important;
-  -webkit-backface-visibility: hidden !important;
-  backface-visibility: hidden !important;
-  -moz-transition: -moz-transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  -o-transition: -o-transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  -webkit-transition: -webkit-transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  -moz-transform-style: preserve-3d !important;
-  -webkit-transform-style: preserve-3d !important;
-  transform-style: preserve-3d !important;
-  -moz-transform: rotateY(0deg) !important;
-  -ms-transform: rotateY(0deg) !important;
-  -webkit-transform: rotateY(0deg) !important;
-  transform: rotateY(0deg) !important;
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.14) !important;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.14) !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.14) !important;
-  -moz-border-radius: 4px !important;
-  -webkit-border-radius: 4px !important;
-  border-radius: 4px !important;
-  position: absolute !important;
-  background-color: #fff !important;
-  width: 100% !important;
-  height: 420px !important;
-  top: 0 !important;
-  left: 0 !important;
-  z-index: 2 !important;
-}
-
-.back {
-  -moz-backface-visibility: hidden !important;
-  -webkit-backface-visibility: hidden !important;
-  backface-visibility: hidden !important;
-  -moz-transition: -moz-transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  -o-transition: -o-transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  -webkit-transition: -webkit-transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-  -moz-transform-style: preserve-3d !important;
-  -webkit-transform-style: preserve-3d !important;
-  transform-style: preserve-3d !important;
-  -moz-transform: rotateY(-180deg) !important;
-  -ms-transform: rotateY(-180deg) !important;
-  -webkit-transform: rotateY(-180deg) !important;
-  transform: rotateY(-180deg) !important;
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.14) !important;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.14) !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.14) !important;
-  -moz-border-radius: 4px !important;
-  -webkit-border-radius: 4px !important;
-  border-radius: 4px !important;
-  position: absolute !important;
-  background-color: #fff !important;
-  width: 100% !important;
-  height: 420px !important;
-  top: 0 !important;
-  left: 0 !important;
-}
 .back .btn-simple {
   position: absolute !important;
   left: 0 !important;
@@ -248,42 +114,52 @@ body {
   line-height: 90% !important;
 }
 
-
-
-body { font-family: sans-serif; }
-
 .scene {
   width: 460px;
   height: 520px;
   perspective: 800px;
 }
 
-.card {
-  height: 100%;
-  cursor: pointer;
-  transform-style: preserve-3d;
-  transform-origin: center right;
-  transition: transform 1s;
+/* entire container, keeps perspective */
+.flip-container {
+	perspective: 1000px;
+}
+	/* flip the pane when hovered */
+	.flip-container:hover .flipper, .flip-container.hover .flipper {
+		transform: rotateY(180deg);
+	}
+
+.flip-container, .front, .back {
+	width: 320px;
+	height: 480px;
 }
 
-.card.is-flipped {
-  transform: translateX(-100%) rotateY(-180deg);
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	position: relative;
 }
 
-.card__face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  line-height: 260px;
-  color: white;
-  text-align: center;
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
-.card__face--front {
-  background: red;
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	/* for firefox 31 */
+	transform: rotateY(0deg);
 }
 
-.card__face--back {
-  background: blue;
-  transform: rotateY(180deg);
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
 }
