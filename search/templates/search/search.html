@@ -170,15 +170,13 @@ card.addEventListener( 'click', function() {
                 <table class="table table-hover">
                     <tbody>
                         <tr>
-                            <td class="align-middle" style="width: 30%;">
-                                          <div class="cover">                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_QkEjdBg7JYo" />
+                            <td class="align-middle" style="width: 30%; background: url (https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_QkEjdBg7JYo) ">
 			           <div class="user">
 								                      <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png" />            </div>
 				    <h5>
                                     <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
                                 </h5><br>
-				                <center class="font-weight-bold">{{ bio.3.title }} <br> {{ bio.3.location }} <br> {{ bio.4 }}</center>
-                      			</div> 
+				                <center class="font-weight-bold">{{ bio.3.title }} <br> {{ bio.3.location }} <br> {{ bio.4 }}</center> 
 			    </td>
                                 <td class="align-middle" style="width: 55%;">{% get_importance bio.3.technical_skills tags %}{% for skill,count in bio.0.items %}<strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br>{% endfor %}    
                             </td>    
