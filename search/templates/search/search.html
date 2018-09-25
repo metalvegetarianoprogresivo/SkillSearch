@@ -57,28 +57,30 @@
 
 <div class="card">
     <div class="content">
-    <div class="front">
-        <br class="d-block d-sm-none"> {% comment %} start Smartphone view  {% endcomment %}
-        <div class="card d-block d-sm-none"><br>
-            <div class="container card d-block d-sm-none" style="width: 18rem;">
-                <div class="card-body text-center">
-                    <h4>
+        <div class="front">
+            <br class="d-block d-sm-none"> {% comment %} start Smartphone view {% endcomment %}
+            <div class="card d-block d-sm-none">
+                <br>
+                <div class="container card d-block d-sm-none" style="width: 18rem;">
+                    <div class="card-body text-center">
+                        <h4>
                         <a href="#theModal" class="nav-link " data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
                     </h4>
-		            <h5 class="card-subtitle mb-2 ">{{ bio.3.title }} <br> {{ bio.3.location }} </h5>
-                    <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
-                    <p>{% for skill,count in bio.0.items %} <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br> {% endfor %}</p>
-                    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                        <h5 class="card-subtitle mb-2 ">{{ bio.3.title }} <br> {{ bio.3.location }} </h5>
+                        <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
+                        <p>{% for skill,count in bio.0.items %} <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio
+                            <br> {% endfor %}</p>
+                        <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                    </div>
                 </div>
-            </div><br>
-        </div> {% comment %} End Smartphone view  {% endcomment %}
+                <br>
+            </div> {% comment %} End Smartphone view {% endcomment %}
         </div>
         <div class="back">
-      Back!
+            Back!
+        </div>
     </div>
-  </div>
 </div>
-
 
 
         <div class="card d-none d-sm-block"> {% comment %} start pc view  {% endcomment %}
