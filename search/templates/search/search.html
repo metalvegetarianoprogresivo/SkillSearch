@@ -1,10 +1,21 @@
 {% extends "templates/base.html" %} {% load static search_extras %} {% block extra_headers %}
-<script src="{% static 'js/modal.js' %}"></script>
 <link rel="stylesheet" href="{% static 'search/css/search.css' %}">
-<script src="{% static 'search/js/toggleCard.js' %}"></script>
+<script src="{% static 'js/modal.js' %}"></script>
+<script type="text/javascript">
+    $().ready(function(){
+        $('[rel="tooltip"]').tooltip();
+    });
 
-
-
+    function rotateCard(btn){
+        var $card = $(btn).closest('.card-container');
+        console.log($card);
+        if($card.hasClass('hover')){
+            $card.removeClass('hover');
+        } else {
+            $card.addClass('hover');
+        }
+    }
+</script>
 <script>
     $(document).ready(function() {
         var roster_cart_buttons = $('.roster-cart');
@@ -64,75 +75,96 @@ card.addEventListener( 'click', function() {
             </div>
         </div>
         {% for bio in bios %} {% if bios %}
-
-<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
-    <div class="flipper">
+        <br class="d-block d-sm-none"> {% comment %} start Smartphone view  {% endcomment %}
+        
+<div class="card-container manual-flip d-block d-sm-none">
+    <div class="card">
         <div class="front">
-            <div class="card d-block d-sm-none " id="wrapper">
-                <br>
-                <div class="container card d-block d-sm-none" style="width: 18rem;">
-                    <div class="cover">
-                        <img src="http://planetaradio.com.mx/guadalajara/wp-content/uploads/2015/06/gdl-150x100.jpg">
-                    </div>
-                    <div class="branded">
-                        <img src="http://0.gravatar.com/avatar/fa4df8540bab3cb38f7dfa60c6e0522c?size=2000" class="imagee"></img>
-                    </div>
-                    <div class="card-body text-center">
-                        <h4>
-								<a href="#theModal" class="nav-link " data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
-							</h4>
-                        <h5 class="card-subtitle mb-2 ">{{ bio.3.title }} 
-								<br> {{ bio.3.location }} 
-								</h5>
-                        <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
-                        <p>{% for skill,count in bio.0.items %}
-                            <strong>{{ skill}}</strong> found
-                            <strong>{{ count }}</strong> time(s) in Bio
-
-                            <br> {% endfor %}
+            <div class="cover">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_QkEjdBg7JYo" />
+            </div>
+            <div class="user">
+                <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png" />
+            </div>
+            <div class="content">
+                <div class="main">
+                    <h3 class="name">{{ bio.3.name }}</h3>
+                    <p class="profession">{{ bio.3.title }} <br> {{ bio.3.location }}</p>
+               
+                    <p class="text-center">
+                        <p>
+                            {% for skill,count in bio.0.items %} 
+                            <strong>{{ skill}}</strong> found <strong>{{ count }}</strong>
+                            time(s) in Bio <br> 
+                            {% endfor %}
                         </p>
-                        <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                    </p>
+                </div>
+                <div class="card-myfooter">
+                    <div class="social-links text-center">
+                        <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}"
+                            data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
+                            {% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+                        <button class="btn btn-simple" onclick="rotateCard(this)">
+                            <i class="fa fa-mail-forward"></i> Manual Rotation
+                        </button>
                     </div>
-                    <div id="social-bar">
-                        <a href="javascript:void" class="more-info">
-                            <span class="oi oi-person"></span>
-                        </a>
-                    </div>
-                    <br>
                 </div>
             </div>
-            <div class="back">
-                <h5 class="card-subtitle mb-2 ">{{ bio.3.title }} <br> {{ bio.3.location }} 
-                </h5>
+
+        </div>
+        <div class="back">
+            <div class="header">
+                <h5 class="motto">"To be or not to be, this is my awesome motto!"</h5>
+            </div>
+            <div class="content">
+                <div class="main">
+                    <h4 class="text-center">Job Description</h4>
+                    <p class="text-center">Web design, Adobe Photoshop, HTML5, CSS3, Corel and many others...</p>
+
+                    <div class="stats-container">
+                        <div class="stats">
+                            <h4>235</h4>
+                            <p>
+                                Followers
+                            </p>
+                        </div>
+                        <div class="stats">
+                            <h4>114</h4>
+                            <p>
+                                Following
+                            </p>
+                        </div>
+                        <div class="stats">
+                            <h4>35</h4>
+                            <p>
+                                Projects
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-myfooter">
+                <button class="btn btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
+                    <i class="fa fa-reply"></i> Back
+                </button>
+                <div class="social-links text-center">
+                    <a href="http://creative-tim.com" class="facebook"><i class="fa fa-facebook fa-fw"></i></a>
+                    <a href="http://creative-tim.com" class="google"><i class="fa fa-google-plus fa-fw"></i></a>
+                    <a href="http://creative-tim.com" class="twitter"><i class="fa fa-twitter fa-fw"></i></a>
+                </div>
             </div>
         </div>
-    </div>
-
-    
-        {% comment %} 
-        <div class="card d-block d-sm-none"><br>
-            <div class="container card d-block d-sm-none" style="width: 18rem;">
-                <div class="card-body text-center">
-                    <h4>
-                        <a href="#theModal" class="nav-link " data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
-                    </h4>
-                    <figure class="snip0069 yellow">
-                        <div class="image">
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample1.jpg" alt="sample47"/
-                        ></div>
-                    </figure>
-		            <h5 class="card-subtitle mb-2 ">{{ bio.3.title }} <br> {{ bio.3.location }} </h5>
-                    <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
-                    <p>{% for skill,count in bio.0.items %} <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br> {% endfor %}</p>
-                    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
-                </div>
-            </div><br>
-        </div>  {% endcomment %}
-
-
-
-
-
+    </div><br>
+</div>
+	
+	
+	
+	
+	
+	
+	{% comment %} End Smartphone view  {% endcomment %}
         <div class="card d-none d-sm-block"> {% comment %} start pc view  {% endcomment %}
             <div class="table-responsive">
                 <table class="table table-hover">
