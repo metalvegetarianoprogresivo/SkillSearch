@@ -1,5 +1,6 @@
 {% extends "templates/base.html" %} {% load static search_extras %} {% block extra_headers %}
 <script src="{% static 'js/modal.js' %}"></script>
+<link rel="stylesheet" href="{% static 'search/css/search.css' %}">
 
 <script>
     $(document).ready(function() {
@@ -53,6 +54,10 @@
             </div>
         </div>
         {% for bio in bios %} {% if bios %}
+
+<div class="card">
+    <div class="content">
+    <div class="front">
         <br class="d-block d-sm-none"> {% comment %} start Smartphone view  {% endcomment %}
         <div class="card d-block d-sm-none"><br>
             <div class="container card d-block d-sm-none" style="width: 18rem;">
@@ -67,6 +72,15 @@
                 </div>
             </div><br>
         </div> {% comment %} End Smartphone view  {% endcomment %}
+        </div>
+        <div class="back">
+      Back!
+    </div>
+  </div>
+</div>
+
+
+
         <div class="card d-none d-sm-block"> {% comment %} start pc view  {% endcomment %}
             <div class="table-responsive">
                 <table class="table table-hover">
