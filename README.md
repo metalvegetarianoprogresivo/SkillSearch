@@ -1,7 +1,7 @@
 # Skills Searcher
 
 
-### Prerequisites
+### Getting Started
 
 Create virtual environment and activate using:
     
@@ -27,7 +27,6 @@ Install NGINX
 
     sudo apt-get install nginx
 
-## Getting Started
 
 ## Running the tests
 
