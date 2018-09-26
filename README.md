@@ -3,28 +3,27 @@
 
 ### Prerequisites
 
--Create virtual environment and activate using:
+Create virtual environment and activate using:
     
     ./rtualenv_dir/Scripts> activate.bat
--Clone repository. 
+Clone repository. 
     using command line:
 
     git clone https://github.com/IntersysConsulting/SkillSearch
--Python3.6+, Java 8+ is required.
+Python3.6+, Java 8+ is required.
 
     https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
     https://www.python.org/downloads/
--Install PIP for python3:
+Install PIP for python3:
 
     sudo apt-get update
     sudo apt install python3-pip
--MongoDB Server 4.0 or greater is required
-    
-    https://nesdis.github.io/djongo/get-started/
--Install dependencies required
+MongoDB Server 4.0 or greater is required using [djongo]https://nesdis.github.io/djongo/get-started/
+
+Install dependencies required
     
     pip3 install -r requirements.txt
--Install NGINX
+Install NGINX
 
     sudo apt-get install nginx
 
