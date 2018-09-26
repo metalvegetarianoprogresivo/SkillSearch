@@ -1,4 +1,4 @@
-# ConsultantMarket
+# Skills Searcher
 
 #### Mongo DB
 
