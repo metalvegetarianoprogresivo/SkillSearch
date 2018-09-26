@@ -18,7 +18,7 @@ Install PIP for python3:
 
     sudo apt-get update
     sudo apt install python3-pip
-MongoDB Server 4.0 or greater is required using [djongo]https://nesdis.github.io/djongo/get-started/
+MongoDB Server 4.0 or greater is required using [djongo](https://nesdis.github.io/djongo/get-started/)
 
 Install dependencies required
     
