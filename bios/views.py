@@ -1,10 +1,11 @@
 import json
 import datetime
 import os
-from django.shortcuts import redirect, render, reverse
-from django.conf import settings
 import requests
 import re
+
+from django.shortcuts import redirect, render, reverse
+from django.conf import settings
 from bs4 import BeautifulSoup
 from tika import parser
 from .models import Bio, Assignments
