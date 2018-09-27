@@ -1,5 +1,6 @@
 # Skills Searcher
 
+Skills Searcher is an app that enables finding people with a certain profile among Intersys organization. Besides from finding people, the app allowes you to create and groom rosters of candidates to fit certain project requirements. 
 
 ### Getting Started
 
