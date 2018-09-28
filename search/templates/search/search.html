@@ -75,7 +75,7 @@ card.addEventListener( 'click', function() {
             </div>
         </div>
         {% for bio in bios %} {% if bios %}
-        <br class="d-block d-sm-none"> {% comment %} start Smartphone view  {% endcomment %}
+        {% comment %} start Smartphone view  {% endcomment %}
         
 <div class="card-container manual-flip d-block d-sm-none">
     <div class="card">
@@ -88,74 +88,107 @@ card.addEventListener( 'click', function() {
             </div>
             <div class="content">
                 <div class="main">
-                    <h3 class="name">{{ bio.3.name }}</h3>
-                    <p class="profession">{{ bio.3.title }} <br> {{ bio.3.location }}</p>
-               
-                    <p class="text-center">
-                        <p>
+
+			<h3 class="text-center"style="color: green;">{{ bio.4 }} </h3> 
+		<h3 class="name">{{ bio.3.name }}</h3>
+		    <p class="profession">{{ bio.3.title }} <br> {{ bio.3.location }}<br></p>
+              
+                        <p class="scrolldiv text-center">
+
                             {% for skill,count in bio.0.items %} 
                             <strong>{{ skill}}</strong> found <strong>{{ count }}</strong>
                             time(s) in Bio <br> 
                             {% endfor %}
-                        </p>
-                    </p>
-                </div>
-                <div class="card-myfooter">
-                    <div class="social-links text-center">
-                        <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}"
+			</p>
+                    <div class="mt-4 col-md-4 text-center">
+		    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}"
                             data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
                             {% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
-                        <button class="btn btn-simple" onclick="rotateCard(this)">
-                            <i class="fa fa-mail-forward"></i> Manual Rotation
-                        </button>
+		</div>
+                </div>
+		<div class="card-myfooter">
+                                <button id="profilebutton" class="btn btn-sm btn-outline-secondary" onclick="rotateCard(this)">
+                                    <span class="oi oi-share"></span> Show Profile
+                                </button>
+                            </div>
+
+                </div>
+            </div>
+        
+	    
+	    
+<div class="back">
+    <div class="content">
+        <div class="main">
+            <h4 class="text-center mt-4">Profile of {{ bio.3.name }}</h4>
+            <div class="scrollprofile">
+                    <p class="text-center" >{{ bio.3.profile }}</p>
+            </div>
+            
+            <h4 class="text-center">Location</h4>
+            <p class="text-center">{{ bio.3.location }}</p>
+            <h4 class="text-center">Assignments:</h4>
+            <table class="table table-sm">
+                <thead>
+                    <th>Client</th>
+                    <th>Utilization</th>
+                    <th>End date</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Temporal name
+                        </td>
+                        <td>
+                            30%
+                        </td>
+                        <td>
+                            01/01/2020
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Temporal name2
+                        </td>
+                        <td>
+                            70%
+                        </td>
+                        <td>
+                            01/01/2020
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+			<td><strong>Total<strong></td>
+                    <td colspan="2">100%</td>
+                </tfoot>
+            </table>
+            <div>
+                    <button class="btn btn-sm btn-outline-success d-none roster-cart ml-3 float-right bio-{{ bio.3.pk }}"
+                    data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
+                    {% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>    
+                    <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
+                        
                     </div>
-                </div>
-            </div>
-
         </div>
-        <div class="back">
-            <div class="header">
-                <h5 class="motto">"To be or not to be, this is my awesome motto!"</h5>
-            </div>
-            <div class="content">
-                <div class="main">
-                    <h4 class="text-center">Job Description</h4>
-                    <p class="text-center">Web design, Adobe Photoshop, HTML5, CSS3, Corel and many others...</p>
+    </div>
+    
+    <div class="card-myfooter">
+   
+        <button id="backbutton" class="btn btn-sm btn-outline-secondary ml-2 mb-2" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
+            <span class="oi oi-share rotate180"></span> Back
+        </button>
+        
+    </div>
+</div>
 
-                    <div class="stats-container">
-                        <div class="stats">
-                            <h4>235</h4>
-                            <p>
-                                Followers
-                            </p>
-                        </div>
-                        <div class="stats">
-                            <h4>114</h4>
-                            <p>
-                                Following
-                            </p>
-                        </div>
-                        <div class="stats">
-                            <h4>35</h4>
-                            <p>
-                                Projects
-                            </p>
-                        </div>
-                    </div>
 
-                </div>
-            </div>
-            <div class="card-myfooter">
-                <button class="btn btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
-                    <i class="fa fa-reply"></i> Back
-                </button>
-                <div class="social-links text-center">
-                    <a href="http://creative-tim.com" class="facebook"><i class="fa fa-facebook fa-fw"></i></a>
-                    <a href="http://creative-tim.com" class="google"><i class="fa fa-google-plus fa-fw"></i></a>
-                    <a href="http://creative-tim.com" class="twitter"><i class="fa fa-twitter fa-fw"></i></a>
-                </div>
-            </div>
-        </div>
+
+
+	    
+
+
+
     </div><br>
 </div>
 	
@@ -170,19 +203,29 @@ card.addEventListener( 'click', function() {
                 <table class="table table-hover">
                     <tbody>
                         <tr>
-                            <td class="align-middle" style="width: 30%; background: url (https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_QkEjdBg7JYo) ">
-			           <div class="user">
-								                      <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png" />            </div>
-				    <h5>
+			<td class="align-middle" style="width: 30%; background: url({% static 'search/img/austin2.jpg' %}) no-repeat center; background-size: cover;">
+				    <div style="background: white; opacity:.7;">
+				               <div class="cover">
+						                       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_
+								       QkEjdBg7JYo" style="opacity: -9;" />
+								                   </div>
+					    <div class="user">
+					 <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png" style="background: opacity:.9;">            </div>
+				    <h5 style="padding:0; background: opacity:.9;">
                                     <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
-                                </h5><br>
-				                <center class="font-weight-bold">{{ bio.3.title }} <br> {{ bio.3.location }} <br> {{ bio.4 }}</center> 
+                                </h5>
+				<center style=" background: opacity:.9;" class="font-weight-bold">{{ bio.3.title }} <br><br> {{ bio.3.location }} <br> {{ bio.4 }}</center>
+				</div>
 			    </td>
                                 <td class="align-middle" style="width: 55%;">{% get_importance bio.3.technical_skills tags %}{% for skill,count in bio.0.items %}<strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br>{% endfor %}    
                             </td>    
                             <td class="align-middle">
-                                <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
-                            </td>
+				<center>
+				<button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+				<button class="mt-2 btn btn-sm btn-outline-success ">
+					<a href="#theModal" class="nav-link text-center" style="padding:0;" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">Go to Profile</a></button>
+				</center>
+			    </td>
                         </tr>
                     </tbody>
                 </table>
@@ -228,10 +271,44 @@ card.addEventListener( 'click', function() {
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">{{ bio.3.profile }}</div>
+            <div class="modal-body">{{ bio.3.profile }}
+    
+		    <h4 class="text-center">Location</h4>
+	                <p class="text-center">{{ bio.3.location }}</p>
+			            <h4 class="text-center">Assignments:</h4>
+				    <table class="table ">
+	         			<thead>
+			     		<tr>
+					   <th scope="col">Client</th>
+					   <th scope="col">Utilization</th>
+			                   <th scope="col">End Date</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+					
+					<td>SkillsSearcher</td>
+					<td>45%</td>
+					<td>2018/12/20</td>
+					</tr>
+					<tr>
+					
+					<td>Home Away</td>
+					<td>55%</td>
+					<td>2019/01/01</td>
+					</tr>
+					<tr>
+					<th scope="row">Total</th>
+					<td colspan="2" >100%</td>
+					
+					
+					</tr>
+					</tbody>
+				    </table>
+	    </div>
             <div class="modal-footer">
                 <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               
                 <a class="btn btn-primary" href="{{ bio.3.url }}">Open Bio</a>
             </div>
         </div>

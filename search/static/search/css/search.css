@@ -4,7 +4,7 @@
    -moz-perspective: 800px;
      -o-perspective: 800px;
         perspective: 800px;
-        margin-bottom: 30px;
+        margin-bottom: 0px;
 }
 /* flip the pane when hovered */
 .card-container:not(.manual-flip):hover .card,
@@ -78,7 +78,7 @@
 }
 .card-container, .front, .back {
 	width: 100%;
-	height: 420px;
+	height: 542px;
 	border-radius: 4px;
 }
 .card .cover{
@@ -132,7 +132,7 @@
     margin-bottom: 20px;
 }
 .card .card-myfooter {
-    border-top: 1px solid #EEEEEE;
+    /*border-top: 1px solid #EEEEEE;*/
     color: #999999;
     margin: 30px 0 0;
     padding: 10px 0 0;
@@ -184,3 +184,62 @@
 .card .stats p{
 	color: #777777;
 }
+.imgDesk{
+border-radius: 50%;
+}
+.scrolldiv{
+	overflow-y: scroll; height:75px;
+}
+.scrollprofile{
+        overflow-y: scroll; height:100px;
+}
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+.btn-simple{
+    opacity: .8;
+    color: #666666;
+    background-color: transparent;
+}
+
+.btn-simple:hover,
+.btn-simple:focus{
+    background-color: transparent;
+    box-shadow: none;
+    opacity: 1;
+}
+.btn-simple i{
+    font-size: 16px;
+}
+.rotate180{
+   -webkit-transform: rotate(180deg);
+   -moz-transform: rotate(180deg);
+   -ms-transform: rotate(180deg);
+   -o-transform: rotate(180deg);
+   transform: rotate(180deg);
+}
+#profiletable{
+margin-bottom: 0px;
+}
+#backbutton{
+    position: absolute;
+    right:4px;
+    top:4px;
+   
+}
+#profilebutton{
+	margin-top: 1px;
+	position: absolute;
+	right:4px;
+	top:4px;
+	background:white;
+	border:gray;
+}
+
