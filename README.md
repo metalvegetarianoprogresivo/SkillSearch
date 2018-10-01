@@ -2,7 +2,7 @@
 
 #### Mongo DB
 
-MongoDB Server 4.0 or greater is required. [Djongo](https://nesdis.github.io/djongo/get-started/) is the library
+MOngoDB Server 4.0 or greater is required. [Djongo](https://nesdis.github.io/djongo/get-started/) is the library
 
 Issue the following command to start the Mongo server before running the Django app:
 
