@@ -150,7 +150,7 @@ def get_bios(token):
         soup = BeautifulSoup(response.text, 'html.parser')  
         link = soup.find(href = regex)
 
-        pdf_link = 'https://www.intersysconsulting.com' + link.get('href')
+        pdf_link = link.get('href')
         pdf_file = requests.get(pdf_link, headers=headers)
 
         with open(filename, 'wb') as f:
