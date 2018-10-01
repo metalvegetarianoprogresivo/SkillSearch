@@ -1,6 +1,21 @@
 {% extends "templates/base.html" %} {% load static search_extras %} {% block extra_headers %}
+<link rel="stylesheet" href="{% static 'search/css/search.css' %}">
 <script src="{% static 'js/modal.js' %}"></script>
+<script type="text/javascript">
+    $().ready(function(){
+        $('[rel="tooltip"]').tooltip();
+    });
 
+    function rotateCard(btn){
+        var $card = $(btn).closest('.card-container');
+        console.log($card);
+        if($card.hasClass('hover')){
+            $card.removeClass('hover');
+        } else {
+            $card.addClass('hover');
+        }
+    }
+</script>
 <script>
     $(document).ready(function() {
         var roster_cart_buttons = $('.roster-cart');
@@ -9,7 +24,6 @@
             var bio = $(this);
             var add_to_roster_action = "{% url 'add_to_roster' %}";
             var remove_from_roster_action = "{% url 'remove_from_roster' %}";
-
             bio.on('click', function() {
                 var bio_id = bio.attr('data-bio');
                 $.post(
@@ -26,7 +40,15 @@
             });
             bio.removeClass('d-none');
         });
-    });
+ });
+    
+
+</script>
+<script>
+var card = document.querySelector('.card');
+card.addEventListener( 'click', function() {
+  card.classList.toggle('is-flipped');
+});
 </script>
 
 {% endblock %} {% block content %}
@@ -53,41 +75,162 @@
             </div>
         </div>
         {% for bio in bios %} {% if bios %}
-        <br class="d-block d-sm-none"> {% comment %} start Smartphone view  {% endcomment %}
-        <div class="card d-block d-sm-none"><br>
-            <div class="container card d-block d-sm-none" style="width: 18rem;">
-                <div class="card-body text-center">
-                    <h4>
-                        <a href="#theModal" class="nav-link " data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
-                    </h4>
-		            <h5 class="card-subtitle mb-2 ">{{ bio.3.title }} <br> {{ bio.3.location }} </h5>
-                    <p class="card-text">{% get_importance bio.3.technical_skills tags %}</p>
-                    <p>{% for skill,count in bio.0.items %} <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br> {% endfor %}</p>
-                    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+        {% comment %} start Smartphone view  {% endcomment %}
+        
+<div class="card-container manual-flip d-block d-sm-none">
+    <div class="card">
+        <div class="front">
+            <div class="cover">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_QkEjdBg7JYo" />
+            </div>
+            <div class="user">
+                <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png" />
+            </div>
+            <div class="content">
+                <div class="main">
+
+			<h3 class="text-center"style="color: green;">{{ bio.4 }} </h3> 
+		<h3 class="name">{{ bio.3.name }}</h3>
+		    <p class="profession">{{ bio.3.title }} <br> {{ bio.3.location }}<br></p>
+              
+                        <p class="scrolldiv text-center">
+
+                            {% for skill,count in bio.0.items %} 
+                            <strong>{{ skill}}</strong> found <strong>{{ count }}</strong>
+                            time(s) in Bio <br> 
+                            {% endfor %}
+			</p>
+                    <div class="mt-4 col-md-4 text-center">
+		    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}"
+                            data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
+                            {% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+		</div>
                 </div>
-            </div><br>
-        </div> {% comment %} End Smartphone view  {% endcomment %}
+		<div class="card-myfooter">
+                                <button id="profilebutton" class="btn btn-sm btn-outline-secondary" onclick="rotateCard(this)">
+                                    <span class="oi oi-share"></span> Show Profile
+                                </button>
+                            </div>
+
+                </div>
+            </div>
+        
+	    
+	    
+<div class="back">
+    <div class="content">
+        <div class="main">
+            <h4 class="text-center mt-4">Profile of {{ bio.3.name }}</h4>
+            <div class="scrollprofile">
+                    <p class="text-center" >{{ bio.3.profile }}</p>
+            </div>
+            
+            <h4 class="text-center">Location</h4>
+            <p class="text-center">{{ bio.3.location }}</p>
+            <h4 class="text-center">Assignments:</h4>
+            <table class="table table-sm">
+                <thead>
+                    <th>Client</th>
+                    <th>Utilization</th>
+                    <th>End date</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Temporal name
+                        </td>
+                        <td>
+                            30%
+                        </td>
+                        <td>
+                            01/01/2020
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Temporal name2
+                        </td>
+                        <td>
+                            70%
+                        </td>
+                        <td>
+                            01/01/2020
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+			<td><strong>Total<strong></td>
+                    <td colspan="2">100%</td>
+                </tfoot>
+            </table>
+            <div>
+                    <button class="btn btn-sm btn-outline-success d-none roster-cart ml-3 float-right bio-{{ bio.3.pk }}"
+                    data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
+                    {% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>    
+                    <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
+                        
+                    </div>
+        </div>
+    </div>
+    
+    <div class="card-myfooter">
+   
+        <button id="backbutton" class="btn btn-sm btn-outline-secondary ml-2 mb-2" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
+            <span class="oi oi-share rotate180"></span> Back
+        </button>
+        
+    </div>
+</div>
+
+
+
+
+	    
+
+
+
+    </div><br>
+</div>
+	
+	
+	
+	
+	
+	
+	{% comment %} End Smartphone view  {% endcomment %}
         <div class="card d-none d-sm-block"> {% comment %} start pc view  {% endcomment %}
             <div class="table-responsive">
                 <table class="table table-hover">
                     <tbody>
                         <tr>
-                            <td class="align-middle" style="width: 30%;">
-                                <h5>
+			<td class="align-middle" style="width: 30%; background: url({% static 'search/img/austin2.jpg' %}) no-repeat center; background-size: cover;">
+				    <div style="background: white; opacity:.7;">
+				               <div class="cover">
+						                       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_
+								       QkEjdBg7JYo" style="opacity: -9;" />
+								                   </div>
+					    <div class="user">
+					 <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png" style="background: opacity:.9;">            </div>
+				    <h5 style="padding:0; background: opacity:.9;">
                                     <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
-                                </h5><br>
-				                <center class="font-weight-bold">{{ bio.3.title }} <br> {{ bio.3.location }} <br> {{ bio.4 }}</center>
-                            </td>
+                                </h5>
+				<center style=" background: opacity:.9;" class="font-weight-bold">{{ bio.3.title }} <br><br> {{ bio.3.location }} <br> {{ bio.4 }}</center>
+				</div>
+			    </td>
                                 <td class="align-middle" style="width: 55%;">{% get_importance bio.3.technical_skills tags %}{% for skill,count in bio.0.items %}<strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br>{% endfor %}    
                             </td>    
                             <td class="align-middle">
-                                <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
-                            </td>
+				<center>
+				<button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+				<button class="mt-2 btn btn-sm btn-outline-success ">
+					<a href="#theModal" class="nav-link text-center" style="padding:0;" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">Go to Profile</a></button>
+				</center>
+			    </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div> {% comment %} End pc view  {% endcomment %}
+        </div> {% comment %} End pc view  {% endcomment %} 
         {% endif %} {% endfor %} 
         <div class="float-right"> {% comment %} start paginator {% endcomment %}
         <nav class="float-right pr-5" aria-label="Page navigation">
@@ -128,10 +271,44 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">{{ bio.3.profile }}</div>
+            <div class="modal-body">{{ bio.3.profile }}
+    
+		    <h4 class="text-center">Location</h4>
+	                <p class="text-center">{{ bio.3.location }}</p>
+			            <h4 class="text-center">Assignments:</h4>
+				    <table class="table ">
+	         			<thead>
+			     		<tr>
+					   <th scope="col">Client</th>
+					   <th scope="col">Utilization</th>
+			                   <th scope="col">End Date</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+					
+					<td>SkillsSearcher</td>
+					<td>45%</td>
+					<td>2018/12/20</td>
+					</tr>
+					<tr>
+					
+					<td>Home Away</td>
+					<td>55%</td>
+					<td>2019/01/01</td>
+					</tr>
+					<tr>
+					<th scope="row">Total</th>
+					<td colspan="2" >100%</td>
+					
+					
+					</tr>
+					</tbody>
+				    </table>
+	    </div>
             <div class="modal-footer">
                 <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               
                 <a class="btn btn-primary" href="{{ bio.3.url }}">Open Bio</a>
             </div>
         </div>

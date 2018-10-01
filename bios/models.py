@@ -22,6 +22,16 @@ class EmailAuth(models.Model):
         return self.email
 
 
+class Assignments(models.Model):
+    name = models.TextField(blank=True, null=True)
+    account_name = models.TextField(blank=True, null=True)
+    start = models.DateField(blank=True, null=True)
+    p1_end = models.DateField(blank=True, null=True)
+    p2_end = models.DateField(blank=True, null=True)
+    p3_end = models.DateField(blank=True, null=True)
+    utilisation = models.FloatField(blank=True, null=True)
+
+
 class Bio(models.Model):
 #kimble information
     name = models.CharField(max_length=100, default='')
@@ -29,8 +39,7 @@ class Bio(models.Model):
     url = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=50, default='')
     email = models.TextField(blank=True, null=True)
-    assignment_date = models.TextField(blank=True, null=True)
-
+    assignments = models.ArrayModelField(model_container=Assignments, null=True)
 #bio Information
     profile = models.TextField(blank=True, null=True)
     technical_skills = models.TextField(blank=True, null=True) 
@@ -38,7 +47,7 @@ class Bio(models.Model):
     education = models.TextField(blank=True, null=True)
     experience = models.TextField(blank=True, null=True)
 
-
+    
     def __str__(self):
         return '{0},{1}'.format(self.name, self.title)
 
