@@ -10,4 +10,4 @@ Issue the following command to start the Mongo server before running the Django 
 
 Then issue the following command to create the database and collections for the first time:
 
-    ./manage.py migrate
+    ./manage.py migrate 
