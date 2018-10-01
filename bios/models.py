@@ -31,8 +31,6 @@ class Assignments(models.Model):
     p3_end = models.DateField(blank=True, null=True)
     utilisation = models.FloatField(blank=True, null=True)
 
-    class Meta:
-        abstract = True
 
 class Bio(models.Model):
 #kimble information
