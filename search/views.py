@@ -65,7 +65,7 @@ def get_availability(bio):
         for project in projects:
             total_utilisation += project.utilisation
 
-            if project.utilisation >= 100
+            if project.utilisation >= 100:
                 if project.p3_end > shown_date_100:
                     shown_date_100 = project.p3_end
                     project_at_100 = True
