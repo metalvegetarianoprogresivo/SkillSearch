@@ -1,13 +1,14 @@
 import json
 import datetime
 import os
-from django.shortcuts import redirect, render, reverse
-from django.conf import settings
 import requests
 import re
+
+from django.shortcuts import redirect, render, reverse
+from django.conf import settings
 from bs4 import BeautifulSoup
 from tika import parser
-from .models import Bio
+from .models import Bio, Assignments
 from datetime import datetime
 
 
@@ -97,7 +98,7 @@ def get_title(token, name):
     return export_title
 
 
-def get_email(token,name):
+def get_email(token, name):
     url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
     headers = {"authorization":"Bearer " + token}
 
@@ -112,23 +113,30 @@ def get_email(token,name):
     return email
 
 
-def get_last_assignment(token,name):
+def get_assignments(token, bio):
     url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
     headers = {"authorization":"Bearer " + token}
     assignment_date = None
+    response = requests.request("GET", url+"SELECT name, KimbleOne__Resource__r.Name, KimbleOne__DeliveryGroup__r.KimbleOne__Account__r.Name, KimbleOne__StartDate__c, KimbleOne__ForecastP1EndDate__c, KimbleOne__ForecastP2EndDate__c, KimbleOne__ForecastP3EndDate__c, KimbleOne__UtilisationPercentage__c FROM KimbleOne__ActivityAssignment__c WHERE KimbleOne__DeliveryGroup__c != NULL AND KimbleOne__Resource__r.Name = '"+bio.name+"'", headers = headers)
+    assignments = json.loads(response.text)
+    assignment_end_date = None
 
-    response = requests.request("GET", url+"SELECT KimbleOne__LatestP1AssignmentEndDate__c FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
-    date_str = json.loads(response.text)
+    total_assignemts = []
 
-    try:
-        assignment_date = date_str['records'][0]['KimbleOne__LatestP1AssignmentEndDate__c']
-    except:
-        pass
+    for assignment in assignments['records']:
+        end_date = assignment['KimbleOne__ForecastP3EndDate__c']
 
-    if assignment_date is None:
-        assignment_date = '1995-04-11'
-
-    return date
+        if end_date is not None and (end_date - date.today()) > 0:
+            project, created = Assignments.objects.get_or_create(name=assignment['name'])
+            project.start = assignment['KimbleOne__StartDate__c']
+            project.p1_end = assignment['KimbleOne__ForecastP1EndDate__c']
+            project.p2_end = assignment['KimbleOne__ForecastP2EndDate__c']
+            project.p3_end = assignment['KimbleOne__ForecastP3EndDate__c']
+            project.account_name = assignment['KimbleOne__DeliveryGroup__r']['KimbleOne__Account__r']['Name']
+            project.utilisation = assignment['KimbleOne__UtilisationPercentage__c']
+            total_assignemts += project
+    
+    return total_assignemts
 
 
 def get_bios(token):
@@ -168,10 +176,8 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
 
     bio.email = get_email(token, bio.name)
 
-    print(bio.name) #keep track of progress in command line
-
     bio.title = get_title(token, bio.name)
-    bio.assignment_date = get_last_assignment(token, bio.name)
+    bio.assignments = get_assignments(token, bio)
 
     try:
         bio.profile = re.search(r" Profile (.*?)Skills ", clean_text).group(1) 

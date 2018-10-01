@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render
 from django.http import Http404
-from bios.models import Bio
+from bios.models import Bio, Assignments
 from django.shortcuts import redirect
 from datetime import datetime, date
 
@@ -29,11 +29,10 @@ def search(request):
         total_count, skills = get_skills_found(tags, fields)
 
         if total_count:
-            availability, days_until_available = get_availability(bio)
-            result_set.append((skills, len(skills), total_count, bio, availability, days_until_available))
+            availability, days_until_available, utilisation = get_availability(bio)
+            result_set.append((skills, len(skills), total_count, bio, availability, days_until_available, 100-utilisation))
 
-    #Set order of relevance using fields in result_set
-    result_set = sorted(result_set, key=lambda x:(x[5], -x[1], -x[2], x[3]))
+    result_set = sorted(result_set, key=lambda x:(x[5],-x[6], -x[1], -x[2], x[3]))
 
     paginator = Paginator(result_set, 10)
     page = request.GET.get('page')
@@ -52,19 +51,43 @@ def search(request):
 
 
 def get_availability(bio):
-    end_date = datetime.strptime(bio.assignment_date,'%Y-%m-%d').date()
-    days_of_difference = end_date - date.today()
-    days_until_available = days_of_difference.days
-
-    if days_until_available <= 0:
-        days_until_available = 0
+    projects = list(filter(lambda x: (x.p3_end > date.today()), bio.assignments)) 
+    total_utilisation = 0
+    shown_date = date(3000, 12, 31)
+    shown_date_100 = date(1995, 4, 11)
+    project_at_100 = False
+    
+    if len(projects) is 0:
+        days_until_available = -1
         availability = 'Available'
-    elif days_until_available <= 30:
-        availability = 'Available in {} days'.format(days_until_available)
-    else:      
-        availability = 'Not Available until {}'.format(bio.assignment_date)
 
-    return availability, days_until_available
+    else:
+        for project in projects:
+            total_utilisation += project.utilisation
+
+            if project.utilisation >= 100
+                if project.p3_end > shown_date_100:
+                    shown_date_100 = project.p3_end
+                    project_at_100 = True
+            else:
+                if project.p3_end < shown_date:
+                    shown_date = project.p3_end
+        
+        if project_at_100 is True:
+            shown_date = shown_date_100
+
+        time_delta = shown_date - date.today()
+        days_until_available = time_delta.days
+
+        if total_utilisation < 100:
+            days_until_available = 0
+            availability = 'Available at {}%'.format(100 - total_utilisation)
+        if days_until_available <= 30:
+            availability = 'Available in {} days'.format(days_until_available)
+        else:      
+            availability = 'Busy until {}'.format(shown_date)
+
+    return availability, days_until_available, total_utilisation
 
 
 def get_fields(bio):
