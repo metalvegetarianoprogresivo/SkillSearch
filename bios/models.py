@@ -31,6 +31,8 @@ class Assignments(models.Model):
     p3_end = models.DateField(blank=True, null=True)
     utilisation = models.FloatField(blank=True, null=True)
 
+    class Meta:
+        abstract = True
 
 class Bio(models.Model):
 #kimble information
@@ -39,7 +41,7 @@ class Bio(models.Model):
     url = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=50, default='')
     email = models.TextField(blank=True, null=True)
-    assignments = models.ArrayModelField(model_container=Assignments, null=True, blank=True)
+    assignments = models.ArrayReferenceField(to=Assignments, on_delete=models.DO_NOTHING, blank=True, null=True)
 #bio Information
     profile = models.TextField(blank=True, null=True)
     technical_skills = models.TextField(blank=True, null=True) 

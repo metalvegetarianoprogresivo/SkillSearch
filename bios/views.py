@@ -121,8 +121,6 @@ def get_assignments(token, bio):
     assignments = json.loads(response.text)
     assignment_end_date = None
 
-    total_assignemts = []
-
     for assignment in assignments['records']:
         end_date = assignment['KimbleOne__ForecastP3EndDate__c']
 
@@ -134,9 +132,7 @@ def get_assignments(token, bio):
             project.p3_end = assignment['KimbleOne__ForecastP3EndDate__c']
             project.account_name = assignment['KimbleOne__DeliveryGroup__r']['KimbleOne__Account__r']['Name']
             project.utilisation = assignment['KimbleOne__UtilisationPercentage__c']
-            total_assignemts += project
-    
-    return total_assignemts
+            bio.assignments.add(project) 
 
 
 def get_bios(token):
@@ -177,7 +173,7 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     bio.email = get_email(token, bio.name)
 
     bio.title = get_title(token, bio.name)
-    bio.assignments = get_assignments(token, bio)
+    get_assignments(token, bio)
 
     try:
         bio.profile = re.search(r" Profile (.*?)Skills ", clean_text).group(1) 
