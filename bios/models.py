@@ -24,12 +24,12 @@ class EmailAuth(models.Model):
 
 class Assignments(models.Model):
     name = models.TextField(blank=True, null=True)
-    account_name TextField(blank=True, null=True)
-    start = DateField(blank=True, null=True)
-    p1_end = DateField(blank=True, null=True)
-    p2_end = DateField(blank=True, null=True)
-    p3_end = DateField(blank=True, null=True)
-    utilisation = FloatField(blank=True, null=True)
+    account_name = models.TextField(blank=True, null=True)
+    start = models.DateField(blank=True, null=True)
+    p1_end = models.DateField(blank=True, null=True)
+    p2_end = models.DateField(blank=True, null=True)
+    p3_end = models.DateField(blank=True, null=True)
+    utilisation = models.FloatField(blank=True, null=True)
 
 
 class Bio(models.Model):
