@@ -124,6 +124,7 @@ def get_assignments(token, bio):
         end_date = assignment['KimbleOne__ForecastP3EndDate__c']
 
         if end_date is not None and (datetime.strptime(end_date, '%Y-%m-%d').date() - date.today()).days > 0:
+            project = Assignments()
             project, created = Assignments.objects.get_or_create(name=assignment['Name'])
             project.start = datetime.strptime(assignment['KimbleOne__StartDate__c'], '%Y-%m-%d').date()
             try:
