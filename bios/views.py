@@ -1,5 +1,4 @@
 import json
-import datetime
 import os
 import requests
 import re
@@ -9,7 +8,7 @@ from django.conf import settings
 from bs4 import BeautifulSoup
 from tika import parser
 from .models import Bio, Assignments
-from datetime import datetime
+from datetime import datetime, date
 
 
 def index(request):
@@ -124,12 +123,18 @@ def get_assignments(token, bio):
     for assignment in assignments['records']:
         end_date = assignment['KimbleOne__ForecastP3EndDate__c']
 
-        if end_date is not None and (end_date - date.today()) > 0:
-            project, created = Assignments.objects.get_or_create(name=assignment['name'])
-            project.start = assignment['KimbleOne__StartDate__c']
-            project.p1_end = assignment['KimbleOne__ForecastP1EndDate__c']
-            project.p2_end = assignment['KimbleOne__ForecastP2EndDate__c']
-            project.p3_end = assignment['KimbleOne__ForecastP3EndDate__c']
+        if end_date is not None and (datetime.strptime(end_date, '%Y-%m-%d').date() - date.today()).days > 0:
+            project, created = Assignments.objects.get_or_create(name=assignment['Name'])
+            project.start = datetime.strptime(assignment['KimbleOne__StartDate__c'], '%Y-%m-%d').date()
+            try:
+                project.p1_end = datetime.strptime(assignment['KimbleOne__ForecastP1EndDate__c'], '%Y-%m-%d').date()
+            except:
+                project.p1_end = None
+            try:
+                project.p2_end = datetime.strptime(assignment['KimbleOne__ForecastP2EndDate__c'], '%Y-%m-%d').date()
+            except:
+                project.p2_end = None
+            project.p3_end = datetime.strptime(assignment['KimbleOne__ForecastP3EndDate__c'], '%Y-%m-%d').date()
             project.account_name = assignment['KimbleOne__DeliveryGroup__r']['KimbleOne__Account__r']['Name']
             project.utilisation = assignment['KimbleOne__UtilisationPercentage__c']
             bio.assignments.add(project) 
