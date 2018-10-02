@@ -126,8 +126,14 @@ def get_assignments(token, bio):
         if end_date is not None and (datetime.strptime(end_date, '%Y-%m-%d').date() - date.today()).days > 0:
             project, created = Assignments.objects.get_or_create(name=assignment['Name'])
             project.start = datetime.strptime(assignment['KimbleOne__StartDate__c'], '%Y-%m-%d').date()
-            project.p1_end = datetime.strptime(assignment['KimbleOne__ForecastP1EndDate__c'], '%Y-%m-%d').date()
-            project.p2_end = datetime.strptime(assignment['KimbleOne__ForecastP2EndDate__c'], '%Y-%m-%d').date()
+            try:
+                project.p1_end = datetime.strptime(assignment['KimbleOne__ForecastP1EndDate__c'], '%Y-%m-%d').date()
+            except:
+                project.p1_end = None
+            try:
+                project.p2_end = datetime.strptime(assignment['KimbleOne__ForecastP2EndDate__c'], '%Y-%m-%d').date()
+            except:
+                project.p2_end = None
             project.p3_end = datetime.strptime(assignment['KimbleOne__ForecastP3EndDate__c'], '%Y-%m-%d').date()
             project.account_name = assignment['KimbleOne__DeliveryGroup__r']['KimbleOne__Account__r']['Name']
             project.utilisation = assignment['KimbleOne__UtilisationPercentage__c']
