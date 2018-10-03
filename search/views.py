@@ -82,7 +82,7 @@ def get_availability(bio):
 
         if total_utilisation < 100:
             days_until_available = 0
-            availability = 'Available at {}%'.format(math.floor(100 - total_utilisation))
+            availability = 'Available at {}%'.format(math.ceil(100 - total_utilisation))
         elif days_until_available <= 30:
             availability = 'Available in {} days'.format(days_until_available)
         else:      
