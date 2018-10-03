@@ -243,3 +243,51 @@ margin-bottom: 0px;
 	border:gray;
 }
 
+
+.availability{
+	    color: #28a745;
+    }
+
+ .table{
+	     margin-bottom: 0px;
+     }
+
+     .oi-person{
+	         color: #28a745;
+	 }
+
+	 .oi-person:hover{
+		     color:white;
+	     }
+
+	     .description{
+		         padding:10px 0 0 30px;
+		 }
+
+
+.consultant-row{
+	    padding: 0 !important;
+	        box-shadow: 2px 0 11px 2px #b5b5b5;
+		    border-radius: 0 5px 5px 0;
+		        width:30%;
+			    padding-bottom: 5px !important; 
+		    }
+
+		    .nav-link{
+			        padding: 0;
+			}
+
+			.action-column{
+				    position: relative;
+			    }
+
+			    .profile-button{
+				        position: absolute;
+					    top: 25px;
+					        right: 30px;
+						    margin-right: 10px;
+					    }
+
+
+
+

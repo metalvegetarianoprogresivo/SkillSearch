@@ -195,27 +195,32 @@
                 <table class="table table-hover">
                     <tbody>
                         <tr>
-			<td class="align-middle" style="width: 30%; background: url({% static 'search/img/austin2.jpg' %}) no-repeat center; background-size: cover;">
-				    <div style="background: white; opacity:.7;">
+			<td class="align-middle consultant-row">
 				               <div class="cover">
-						                       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_
-								       QkEjdBg7JYo" style="opacity: -9;" />
-								                   </div>
+						    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_QkEjdBg7JYo">
+						</div>
 					    <div class="user">
-					 <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png" style="background: opacity:.9;">            </div>
-				    <h5 style="padding:0; background: opacity:.9;">
+						    <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png"> 
+			</div>
+				    <h5>
                                     <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
                                 </h5>
-				<center style=" background: opacity:.9;" class="font-weight-bold">{{ bio.3.title }} <br><br> {{ bio.3.location }} <br> {{ bio.4 }}</center>
-				</div>
+				<center 
+			class="font-weight-bold">{{ bio.3.title }} <br><br> {{ bio.3.location }}
+				</center>
 			    </td>
-                                <td class="align-middle" style="width: 55%;">{% get_importance bio.3.technical_skills tags %}{% for skill,count in bio.0.items %}<strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br>{% endfor %}    
+                                <td class="profile" style="width: 55%;">
+					<div class="description">
+						<center><h4>{{ bio.4 }}</h4><br></center>
+						<p>{% get_importance bio.3.technical_skills tags %}{% for skill,count in bio.0.items %}<strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br>{% endfor %}</p>
+					</div>
                             </td>    
-                            <td class="align-middle">
-				<center>
+                            <td class="align-middle action-column">
+				    <button class="btn btn-sm btn-outline-success profile-button">
+					    <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.3.id }}"><span class="oi oi-person"></a>
+				    </button>
+				    <center>
 				<button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
-				<button class="mt-2 btn btn-sm btn-outline-success ">
-					<a href="#theModal" class="nav-link text-center" style="padding:0;" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">Go to Profile</a></button>
 				</center>
 			    </td>
                         </tr>
