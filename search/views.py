@@ -51,10 +51,7 @@ def search(request):
 
 
 def get_availability(bio):
-    try:
-        projects = list(filter(lambda x: (x.p3_end - date.today()).days > 0, bio.assignments.all()))
-    except:
-        projects = list()
+    projects = list(filter(lambda x: (x.p3_end - date.today()).days > 0, bio.assignments.all()))
     total_utilisation = 0
     shown_date = date(3000, 12, 31)
     shown_date_100 = date(1995, 4, 11)
