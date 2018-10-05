@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  fake-kimble-server:
+    restart: always
+    build: ./fake_server/
+    image: skillsearch/fake-kimble-server
+    container_name: fake-kimble-server
+    environment:
+      - TEST_DATA=KIMBLE
+    volumes:
+      - ./fake_server:/skillsearch
+    ports:
+      - 3010:3010
+    networks:
+      - backend
+  mongo:
+    image: mongo
+    container_name: skillsearch-mongo
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+  skillsearch-app:
+    restart: always
+    build: .
+    image: skillsearch/app
+    container_name: skillsearch-app
+    volumes:
+      - .:/skillsearch
+    ports:
+      - 8000:8000
+    links:
+      - fake-kimble-server
+      - mongo
+    networks:
+      - backend
+networks:
+  backend:
+    driver: "bridge"

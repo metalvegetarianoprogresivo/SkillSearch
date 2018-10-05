@@ -1,0 +1,15 @@
+{
+  "name": "fake-kimble-server",
+  "version": "1.0.0",
+  "description": "Fake Kimble Server for Skill Searcher Test Environment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Miguel Martinez",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "json-server": "^0.14.0"
+  }
+}
