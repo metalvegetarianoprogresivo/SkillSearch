@@ -7,6 +7,7 @@
 
 var consultantInfo
 var consultantAssignments
+var serverOAuth = require('./server_oauth.json')
 
 switch(process.env.TEST_DATA){
   case "CLEAN":
@@ -21,6 +22,7 @@ switch(process.env.TEST_DATA){
 
 module.exports = function() {
   return {
+    serverOAuth: serverOAuth,
     consultantInfo: consultantInfo,
     consultantAssignments: consultantAssignments
   }
