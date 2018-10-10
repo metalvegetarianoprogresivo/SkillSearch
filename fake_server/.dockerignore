@@ -1,8 +1,4 @@
-.git
-.gitignore
-allemployees.xlsx
 *.md
 Dockerfile
-dokcer-compose.yml
-
+docker-compose.yml
 .DS_Store

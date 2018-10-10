@@ -4,3 +4,5 @@ allemployees.xlsx
 *.md
 Dockerfile
 docker-compose.yml
+.DS_Store
+/fake_server

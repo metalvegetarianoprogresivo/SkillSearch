@@ -1,14 +1,13 @@
 FROM node:latest
 
-# Install json-server library in global mode
-RUN npm install -g json-server
-
-# Setup the working directory
-COPY . /data
-WORKDIR /data
-
-# Install the fake server application from the package.json file
+# Install dependencies from package.json file
+COPY package.json ./
 RUN npm install
 
+# Copy files and set the working directory
+RUN mkdir /fake_server
+COPY . ./fake_server
+WORKDIR /fake_server
+
 # Run the fake server
-CMD ["node", "test_server.js"]
+CMD ["npm", "start"]
