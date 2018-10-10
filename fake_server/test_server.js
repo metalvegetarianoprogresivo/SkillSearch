@@ -52,7 +52,7 @@ server.use(router)
 
 // Start the server
 server.listen(serverPort, () => {
-  console.log('Fake Kimble Server is running and listening on port ' + serverPort)
+  console.log('Fake Kimble API Server is running and listening on port ' + serverPort)
 })
 
 

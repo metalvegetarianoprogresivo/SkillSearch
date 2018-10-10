@@ -1,29 +1,18 @@
 /*
-  This module sets the data to use on when the server is started. Each option is given by the TEST_DATA environmental variable.
+  This module sets the data to use when the server is started.
+  The value is specified on the test_data attribute of the data_config.json file.
   There are two options:
-    - CLEAN: Sets a clean dataset.
+    - EMPTY: To set am empty dataset.
     - KIMBLE: Sets a dataset based on a kimble dump.
 */
 
-var consultantInfo
-var consultantAssignments
-var serverOAuth = require('./server_oauth.json')
-
-switch(process.env.TEST_DATA){
-  case "CLEAN":
-    consultantInfo = require('./db_consultant_info_clean_data.json')
-    consultantAssignments = require('./db_consultant_assignments_clean_data.json')
-  break;
-  case "KIMBLE":
-    consultantInfo = require('./db_consultant_info_kimble_dump.json')
-    consultantAssignments = require('./db_consultant_assignments_kimble_dump.json')
-  break;
-}
+const dataConfig = require('./data_config.json');
 
 module.exports = function() {
+
   return {
-    serverOAuth: serverOAuth,
-    consultantInfo: consultantInfo,
-    consultantAssignments: consultantAssignments
+    serverOAuth: require(dataConfig.server_oauth),
+    consultantInfo: dataConfig.test_data === 'KIMBLE' ? require(dataConfig.kimble.consultant_info) : require(dataConfig.empty.consultant_info),
+    consultantAssignments: dataConfig.test_data === 'KIMBLE' ? require(dataConfig.kimble.consultant_assignments) : require(dataConfig.empty.consultant_assignments)
   }
 }

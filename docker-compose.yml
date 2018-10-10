@@ -6,10 +6,8 @@ services:
     build: ./fake_server/
     image: skillsearch/fake-kimble-server
     container_name: fake-kimble-server
-    environment:
-      - TEST_DATA=KIMBLE
     volumes:
-      - ./fake_server:/skillsearch
+      - ./fake_server:/fake_server
     ports:
       - 3010:3010
     networks:
