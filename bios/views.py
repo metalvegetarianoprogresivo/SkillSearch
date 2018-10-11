@@ -1,19 +1,19 @@
 import json
-import datetime
 import os
-from django.shortcuts import redirect, render, reverse
-from django.conf import settings
 import requests
 import re
+
+from django.shortcuts import redirect, render, reverse
+from django.conf import settings
 from bs4 import BeautifulSoup
 from tika import parser
-from .models import Bio
-from datetime import datetime
+from .models import Bio, Assignments
+from datetime import datetime, date
 
 
 def index(request):
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-        return redirect("https://skillssearcher.intersysconsulting.com/")
+        return redirect("https://skillssearchertest.centralus.cloudapp.azure.com/")
     if("code" in request.GET.keys()):
         get_token(request.GET.get("code"))
     return render(request, 'bios/index.html')
@@ -29,12 +29,12 @@ def index(request):
 
       
 def get_documents(request):
-    return redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F")
+    return redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearchertest.centralus.cloudapp.azure.com%2Fbios%2F")
 
 
 def get_token(code):
     url = "https://intersys.my.salesforce.com/services/oauth2/token"
-    payload = "grant_type=authorization_code&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
+    payload = "grant_type=authorization_code&redirect_uri=https%3A%2F%2Fskillssearchertest.centralus.cloudapp.azure.com%2Fbios%2F&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
     headers = {"content-type":"application/x-www-form-urlencoded"}
 
     response = requests.request("POST", url, data= payload, headers = headers)
@@ -97,7 +97,7 @@ def get_title(token, name):
     return export_title
 
 
-def get_email(token,name):
+def get_email(token, name):
     url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
     headers = {"authorization":"Bearer " + token}
 
@@ -112,23 +112,34 @@ def get_email(token,name):
     return email
 
 
-def get_last_assignment(token,name):
+def get_assignments(token, bio):
     url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
     headers = {"authorization":"Bearer " + token}
     assignment_date = None
+    response = requests.request("GET", url+"SELECT name, KimbleOne__Resource__r.Name, KimbleOne__DeliveryGroup__r.KimbleOne__Account__r.Name, KimbleOne__StartDate__c, KimbleOne__ForecastP1EndDate__c, KimbleOne__ForecastP2EndDate__c, KimbleOne__ForecastP3EndDate__c, KimbleOne__UtilisationPercentage__c FROM KimbleOne__ActivityAssignment__c WHERE KimbleOne__DeliveryGroup__c != NULL AND KimbleOne__Resource__r.Name = '"+bio.name+"'", headers = headers)
+    assignments = json.loads(response.text)
+    assignment_end_date = None
 
-    response = requests.request("GET", url+"SELECT KimbleOne__LatestP1AssignmentEndDate__c FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
-    date_str = json.loads(response.text)
+    for assignment in assignments['records']:
+        end_date = assignment['KimbleOne__ForecastP3EndDate__c']
 
-    try:
-        assignment_date = date_str['records'][0]['KimbleOne__LatestP1AssignmentEndDate__c']
-    except:
-        pass
-
-    if assignment_date is None:
-        assignment_date = '1995-04-11'
-
-    return date
+        if end_date is not None and (datetime.strptime(end_date, '%Y-%m-%d').date() - date.today()).days > 0:
+            project = Assignments()
+            project, created = Assignments.objects.get_or_create(name=assignment['Name'])
+            project.start = datetime.strptime(assignment['KimbleOne__StartDate__c'], '%Y-%m-%d').date()
+            try:
+                project.p1_end = datetime.strptime(assignment['KimbleOne__ForecastP1EndDate__c'], '%Y-%m-%d').date()
+            except:
+                project.p1_end = None
+            try:
+                project.p2_end = datetime.strptime(assignment['KimbleOne__ForecastP2EndDate__c'], '%Y-%m-%d').date()
+            except:
+                project.p2_end = None
+            project.p3_end = datetime.strptime(assignment['KimbleOne__ForecastP3EndDate__c'], '%Y-%m-%d').date()
+            project.account_name = assignment['KimbleOne__DeliveryGroup__r']['KimbleOne__Account__r']['Name']
+            project.utilisation = int(assignment['KimbleOne__UtilisationPercentage__c'])
+            bio.assignments.add(project)
+            project.save() 
 
 
 def get_bios(token):
@@ -142,7 +153,7 @@ def get_bios(token):
         soup = BeautifulSoup(response.text, 'html.parser')  
         link = soup.find(href = regex)
 
-        pdf_link = 'https://www.intersysconsulting.com' + link.get('href')
+        pdf_link = link.get('href')
         pdf_file = requests.get(pdf_link, headers=headers)
 
         with open(filename, 'wb') as f:
@@ -166,12 +177,9 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     bio.location = get_location(token, consultant_name)
     bio.url = pdf_link
 
-    bio.email = get_email(token, bio.name)
-
-    print(bio.name) #keep track of progress in command line
-
     bio.title = get_title(token, bio.name)
-    bio.assignment_date = get_last_assignment(token, bio.name)
+    bio.email = get_email(token, bio.name)
+    get_assignments(token, bio)
 
     try:
         bio.profile = re.search(r" Profile (.*?)Skills ", clean_text).group(1) 

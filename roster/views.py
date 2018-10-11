@@ -13,7 +13,7 @@ from django.conf import settings
 from consultantmarket.views import index
 from .forms import sendForm
 from django.contrib import messages
-
+from search.views import get_availability
 @require_POST
 @csrf_exempt
 
@@ -71,15 +71,41 @@ def remove_from_roster(request):
 def roster_detail(request):
     
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-        return redirect("https://skillssearcher.intersysconsulting.com/")
+        return redirect("https://skillssearchertest.centralus.cloudapp.azure.com/")
     
     roster = request.session.get('roster')
     bios = Bio.objects.filter(pk__in=roster).order_by('name')
+    consultant = {
+            'bios': []
+            }
+    #list_bios = []
+    #list_assignments = []
 
+    for bio in bios:
+        consultant['bios'].append(
+                {
+                    'bio':{
+                        'data':bio,
+                        'assignments':get_availability(bio)
+                        }
+                })
+        #list_assignments.append(get_availability(bio))
+        #assignments.append(get_availability(bio))
+        #print(type(availability),type(days_until_available),type(utilisation),type(projects))
+        #print(availability,days_until_available,utilisation,projects)
+        #print("---get details")
+        #print(type(bio))
+        #print(dir(bio))
+        #for assi in bio.assignments.all():
+        #    print(dir(assi))
+        ##print("---get details")
+    #print(type(list_assignments[0]))
     context = {
         'title': 'Roster selected',
         'bios': bios,
-    }
+        'consultant': consultant
+        }
+        
 
     return render(request, 'roster/detail.html', context)
 
@@ -87,7 +113,7 @@ def roster_detail(request):
 def send_roster(request):
     
     if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-        return redirect("https://skillssearcher.intersysconsulting.com/")
+        return redirect("https://skillssearchertest.centralus.cloudapp.azure.com/")
     
 #confirm from_mail in 'consultantmarket/settings.py'
     if request.method == 'POST':
