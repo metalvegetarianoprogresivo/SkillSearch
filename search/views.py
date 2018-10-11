@@ -34,7 +34,7 @@ def search(request):
             result_set.append((skills, len(skills), total_count, bio, availability, days_until_available, 100-utilisation))
 
     result_set = sorted(result_set, key=lambda x:(x[5],-x[6], -x[1], -x[2], x[3]))
-
+    #get relevance intead of sorted
     paginator = Paginator(result_set, 10)
     page = request.GET.get('page')
     bios = paginator.get_page(page)
@@ -93,16 +93,33 @@ def get_availability(bio):
 
 def get_fields(bio):
     names = bio.name.lower().split()
+
+    fields = names + get_skills(bio) + get_experience(bio) + get_profile(bio)
+
+    return fields 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+
+def get_skills(bio):
     skills = bio.skills.lower().replace('/',' ').split()
     tech_skills = bio.technical_skills.lower().replace('/',' ').split()
-    profile = bio.profile.lower().replace('/',' ').split()
+    
+    all_skills = skills + tech_skills 
+
+    return all_skills
+
+
+def get_experience(bio):
     experience = bio.experience.lower().replace('/',' ').split()
-
-    fields = names + profile + skills + tech_skills + experience
-
-    return fields
+    
+    return experience
 
 
+def get_profile(bio):
+    profile = bio.profile.lower().replace('/',' ').split()
+
+    return profile    
+
+#deprecate?
 def get_skills_found(tags, fields):
     total_count = 0
     diff_skill_flag = False 
@@ -128,3 +145,40 @@ def send_log(mail):
     f.write(today+"\n")
     f.close()
 
+'''
+consultant_skills = {}
+global_count = 0
+
+for tag in tags:
+    global_skill_count[tag] = 0
+
+    for bio in bios:
+        consultant_skills[bio][tag][skill_ocurrence] = get_skill_ocurrence(tag, bio)
+
+        profile = get_profile(bio)
+        skills = get_skills(bio)
+        experience = get_experience(bio)
+
+        consultant_skills[bio][tag][flags][profile] = tag in profile
+        consultant_skills[bio][tag][flags][skill] = tag in skills
+        consultant_skills[bio][tag][flags][experience] = tag in experience
+
+        global_skill_count[tag] += consultant_skills[bio][tag][skill_ocurrence]
+
+    global_count += global_skill_count[tag]
+
+for tag in tags:
+    weights[tag] = global_skill_count[tag]/global_count
+
+
+get_skill_ocurrence(tag, bio):
+    fields = get_fields(bio)
+    skill_ocurrence = 0
+
+    for word in fields:
+        if tag == word:
+            skill_ocurrence += 1
+    
+    return skill_ocurrence
+
+'''
