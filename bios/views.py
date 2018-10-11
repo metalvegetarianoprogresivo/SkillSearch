@@ -137,7 +137,7 @@ def get_assignments(token, bio):
                 project.p2_end = None
             project.p3_end = datetime.strptime(assignment['KimbleOne__ForecastP3EndDate__c'], '%Y-%m-%d').date()
             project.account_name = assignment['KimbleOne__DeliveryGroup__r']['KimbleOne__Account__r']['Name']
-            project.utilisation = assignment['KimbleOne__UtilisationPercentage__c']
+            project.utilisation = int(assignment['KimbleOne__UtilisationPercentage__c'])
             bio.assignments.add(project)
             project.save() 
 
