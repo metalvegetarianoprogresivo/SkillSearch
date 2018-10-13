@@ -40,6 +40,7 @@
             });
             bio.removeClass('d-none');
         });
+
  });
     
 
@@ -53,8 +54,8 @@ card.addEventListener( 'click', function() {
 
 {% endblock %} {% block content %}
 <div class="container my-4 pb-5">
-    <div class="card">
-        <div class="card-header "> {% comment %} validate if exist a result  {% endcomment %}
+    <div class="card"style="border: inherit;">
+        <div class="card-header" > {% comment %} validate if exist a result  {% endcomment %}
             <h5 class="mt-2 float-left">
                 {% if bios %}{{ max }} {{ title }} {% if q %} for {{ q }}  {% endif %}
                 {% else %}No matches for {{ q }}{% endif %}
@@ -62,7 +63,7 @@ card.addEventListener( 'click', function() {
         </div>
         {% if bios %}
         <div class="card d-none d-sm-block">
-            <div class="table-responsive text-center">
+            <div class="table-responsive text-center" >
                 <table class="table table-hover">
                     <tbody>
                         <tr>
@@ -76,196 +77,202 @@ card.addEventListener( 'click', function() {
         </div>
         {% for bio in bios %} {% if bios %}
         {% comment %} start Smartphone view  {% endcomment %}
-        
-<div class="card-container manual-flip d-block d-sm-none">
-    <div class="card">
-        <div class="front">
-            <div class="cover">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_QkEjdBg7JYo" />
-            </div>
-            <div class="user">
-                <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png" />
-            </div>
-            <div class="content">
-                <div class="main">
-
-			<h3 class="text-center"style="color: green;">{{ bio.4 }} </h3> 
-		<h3 class="name">{{ bio.3.name }}</h3>
-		    <p class="profession">{{ bio.3.title }} <br> {{ bio.3.location }}<br></p>
-              
-                        <p class="scrolldiv text-center">
-
+	<div class="pt-3" style="background: LightGrey !important"></div>
+        <div class="card-container manual-flip d-block d-sm-none ">
+			<div class="card ">
+			{% if bio.8 >= 100 %}
+			<div class="front notAvailable">
+			{% else %}
+			<div class="front">
+			{% endif %}
+                    <div class="cover">
+                        {% if bio.3.location == "Mexico Delivery Center" %}
+			    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_QkEjdBg7JYo">               							                                                        {% endif %}
+		        {% if bio.3.location == "West" %}
+		            <img src="https://atgusa.com/wp-content/uploads/2018/06/Phoenix-pic-.jpg">
+		        {% endif %}
+		        {% if bio.3.location == "Central" %}
+		            <img src="https://odysseyonline-img.rbl.ms/simage/http%3A%2F%2Fcdn1.theodysseyonline.com%2Ffiles%2F2015%2F06%2F16%2F6357006265818468541994708887_Austin_Evening.jpg/2000%2C2000/s6FVytfQ3pTXc1J9/img.jpg">
+		        {% endif %}
+		        {% if bio.3.location == "East" %}
+		            <img src="http://newyork.irishnetwork-usa.org/wp-content/uploads/sites/5/2015/06/nyc-slide.jpg">
+                        {% endif %}
+                    </div>
+                    <div class="user">
+                        <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png" />
+                    </div>
+                    <div class="content">
+                        <div class="main">
+                            <h3 class="text-center"style="color: green;">{{ bio.4 }} </h3> 
+		            <h3 class="name">{{ bio.3.name }}</h3>
+		            <p class="profession">{{ bio.3.title }} <br> {{ bio.3.location }}<br></p>
+                            <p class="scrolldiv text-center">
                             {% for skill,count in bio.0.items %} 
-                            <strong>{{ skill}}</strong> found <strong>{{ count }}</strong>
-                            time(s) in Bio <br> 
+                                <strong>{{ skill}}</strong> found <strong>{{ count }}</strong>
+                                time(s) in Bio <br> 
                             {% endfor %}
-			</p>
-                    <div class="mt-4 col-md-4 text-center">
-		    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}"
-                            data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
-                            {% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
-		</div>
+			    </p>
+                            <div class="mt-4 col-md-4 text-center">
+		                <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
+                                {% if bio.3.pk in roster %}
+				    Remove from cart
+				{% else %}
+				    Add to cart
+				{% endif %}
+				</button>
+		            </div>
+                        </div>
+		        <div class="card-myfooter">
+                            <button id="profilebutton" class="btn btn-sm btn-outline-secondary" onclick="rotateCard(this)"><span class="oi oi-share"></span> Show Profile
+			    </button>
+                        </div>
+                    </div>
                 </div>
-		<div class="card-myfooter">
-                                <button id="profilebutton" class="btn btn-sm btn-outline-secondary" onclick="rotateCard(this)">
-                                    <span class="oi oi-share"></span> Show Profile
-                                </button>
+                <div class="back">
+                    <div class="content">
+                        <div class="main">
+                            <h4 class="text-center mt-4">Profile of {{ bio.3.name }}</h4>
+                            <div class="scrollprofile">
+                                <p class="text-center" >{{ bio.3.profile }}</p>
                             </div>
-
+                            <h4 class="text-center">Location</h4>
+                            <p class="text-center">{{ bio.3.location }}</p>
+                            <h4 class="text-center">Assignments:</h4>
+                            <table class="table table-sm">
+                                <thead>
+                                    <th>Client</th>
+                                    <th>Utilization</th>
+                                    <th>End date</th>
+                                </thead>
+				<tbody class="assignments">
+		                    {% for assignment in bio.7 %}
+                                        <tr>
+                                            <td>{{ assignment.account_name }}</td>
+		          	            <td>{{ assignment.utilisation }}</td>
+			                    <td>{{ assignment.p3_end }}</td>
+                                        </tr>
+		                    {% endfor %}
+				</tbody>
+				<tfoot>
+                                    <tr>
+                                        <th scope="row">Total</th>
+			                <td colspan="2">{{ bio.8 }}</td>
+		                    </tr>
+	                        </tfoot>
+	                    </table>
+                        <div>
+                            <button class="btn btn-sm btn-outline-success d-none roster-cart ml-3 float-right bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
+                            {% if bio.3.pk in roster %}
+			        Remove from cart
+			    {% else %}
+			        Add to cart
+		            {% endif %}
+			    </button>    
+                            <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-myfooter">
+                    <button id="backbutton" class="btn btn-sm btn-outline-secondary ml-2 mb-2" rel="tooltip" title="Flip Card" onclick="rotateCard(this)"><span class="oi oi-share rotate180"></span> Back</button>
                 </div>
             </div>
-        
-	    
-	    
-<div class="back">
-    <div class="content">
-        <div class="main">
-            <h4 class="text-center mt-4">Profile of {{ bio.3.name }}</h4>
-            <div class="scrollprofile">
-                    <p class="text-center" >{{ bio.3.profile }}</p>
-            </div>
-            
-            <h4 class="text-center">Location</h4>
-            <p class="text-center">{{ bio.3.location }}</p>
-            <h4 class="text-center">Assignments:</h4>
-            <table class="table table-sm">
-                <thead>
-                    <th>Client</th>
-                    <th>Utilization</th>
-                    <th>End date</th>
-                </thead>
+        </div>
+	<br>
+    </div>	
+    {% comment %} End Smartphone view  {% endcomment %}
+    {% comment %} Start Desktop View  {%endcomment %}
+    <div class="card d-none d-sm-block">
+        <div class="table-responsive">
+            <table class="table table-hover">
                 <tbody>
-                    <tr>
-                        <td>
-                            Temporal name
-                        </td>
-                        <td>
-                            30%
-                        </td>
-                        <td>
-                            01/01/2020
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Temporal name2
-                        </td>
-                        <td>
-                            70%
-                        </td>
-                        <td>
-                            01/01/2020
-                        </td>
+			{% if bio.8 >= 100 %}	
+                    <tr class="notAvailable">
+		{% else %}
+		    <tr>
+		{% endif %}
+		        <td class="align-middle consultant-row">
+	                    <div class="cover">
+		            {% if bio.3.location == "Mexico Delivery Center" %}
+			        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_QkEjdBg7JYo">
+			    {% endif %}
+            	            {% if bio.3.location == "West" %}
+			        <img src="https://atgusa.com/wp-content/uploads/2018/06/Phoenix-pic-.jpg">
+                            {% endif %}
+		 	    {% if bio.3.location == "Central" %}
+			        <img src="https://odysseyonline-img.rbl.ms/simage/http%3A%2F%2Fcdn1.theodysseyonline.com%2Ffiles%2F2015%2F06%2F16%2F6357006265818468541994708887_Austin_Evening.jpg/2000%2C2000/s6FVytfQ3pTXc1J9/img.jpg">	                            {% endif %}
+			    {% if bio.3.location == "East" %}
+		                <img src="http://newyork.irishnetwork-usa.org/wp-content/uploads/sites/5/2015/06/nyc-slide.jpg">
+                            {% endif %}
+			    </div>
+		            <div class="user">
+			        <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png"> 
+			    </div>
+	                    <h5><a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a></h5>
+			    <center class="font-weight-bold">
+			        {{ bio.3.title }} <br> {{ bio.3.location }}
+			    </center>
+		        </td>
+                        <td class="profile" style="width: 55%;">
+		            <div class="description">
+			        <center>
+			            <h4>{{ bio.4 }}</h4>
+				    <br>
+			        </center>
+			        <p>{{ bio.3.profile|slice:"0:150" }}...</p>
+		                <p class="scrolldivDeskMatches">
+			        {% for skill,count in bio.0.items %}
+			            <strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br>
+			        {% endfor %}
+			        </p>
+			    </div>
+                        </td>    
+                        <td class="align-middle action-column">
+		            <a href="#theModal" class="nav-link text-center btn btn-sm btn-outline-success profile-button" data-toggle="modal" data-target="#theModal{{ bio.3.id }}"><span class="oi oi-person"></a>
+			    <center>
+				    {% if bio.8 >= 100 %}
+				    <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
+			{% if bio.3.pk in roster %}
+			     Remove from cart
+	                    {% else %}								                              Add Anyway										     {% endif %}
+				{% else %}
+				<button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
+			    {% if bio.3.pk in roster %}
+			        Remove from cart
+			    {% else %}
+			        Add to cart
+			    {% endif %}
+
+			    {% endif %}
+				</button>
+			    </center>
+	 	        </td>
                     </tr>
                 </tbody>
-                <tfoot>
-			<td><strong>Total<strong></td>
-                    <td colspan="2">100%</td>
-                </tfoot>
             </table>
-            <div>
-                    <button class="btn btn-sm btn-outline-success d-none roster-cart ml-3 float-right bio-{{ bio.3.pk }}"
-                    data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
-                    {% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>    
-                    <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
-                        
-                    </div>
         </div>
     </div>
-    
-    <div class="card-myfooter">
-   
-        <button id="backbutton" class="btn btn-sm btn-outline-secondary ml-2 mb-2" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
-            <span class="oi oi-share rotate180"></span> Back
-        </button>
-        
-    </div>
-</div>
-
-
-
-
-	    
-
-
-
-    </div><br>
-</div>
-	
-	
-	
-	
-	
-	
-	{% comment %} End Smartphone view  {% endcomment %}
-        <div class="card d-none d-sm-block"> {% comment %} start pc view  {% endcomment %}
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <tbody>
-                        <tr>
-			<td class="align-middle consultant-row">
-				               <div class="cover">
-						    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_QkEjdBg7JYo">
-						</div>
-					    <div class="user">
-						    <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png"> 
-			</div>
-				    <h5>
-                                    <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.3.id }}">{{ bio.3.name }}</a>
-                                </h5>
-				<center 
-			class="font-weight-bold">{{ bio.3.title }} <br><br> {{ bio.3.location }}
-				</center>
-			    </td>
-                                <td class="profile" style="width: 55%;">
-					<div class="description">
-						<center><h4>{{ bio.4 }}</h4><br></center>
-						<p>{% get_importance bio.3.technical_skills tags %}{% for skill,count in bio.0.items %}<strong>{{ skill}}</strong> found <strong>{{ count }}</strong> time(s) in Bio <br>{% endfor %}</p>
-					</div>
-                            </td>    
-                            <td class="align-middle action-column">
-				    <button class="btn btn-sm btn-outline-success profile-button">
-					    <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.3.id }}"><span class="oi oi-person"></a>
-				    </button>
-				    <center>
-				<button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
-				</center>
-			    </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div> {% comment %} End pc view  {% endcomment %} 
-        {% endif %} {% endfor %} 
-        <div class="float-right"> {% comment %} start paginator {% endcomment %}
+    {% comment %} End pc view  {% endcomment %} 
+    {% endif %} {% endfor %} 
+    {% comment %} start paginator {% endcomment %}
+    <div class="float-right"> 
         <nav class="float-right pr-5" aria-label="Page navigation">
             <ul class="pagination">
-                {% if bios.has_previous %}
-                <li class="page-item">
-                    <a class="page-link paginator-link" href="?q={{ q }}&page=1">&laquo; first</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link paginator-link" href="?q={{ q }}&page={{ bios.previous_page_number }}">{{ bios.previous_page_number }}</a>
-                </li>
-                {% endif %}
-                <li class="page-item active">
-                    <a class="page-link" href="#">{{ bios.number }}</a>
-                </li>
-                {% if bios.has_next %}
-                <li class="page-item">
-                    <a class="page-link paginator-link" href="?q={{ q }}&page={{ bios.next_page_number }}">{{ bios.next_page_number }}</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link paginator-link" href="?q={{ q }}&page={{ bios.paginator.num_pages }}">last &raquo;</a>
-                </li>
-                {% endif %}
+            {% if bios.has_previous %}
+                <li class="page-item"><a class="page-link paginator-link" href="?q={{ q }}&page=1">&laquo; first</a></li>
+                <li class="page-item"><a class="page-link paginator-link" href="?q={{ q }}&page={{ bios.previous_page_number }}">{{ bios.previous_page_number }}</a></li>
+            {% endif %}
+            <li class="page-item active"><a class="page-link" href="#">{{ bios.number }}</a></li>
+            {% if bios.has_next %}
+		<li class="page-item"><a class="page-link paginator-link" href="?q={{ q }}&page={{ bios.next_page_number }}">{{ bios.next_page_number }}</a></li>
+                <li class="page-item"><a class="page-link paginator-link" href="?q={{ q }}&page={{ bios.paginator.num_pages }}">last &raquo;</a></li>
+            {% endif %}
             </ul>
         </nav>
-        </div> {% comment %} finish paginator {% endcomment %}
-        {% endif %}
+    </div> 
+    {% comment %} finish paginator {% endcomment %}
+    {% endif %}
     </div>
 </div>
- 
 {% for bio in bios %} {% comment %} start open a bio view  {% endcomment %}
 <div class="modal fade mt-5 pt-5" id="theModal{{ bio.3.id }}" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
@@ -290,31 +297,23 @@ card.addEventListener( 'click', function() {
 					</tr>
 					</thead>
 					<tbody>
+					{% for assignment in bio.7 %}
 					<tr>
-					
-					<td>SkillsSearcher</td>
-					<td>45%</td>
-					<td>2018/12/20</td>
+						<td>{{ assignment.account_name }}</td>
+						<td>{{ assignment.utilisation }}</td>
+						<td>{{ assignment.p3_end }}</td>
 					</tr>
-					<tr>
-					
-					<td>Home Away</td>
-					<td>55%</td>
-					<td>2019/01/01</td>
-					</tr>
+					{% endfor %}
 					<tr>
 					<th scope="row">Total</th>
-					<td colspan="2" >100%</td>
-					
-					
-					</tr>
+					<td colspan="2" >{{ bio.8 }}</td>
 					</tbody>
 				    </table>
 	    </div>
             <div class="modal-footer">
                 <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
                
-                <a class="btn btn-primary" href="{{ bio.3.url }}">Open Bio</a>
+                <a class="btn btn-sm btn-outline-primary" href="{{ bio.3.url }}">Open Bio</a>
             </div>
         </div>
     </div>
