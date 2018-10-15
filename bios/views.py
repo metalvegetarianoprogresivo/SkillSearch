@@ -176,7 +176,6 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     bio, created = Bio.objects.get_or_create(name=consultant_name)
     bio.location = get_location(token, consultant_name)
     bio.url = pdf_link
-
     bio.title = get_title(token, bio.name)
     bio.email = get_email(token, bio.name)
     get_assignments(token, bio)
