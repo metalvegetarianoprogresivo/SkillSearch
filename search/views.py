@@ -23,6 +23,7 @@ def search(request):
 
     q = q.replace(', ', ' ').replace(',',' ')
     result_set = []
+    projects=[]
     tags = list(map(lambda word: word.strip().lower(), q.split(' ')))
 
     for bio in Bio.objects.all():
@@ -30,8 +31,9 @@ def search(request):
         total_count, skills = get_skills_found(tags, fields)
 
         if total_count:
-            availability, days_until_available, utilisation = get_availability(bio)
-            result_set.append((skills, len(skills), total_count, bio, availability, days_until_available, 100-utilisation))
+
+            availability, days_until_available, utilisation, projects = get_availability(bio)
+            result_set.append((skills, len(skills), total_count, bio, availability, days_until_available, 100-utilisation,projects,utilisation))
 
     result_set = sorted(result_set, key=lambda x:(x[5],-x[6], -x[1], -x[2], x[3]))
 
@@ -82,13 +84,15 @@ def get_availability(bio):
 
         if total_utilisation < 100:
             days_until_available = 0
-            availability = 'Available at {}%'.format(math.ceil(100 - total_utilisation))
+
+            availability = 'Available at {}%'.format(100 - total_utilisation)
         elif days_until_available <= 30:
             availability = 'Available in {} days'.format(days_until_available)
         else:      
-            availability = 'Busy until {}'.format(shown_date)
+            availability = 'Commited until {}'.format(shown_date)
 
-    return availability, days_until_available, total_utilisation
+    return availability, days_until_available, total_utilisation,projects
+
 
 
 def get_fields(bio):
