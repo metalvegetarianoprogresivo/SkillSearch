@@ -56,11 +56,11 @@ def search(request):
 
     for bio in bios:
         total = 0
-        skills = []
+        skills = {}
         for tag in tags:
             total += consultant_skills[bio.name][tag]['skill_ocurrence']
             if consultant_skills[bio.name][tag]['skill_ocurrence']:
-                skills += tag
+                skills[tag] = consultant_skills[bio.name][tag]['skill_ocurrence']
         if total:
             availability, days_until_available, utilisation, projects = get_availability(bio)
             w_A = 40
@@ -75,7 +75,7 @@ def search(request):
 
             result_set.append((skills, len(skills), total, bio, availability, days_until_available, 100-utilisation, projects, utilisation, relevance_funct))
 
-    result_set = sorted(result_set, key=lambda x:(-x[-1], x[5], -x[6], -x[1], -x[2], x[3]))
+    result_set = sorted(result_set, key=lambda x:(x[-1], x[5], -x[6], -x[1], -x[2], x[3]))
     #get relevance intead of sorted
     paginator = Paginator(result_set, 10)
     page = request.GET.get('page')
