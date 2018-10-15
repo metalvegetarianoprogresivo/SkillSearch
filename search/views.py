@@ -69,10 +69,10 @@ def search(request):
             w_I = 25
             relevance_funct = w_A*utilisation
             for tag in tags:
-                relevance_funct += w_V*weights[tag]*(consultant_skills[consultant][tag]['skill_occurence']>0) 
-                relevance_funct += w_I*weights[tag]*(1/6)*consultant_skills[consultant][tag]['flags']['experience']
-                relevance_funct += w_I*weights[tag]*(3/6)*consultant_skills[consultant][tag]['flags']['profile']
-                relevance_funct += w_I*weights[tag]*(2/6)*consultant_skills[consultant][tag]['flags']['skills']
+                relevance_funct += w_V*weights[tag]*(consultant_skills[bio.name][tag]['skill_occurence']>0) 
+                relevance_funct += w_I*weights[tag]*(1/6)*consultant_skills[bio.name][tag]['flags']['experience']
+                relevance_funct += w_I*weights[tag]*(3/6)*consultant_skills[bio.name][tag]['flags']['profile']
+                relevance_funct += w_I*weights[tag]*(2/6)*consultant_skills[bio.name][tag]['flags']['skills']
 
             result_set.append((skills, len(skills), total, bio, availability, days_until_available, 100-utilisation, projects, utilisation, relevance_funct))
 
