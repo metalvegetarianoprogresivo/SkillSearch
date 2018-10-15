@@ -67,7 +67,7 @@ def search(request):
             w_A = 40
             w_V = 35
             w_I = 25
-            relevance_funct = w_A*utilisation
+            relevance_funct = w_A*((100-utilisation)/100)
             for tag in tags:
                 relevance_funct += w_V*weights[tag]*(consultant_skills[bio.name][tag]['skill_ocurrence']>0) 
                 relevance_funct += w_I*weights[tag]*(1/6)*consultant_skills[bio.name][tag]['flags']['experience']
@@ -76,7 +76,7 @@ def search(request):
 
             result_set.append((skills, len(skills), total, bio, availability, days_until_available, 100-utilisation, projects, utilisation, relevance_funct))
 
-    result_set = sorted(result_set, key=lambda x:(x[-1], x[5], -x[6], -x[1], -x[2], x[3]))
+    result_set = sorted(result_set, key=lambda x:(-x[-1], x[5], -x[6], -x[1], -x[2], x[3]))
     #get relevance intead of sorted
     paginator = Paginator(result_set, 10)
     page = request.GET.get('page')
