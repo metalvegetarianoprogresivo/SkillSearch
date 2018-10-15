@@ -54,8 +54,10 @@ def search(request):
     weights = {}
     N = len(tags)
     for tag in tags:
-        
-        weights[tag] = (global_count - global_skill_count[tag])/((N-1)*global_count)
+        if  N <= 1 or global_count is 0:
+            weights[tag] = 1
+        else:        
+            weights[tag] = (global_count - global_skill_count[tag])/((N-1)*global_count)
 
     for bio in bios:
         total = 0
@@ -66,9 +68,9 @@ def search(request):
                 skills[tag] = consultant_skills[bio.name][tag]['skill_ocurrence']
         if total:
             availability, days_until_available, utilisation, projects = get_availability(bio)
-            w_A = 40
-            w_V = 35
-            w_I = 25
+            w_A = 20
+            w_V = 45
+            w_I = 35
             relevance_funct = w_A*((100-utilisation)/100)
             for tag in tags:
                 relevance_funct += w_V*weights[tag]*(consultant_skills[bio.name][tag]['skill_ocurrence']>0) 
