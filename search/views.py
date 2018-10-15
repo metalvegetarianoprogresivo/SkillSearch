@@ -51,8 +51,10 @@ def search(request):
         global_count += global_skill_count[tag]
 
     weights = {}
+    N = len(tags)
     for tag in tags:
-        weights[tag] = 1/2 - global_skill_count[tag]/(2*global_count)
+        
+        weights[tag] = (global_count - global_skill_count[tag])/((N-1)*global_count)
 
     for bio in bios:
         total = 0
