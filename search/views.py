@@ -62,7 +62,7 @@ def search(request):
             if consultant_skills[bio.name][tag]['skill_ocurrence']:
                 skills += tag
         if total:
-            availability, days_until_available, utilisation = get_availability(bio)
+            availability, days_until_available, utilisation, projects = get_availability(bio)
             w_A = 40
             w_V = 35
             w_I = 25
