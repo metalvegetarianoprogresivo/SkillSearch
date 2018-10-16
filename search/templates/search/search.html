@@ -111,7 +111,8 @@ card.addEventListener( 'click', function() {
                     </div>
                     <div class="content">
                         <div class="main">
-                            <h3 class="text-center"style="color: green;">{{ bio.4 }} </h3> 
+		    <h3 class="text-center"style="color: green;">{{ bio.4 }} </h3> 
+		    <h6 class="text-center"><strong>Relevance Score: {{ bio.9| floatformat:-2 }}%</strong></h6>
 		            <h3 class="name">{{ bio.3.name }}</h3>
 		            <p class="profession">{{ bio.3.title }} <br> {{ bio.3.location }}<br></p>
                             <p class="scrolldiv text-center">
@@ -172,22 +173,25 @@ card.addEventListener( 'click', function() {
 		                    </tr>
 	                        </tfoot>
 	                    </table>
-			    <div>
-				    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float-left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}"  id="{{ bio.3.pk }}" value="{{ bio.8 }}">
-			                                    {% if bio.3.pk in roster %}
-							                                            Remove from cart
-												                                    {% else %}
-																                                            {% if bio.8 >= 100 %}
-																					                                                    Add Anyway
-																											                                            {% else %}
-																																                                                    Add to Cart
-																																						                                            {% endif %}
-																																											                                    {% endif %}
-																																															                                    </button>
-				
-				<a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
-                        </div>
-                    </div>
+                <div>
+                
+                    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float-right bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}"
+                        data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}"
+                        id="{{ bio.3.pk }}" value="{{ bio.8 }}">
+                        {% if bio.3.pk in roster %}
+                        Remove from cart
+                        {% else %}
+                        {% if bio.8 >= 90 %}
+                        Add Anyway
+                        {% else %}
+                        Add to Cart
+                        {% endif %}
+                        {% endif %}
+                    </button>
+                
+                    <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
+                </div>
+                </div>
                 </div>
                 <div class="card-myfooter">
                     <button id="backbutton" class="btn btn-sm btn-outline-secondary ml-2 mb-2" rel="tooltip" title="Flip Card" onclick="rotateCard(this)"><span class="oi oi-share rotate180"></span> Back</button>
@@ -233,7 +237,8 @@ card.addEventListener( 'click', function() {
 		            <div class="description">
 			        <center>
 			            <h4>{{ bio.4 }}</h4>
-				    <br>
+				  
+				    <h6><strong>Relevance Score: {{ bio.9| floatformat:-2 }}%</strong></h6>
 			        </center>
 			        <p>{{ bio.3.profile|slice:"0:150" }}...</p>
 		                <p class="scrolldivDeskMatches">
