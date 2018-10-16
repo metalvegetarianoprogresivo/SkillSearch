@@ -136,8 +136,8 @@ def get_availability(bio):
         time_delta = shown_date - date.today()
         days_until_available = time_delta.days
         shown_date = ""+shown_date.strftime("%B")+shown_date.strftime(" %d,")+shown_date.strftime("%Y")
-        
-        if total_utilisation < 100:
+
+        if total_utilisation < 90:
             days_until_available = 0
 
             availability = 'Available at {}%'.format(100 - total_utilisation)
@@ -175,25 +175,6 @@ def get_profile(bio):
     profile = bio.profile.lower().replace('/',' ').split()
 
     return profile    
-
-#deprecate?
-def get_skills_found(tags, fields):
-    total_count = 0
-    diff_skill_flag = False 
-    skills = {}
-    
-    for tag in tags:
-        skill_count = 0 
-        for word in fields:
-            if word == tag:
-                diff_skill_flag = True
-                total_count += 1
-                skill_count += 1
-        if diff_skill_flag is True:
-            skills[tag.title()] = skill_count
-            diff_skill_flag = False
-
-    return total_count, skills
 
 
 def send_log(mail):   
