@@ -132,10 +132,11 @@ def get_availability(bio):
         
         if project_at_100 is True:
             shown_date = shown_date_100
-
+        
         time_delta = shown_date - date.today()
         days_until_available = time_delta.days
-
+        shown_date = ""+shown_date.strftime("%B")+shown_date.strftime(" %d,")+shown_date.strftime("%Y")
+        
         if total_utilisation < 100:
             days_until_available = 0
 

@@ -34,7 +34,8 @@
                         get_roster_bios();
                         var buttons = $('[data-bio=' + bio_id + ']');
                         buttons.attr('data-action', data.added ? remove_from_roster_action : add_to_roster_action);
-                        buttons.html(data.added ? 'Remove from cart' : 'Add to cart');
+				    buttons.html(data.added ? 'Remove from cart' : parseInt(bio.val()) >= 100 ? 'Add Anyway' : 'Add to cart');
+			console.log(bio.val());
                     }
                 );
             });
@@ -42,8 +43,15 @@
         });
 
  });
-    
-
+/*
+function set_add_anyway(id, utilization) {
+		//$(`#`+id).text()
+	if(utilization >= 90 && $(`#`+id).text() == "Remove from cart"){
+		$(`#`+id).text("Add anyway")
+	}
+	console.log($(`#`+id).text());
+	            }
+*/
 </script>
 <script>
 var card = document.querySelector('.card');
@@ -113,11 +121,15 @@ card.addEventListener( 'click', function() {
                             {% endfor %}
 			    </p>
                             <div class="mt-4 col-md-4 text-center">
-		                <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
+				    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}"  id="{{ bio.3.pk }}" value="{{ bio.8 }}">
                                 {% if bio.3.pk in roster %}
-				    Remove from cart
-				{% else %}
-				    Add to cart
+					Remove from cart
+		                {% else %}
+		                        {% if bio.8 >= 100 %}
+			                        Add Anyway
+			                {% else %}
+				                Add to Cart
+				        {% endif %}
 				{% endif %}
 				</button>
 		            </div>
@@ -160,15 +172,20 @@ card.addEventListener( 'click', function() {
 		                    </tr>
 	                        </tfoot>
 	                    </table>
-                        <div>
-                            <button class="btn btn-sm btn-outline-success d-none roster-cart ml-3 float-right bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
-                            {% if bio.3.pk in roster %}
-			        Remove from cart
-			    {% else %}
-			        Add to cart
-		            {% endif %}
-			    </button>    
-                            <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
+			    <div>
+				    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float-left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}"  id="{{ bio.3.pk }}" value="{{ bio.8 }}">
+			                                    {% if bio.3.pk in roster %}
+							                                            Remove from cart
+												                                    {% else %}
+																                                            {% if bio.8 >= 100 %}
+																					                                                    Add Anyway
+																											                                            {% else %}
+																																                                                    Add to Cart
+																																						                                            {% endif %}
+																																											                                    {% endif %}
+																																															                                    </button>
+				
+				<a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
                         </div>
                     </div>
                 </div>
@@ -229,22 +246,19 @@ card.addEventListener( 'click', function() {
                         <td class="align-middle action-column">
 		            <a href="#theModal" class="nav-link text-center btn btn-sm btn-outline-success profile-button" data-toggle="modal" data-target="#theModal{{ bio.3.id }}"><span class="oi oi-person"></a>
 			    <center>
-				    {% if bio.8 >= 100 %}
-				    <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
-			{% if bio.3.pk in roster %}
-			     Remove from cart
-	                    {% else %}								                              Add Anyway										     {% endif %}
-				{% else %}
-				<button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
+		
+			    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" onclick="set_add_anyway({{ bio.3.pk }}, {{ bio.8 }})" id="{{ bio.3.pk }}" value="{{ bio.8 }}">
 			    {% if bio.3.pk in roster %}
-			        Remove from cart
-			    {% else %}
-			        Add to cart
-			    {% endif %}
-
-			    {% endif %}
-				</button>
-			    </center>
+	                          Remove from cart
+		            {% else %}
+		                  {% if bio.8 >= 100 %}
+		                        Add Anyway
+		                  {% else %}
+		                        Add to Cart
+		                  {% endif %}
+		            {% endif %}
+		            </button>
+					    </center>
 	 	        </td>
                     </tr>
                 </tbody>
@@ -281,7 +295,7 @@ card.addEventListener( 'click', function() {
                 <h5 class="modal-title" id="exampleModalLabel">{{ bio.3.name }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
-                </button>
+		</button>
             </div>
             <div class="modal-body">{{ bio.3.profile }}
     
@@ -311,7 +325,17 @@ card.addEventListener( 'click', function() {
 				    </table>
 	    </div>
             <div class="modal-footer">
-                <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.3.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+		    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}"  id="{{ bio.3.pk }}" value="{{ bio.8 }}">
+		                                    {% if bio.3.pk in roster %}
+						                                            Remove from cart
+											                                    {% else %}
+															                                            {% if bio.8 >= 100 %}
+																				                                                    Add Anyway
+																										                                            {% else %}
+																															                                                    Add to Cart
+																																					                                            {% endif %}
+																																										                                    {% endif %}
+																																														                                    </button>
                
                 <a class="btn btn-sm btn-outline-primary" href="{{ bio.3.url }}">Open Bio</a>
             </div>
