@@ -34,7 +34,7 @@
                         get_roster_bios();
                         var buttons = $('[data-bio=' + bio_id + ']');
                         buttons.attr('data-action', data.added ? remove_from_roster_action : add_to_roster_action);
-				    buttons.html(data.added ? 'Remove from cart' : parseInt(bio.val()) >= 100 ? 'Add Anyway' : 'Add to cart');
+				    buttons.html(data.added ? 'Remove from cart' : parseInt(bio.val()) >= 90 ? 'Add Anyway' : 'Add to cart');
 			console.log(bio.val());
                     }
                 );
@@ -88,7 +88,7 @@ card.addEventListener( 'click', function() {
 	<div class="pt-3" style="background: LightGrey !important"></div>
         <div class="card-container manual-flip d-block d-sm-none ">
 			<div class="card ">
-			{% if bio.8 >= 100 %}
+			{% if bio.8 >= 90 %}
 			<div class="front notAvailable">
 			{% else %}
 			<div class="front">
@@ -125,7 +125,7 @@ card.addEventListener( 'click', function() {
                                 {% if bio.3.pk in roster %}
 					Remove from cart
 		                {% else %}
-		                        {% if bio.8 >= 100 %}
+		                        {% if bio.8 >= 90 %}
 			                        Add Anyway
 			                {% else %}
 				                Add to Cart
@@ -177,7 +177,7 @@ card.addEventListener( 'click', function() {
 			                                    {% if bio.3.pk in roster %}
 							                                            Remove from cart
 												                                    {% else %}
-																                                            {% if bio.8 >= 100 %}
+																                                            {% if bio.8 >= 90 %}
 																					                                                    Add Anyway
 																											                                            {% else %}
 																																                                                    Add to Cart
@@ -202,7 +202,7 @@ card.addEventListener( 'click', function() {
         <div class="table-responsive">
             <table class="table table-hover">
                 <tbody>
-			{% if bio.8 >= 100 %}	
+			{% if bio.8 >= 90 %}	
                     <tr class="notAvailable">
 		{% else %}
 		    <tr>
@@ -251,7 +251,7 @@ card.addEventListener( 'click', function() {
 			    {% if bio.3.pk in roster %}
 	                          Remove from cart
 		            {% else %}
-		                  {% if bio.8 >= 100 %}
+		                  {% if bio.8 >= 90 %}
 		                        Add Anyway
 		                  {% else %}
 		                        Add to Cart
@@ -329,7 +329,7 @@ card.addEventListener( 'click', function() {
 		                                    {% if bio.3.pk in roster %}
 						                                            Remove from cart
 											                                    {% else %}
-															                                            {% if bio.8 >= 100 %}
+															                                            {% if bio.8 >= 90 %}
 																				                                                    Add Anyway
 																										                                            {% else %}
 																															                                                    Add to Cart
