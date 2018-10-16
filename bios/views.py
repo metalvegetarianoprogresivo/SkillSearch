@@ -1,15 +1,14 @@
 import json
-import datetime
 import os
-from django.shortcuts import redirect, render, reverse
-from django.conf import settings
 import requests
 import re
+
+from django.shortcuts import redirect, render, reverse
+from django.conf import settings
 from bs4 import BeautifulSoup
 from tika import parser
-from openpyxl import load_workbook
-from openpyxl import workbook
-from .models import Bio, Technical, Skill
+from .models import Bio, Assignments
+from datetime import datetime, date
 
 
 def index(request):
@@ -28,186 +27,190 @@ def index(request):
     except: 
         pass
 
+      
 def get_documents(request):
-    #process_documents()
-    
-    return get_code(request)
-
-def get_code(request):
     return redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F")
+
 
 def get_token(code):
     url = "https://intersys.my.salesforce.com/services/oauth2/token"
-
     payload = "grant_type=authorization_code&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
-      
-    headers = {
-            "content-type":"application/x-www-form-urlencoded"  
-    }
+    headers = {"content-type":"application/x-www-form-urlencoded"}
+
     response = requests.request("POST", url, data= payload, headers = headers)
     resJson = json.loads(response.text)
-    #print(resJson)
-    #print(type(resJson))
-    process_documents(resJson["access_token"])
 
-    return()
+    get_bios(resJson["access_token"])
+
 
 def get_location(token, name):
-    locations = ['Mexico Delivery Center','Central', 'West', 'East']
     url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
-
-    headers = {
-            "authorization":"Bearer "+token
-    }
+    headers = {"authorization":"Bearer "+token}
     location = "No location Found"
+
     try:
         response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__BusinessUnit__r.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
         response_json=json.loads(response.text)
-    except:
-        location = "No location Found - 1"
-    if 'No location Found' in location:
         try:
-            response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__BusinessUnit__r.Name FROM KimbleOne__Resource__c WHERE name LIKE '%"+name+"%'", headers = headers)
-            response_json=json.loads(response.text)
+            location = response_json['records'][0]['KimbleOne__BusinessUnit__r']['Name']
+            if location is None:
+                location = "No location Found"
         except:
-            location = "No location Found - 2"
-    try:
-        location = response_json['records'][0]['KimbleOne__BusinessUnit__r']['Name']
-        if not location:
-            location = "No location Found"
+            pass
     except:
-        location = "No location Found"
-    print("location ",location)
+        pass  
+
     return(location)
 
 
+def get_name_link(token):
+    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    headers = {"authorization":"Bearer " + token}
+    names_link = {}
 
-
-def process_documents(token):
+    response = requests.request("GET", url+"SELECT Name,KimbleOne__Resource__c.Resource_Bio__r.Bio_Url__c FROM KimbleOne__Resource__c WHERE KimbleOne__ResourceType__c = 'a7J0c000002VD4LEAW' AND KimbleOne__Grade__c != 'a5G0c000000g2IXEAY' AND KimbleOne__StartDate__c <= TODAY AND KimbleOne__EndDate__c = Null", headers = headers)
+    consultants=json.loads(response.text)
     
-    headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
-    '''
-    excel_url = 'https://intersysconsulting.sharepoint.com/:x:/r/salesandmarketing/_layouts/15/Doc.aspx?sourcedoc=%7BEE714148-B6C1-49EA-B94A-4EA31E13A807%7D&file=1%20Consultant%20Bio%20Links.xlsx&action=default&mobileredirect=true'
-    excel_user = 'internalapp@intersysconsulting.com'
-    excel_pass = 'Internal2018!'
+    for consultant in consultants['records']:
+        if consultant['Resource_Bio__r']['Bio_Url__c'] is not None:
+            names_link[consultant['Name']] = consultant['Resource_Bio__r']['Bio_Url__c']
+    
+    return names_link
 
-    response = requests.get(excel_url, auth=excel_user, excel_url, headers=headers)
-    name = 'consultants.xlsx'
 
-    with open(name. 'wb') as f:
-        f.write(response.content)
-        f.close()
+def get_title(token, name):
+    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    headers = {"authorization":"Bearer " + token}
 
-    wb = load_workbook(name)
-    '''
-    wb = load_workbook('allemployees.xlsx')
-    usa = wb['US']
-    mx = wb['MDC']
-    all_links = wb['US']['B'] + wb['MDC']['B']
-    all_names = wb['US']['A'] + wb['MDC']['A']
-    names_links = {}
-
-    for consultant in range(len(all_links)):
-        if all_links[consultant].value is not None and 'https' in all_links[consultant].value:
-            names_links[all_names[consultant].value] = all_links[consultant].value
-        else:
+    try:
+        response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__Grade__r.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
+        title = json.loads(response.text)
+        try:
+            export_title = title['records'][0]['KimbleOne__Grade__r']['Name']
+        except:
             pass
+    except:
+        export_title = 'No title available'
+    if 'MDC' in export_title:
+        export_title = export_title.replace('MDC ','')
+
+    return export_title
+
+
+def get_email(token, name):
+    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    headers = {"authorization":"Bearer " + token}
+
+    response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__User__r.Email FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
+    email = json.loads(response.text)
+
+    try:
+        email = email['records'][0]['KimbleOne__User__r']['Email']
+    except:
+        email = 'No email available'
+
+    return email
+
+
+def get_assignments(token, bio):
+    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    headers = {"authorization":"Bearer " + token}
+    assignment_date = None
+    response = requests.request("GET", url+"SELECT name, KimbleOne__Resource__r.Name, KimbleOne__DeliveryGroup__r.KimbleOne__Account__r.Name, KimbleOne__StartDate__c, KimbleOne__ForecastP1EndDate__c, KimbleOne__ForecastP2EndDate__c, KimbleOne__ForecastP3EndDate__c, KimbleOne__UtilisationPercentage__c FROM KimbleOne__ActivityAssignment__c WHERE KimbleOne__DeliveryGroup__c != NULL AND KimbleOne__Resource__r.Name = '"+bio.name+"'", headers = headers)
+    assignments = json.loads(response.text)
+    assignment_end_date = None
+
+    for assignment in assignments['records']:
+        end_date = assignment['KimbleOne__ForecastP3EndDate__c']
+
+        if end_date is not None and (datetime.strptime(end_date, '%Y-%m-%d').date() - date.today()).days > 0:
+            project = Assignments()
+            project, created = Assignments.objects.get_or_create(name=assignment['Name'])
+            project.start = datetime.strptime(assignment['KimbleOne__StartDate__c'], '%Y-%m-%d').date()
+            try:
+                project.p1_end = datetime.strptime(assignment['KimbleOne__ForecastP1EndDate__c'], '%Y-%m-%d').date()
+            except:
+                project.p1_end = None
+            try:
+                project.p2_end = datetime.strptime(assignment['KimbleOne__ForecastP2EndDate__c'], '%Y-%m-%d').date()
+            except:
+                project.p2_end = None
+            project.p3_end = datetime.strptime(assignment['KimbleOne__ForecastP3EndDate__c'], '%Y-%m-%d').date()
+            project.account_name = assignment['KimbleOne__DeliveryGroup__r']['KimbleOne__Account__r']['Name']
+            project.utilisation = int(assignment['KimbleOne__UtilisationPercentage__c'])
+            bio.assignments.add(project)
+            project.save() 
+
+
+def get_bios(token):
+    headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
+    names_links = get_name_link(token)
+    regex = re.compile('.*.pdf')
+    filename = 'Bio.pdf'
 
     for consultant_name, consultant_link in names_links.items():
         response = requests.get(consultant_link, headers=headers)
-        filename = 'Bio.pdf'
-        soup = BeautifulSoup(response.text, 'html.parser')
-        regex = re.compile('.*.pdf')
+        soup = BeautifulSoup(response.text, 'html.parser')  
         link = soup.find(href = regex)
-        pdf_link = 'https://www.intersysconsulting.com' + link.get('href')
+
+        pdf_link = link.get('href')
         pdf_file = requests.get(pdf_link, headers=headers)
 
-        template_error = 'Update Bio, standard format needed' 
         with open(filename, 'wb') as f:
             f.write(pdf_file.content)
             f.close()
-        
+
         pdf = parser.from_file(filename)
         pdf_text = pdf['content'].replace('\t','\n').replace('\n',' ').replace(',',' ').split()
 
         clean_text = ''
-
         for word in pdf_text:
             clean_text += (word + ' ')
-        
-        name_title = template_error               
-        try:
-            name_title = re.search(r".docx(.*?) Profile ", clean_text).group(1)
-        except:
-            pass
 
-        if name_title is template_error:
-            try:
-                name_title = re.search(r"(.*?) Profile ", clean_text).group(1)
-            except:
-                pass
-                
-        bio, created = Bio.objects.get_or_create(name=consultant_name)
-        print(consultant_name)
-        bio.name_and_title = name_title
-        bio.url = pdf_link
-        bio.location = get_location(token, consultant_name)
-        job_titles = ['Senior Consultant', 'Consultant', 'Technical Lead', 'Practice Director',
-        'Technical Manager', 'Delivery Lead', 'Delivery Manager']
+        process_documents(token, consultant_name, clean_text, pdf_link)
 
-        bio.title = template_error   
-        for title in job_titles:
-            try: 
-                if title in name_title.title():
-                    bio.title = title
-                    break
-            except:
-                pass
 
-        profile = template_error
-        try:
-            profile = re.search(r" Profile (.*?)Skills ", clean_text).group(1)
-        except:
-            pass
-        bio.profile = profile
+def process_documents(token, consultant_name, clean_text, pdf_link):
+    template_error = 'Update Bio, standard format needed' 
 
+    bio, created = Bio.objects.get_or_create(name=consultant_name)
+    bio.location = get_location(token, consultant_name)
+    bio.url = pdf_link
+    bio.title = get_title(token, bio.name)
+    bio.email = get_email(token, bio.name)
+    get_assignments(token, bio)
+
+    try:
+        bio.profile = re.search(r" Profile (.*?)Skills ", clean_text).group(1) 
+    except:
+        bio.profile = template_error
+
+    try:
+        skills_field = re.search(r"Skills (.*?)Education ", clean_text).group(0)
+    except:
         skills_field = template_error
-        try:
-            skills_field = re.search(r"Skills (.*?)Education ", clean_text).group(0)
-        except:
-            pass
-        Skills = template_error
-        try:
-            skills = re.search(r"Skills ([^']*)Technical ", skills_field).group(1)
-        except:
-            pass
-        bio.skills = skills
 
-        technical = template_error
-        try:
-            technical = re.search(r"Technical(.*?)Education ", skills_field).group(1)
-        except:
-            pass
-        bio.technical_skills = technical
-            
-        education = template_error
-        try:
-            education = re.search(r" Education (.*?) Certifications ", clean_text).group(1)
-        except:
-            pass
-        if education is template_error:
-            try:
-                education = re.search(r" Education (.*?) Experience ", clean_text).group(1)
-            except:
-                pass
-        bio.education = education
+    try:
+        bio.skills = re.search(r"Skills ([^']*)Technical ", skills_field).group(1)
+    except:
+        bio.skills = template_error
 
-        experience = template_error
+    try:
+        bio.technical_skills = re.search(r"Technical(.*?)Education ", skills_field).group(1)
+    except:
+        bio.technical_skills = template_error
+
+    try:
+        bio.education = re.search(r" Education (.*?) Certifications ", clean_text).group(1)
+    except:
         try:
-            experience = re.search(r" Experience ([^']*) ", clean_text).group(1)
+            bio.education = re.search(r" Education (.*?) Experience ", clean_text).group(1)
         except:
-            pass
-        bio.experience = experience
+            bio.education = template_error
 
-        bio.save()
+    try:
+        bio.experience = re.search(r" Experience ([^']*) ", clean_text).group(1)
+    except:
+        bio.experience = template_error
 
+    bio.save()

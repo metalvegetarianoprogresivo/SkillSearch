@@ -1,8 +1,23 @@
 {% extends "templates/base.html" %} {% load static search_extras %} {% block extra_headers %}
+<link rel="stylesheet" href="{% static 'search/css/search.css' %}">
 <script src="{% static 'js/modal.js' %}"></script>
 
+<script type="text/javascript">
+    $().ready(function() {
+        $('[rel="tooltip"]').tooltip();
+    });
+
+    function rotateCard(btn) {
+        var $card = $(btn).closest('.card-container');
+        console.log($card);
+        if ($card.hasClass('hover')) {
+            $card.removeClass('hover');
+        } else {
+            $card.addClass('hover');
+        }
+    }
+</script>
 <script>
-	
     $(document).ready(function() {
         var roster_cart_buttons = $('.roster-cart');
 
@@ -10,7 +25,6 @@
             var bio = $(this);
             var add_to_roster_action = "{% url 'add_to_roster' %}";
             var remove_from_roster_action = "{% url 'remove_from_roster' %}";
-
             bio.on('click', function() {
                 var bio_id = bio.attr('data-bio');
                 $.post(
@@ -21,14 +35,22 @@
                         get_roster_bios();
                         var buttons = $('[data-bio=' + bio_id + ']');
                         buttons.attr('data-action', data.added ? remove_from_roster_action : add_to_roster_action);
-                        buttons.html(data.added ? 'Remove' : 'Add');
+                        buttons.html(data.added ? 'Remove from cart' : 'Add to cart');
                     }
                 );
             });
             bio.removeClass('d-none');
         });
+
     });
 </script>
+<script>
+    var card = document.querySelector('.card');
+    card.addEventListener('click', function() {
+        card.classList.toggle('is-flipped');
+    });
+</script>
+
 {% endblock %} {% block content %}
 
 <div class="container my-4 pb-5">
@@ -36,164 +58,282 @@
         <div class="card-header">
             {% if bios %}
             <h5 class="mt-2 float-left">{{ title }} {% if q %} for {{ q }} {% endif %}</h5>
+
             <button type="button" class="btn btn-primary float-right btn-info" data-toggle="modal" data-target="#exampleModalCenter">
                 Send Roster
             </button>
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header" id="exampleModalCenter1">
-                            <h5 class="modal-title">Send me the roster</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form method="POST" action="{% url 'send_roster' %}">
-                                <div class="form-group">
-					<script>
-					{% if messages %}
-					{% for message in messages %}
-						$(document).ready(function(){
-	      						 $("#myModal").modal("show");
-						});
-					{% endfor %}
-					{% endif %}
-					</script>
-                                    <label for="project_title" class="col-form-label">Project:</label>
-                                    <input for="{{ form.title }}" type="text" class="form-control" id="project_title" value="" name="title">
-                                    {% csrf_token %}
-                                    <button class="btn btn-outline-success mt-2 ml-2 float-right" type="submit" value="OK">Send</button>
-                                    <button class="btn btn-secondary float-right mt-2" data-dismiss="modal">Cancel</button>
-                                </div> 
-                                <div class="modal-footer"></div>
-			
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-	  
+
             {% else %}
-            <h5 class="mt-2 float-left"> You do not have roster to show </h5>
-            {% endif %}
+            <h5 class="mt-2 float-left"> You do not have roster to show </h5> {% endif %}
         </div>
-  {% if bios %}
+        {% if consultant.bios %}
+
         <div class="card d-none d-sm-block">
-            <div class="table-responsive">
+            <div class="table-responsive text-center">
                 <table class="table table-hover">
                     <tbody>
                         <tr>
-                            <th class="text-center align-middle" style="width: 30%;">Consultant</th>
-
-                            <th class="text-center align-middle" style="width: 55%;">Skills</th>
-                            {% comment %}
-                            <th>Kimble</th>{% endcomment %}
-                            <th class="text-center align middle">Action</th>
+                            <th class=" align-middle" style="width: 30%;">Consultant</th>
+                            <th class=" align-middle" style="width: 55%;">Skills</th>
+                            <th class=" align-middle">Action</th>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        {% endif %}
-        {% for bio in bios %}
-        <br class="d-block d-sm-none">
-        <div class="card d-block d-sm-none">
-            <br >
-            <div class="container card d-block d-sm-none" style="width: 18rem;">
-                <div class="card-body">
-                    <h4>
-                    <a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
-                                {{ bio.name }} 
-                            </a>
-                    </h4>
-		    <h6 class="card-subtitle mb-2 text-center">{{ bio.title }} <br>  {{bio.location}}</h6>
-                    <div class="text-center">
-                        <p class="card-text">{% get_importance bio.technical_skills tags %}</p>
+
+        {% for bio in consultant.bios %} {% if bio %} {% comment %} start Smartphone view {% endcomment %}
+
+        <div class="pt-3" style="background: LightGrey !important"></div>
+        <div class="card-container manual-flip d-block d-sm-none ">
+            <div class="card ">
+                {% if bio.bio.assignments.2 >= 100 %}
+                <div class="front notAvailable">
+                    {% else %}
+                    <div class="front">
+                        {% endif %}
+                        <div class="cover">
+                            {% if bio.bio.data.location == "Mexico Delivery Center" %}
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_QkEjdBg7JYo"> {% endif %} {% if bio.bio.data.location == "West" %}
+                            <img src="https://atgusa.com/wp-content/uploads/2018/06/Phoenix-pic-.jpg"> {% endif %} {% if bio.bio.data.location == "Central" %}
+                            <img src="https://odysseyonline-img.rbl.ms/simage/http%3A%2F%2Fcdn1.theodysseyonline.com%2Ffiles%2F2015%2F06%2F16%2F6357006265818468541994708887_Austin_Evening.jpg/2000%2C2000/s6FVytfQ3pTXc1J9/img.jpg"> {% endif %} {% if bio.bio.data.location == "East" %}
+                            <img src="http://newyork.irishnetwork-usa.org/wp-content/uploads/sites/5/2015/06/nyc-slide.jpg"> {% endif %}
+                        </div>
+                        <div class="user">
+                            <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png" />
+                        </div>
+                        <div class="content">
+                            <div class="main">
+                                <h3 class="text-center" style="color: green;">{{ bio.bio.assignments.0 }} </h3>
+                                <h3 class="name">{{ bio.bio.data.name }}</h3>
+                                <p class="profession">{{ bio.bio.data.title }}
+                                    <br> {{ bio.bio.data.location }}
+                                    <br>
+                                </p>
+                                <div class="mt-4 col-md-4 text-center">
+                                    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
+                                        {% if bio.bio.data.pk in roster %} Add to cart {% else %} Remove from cart {% endif %}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-myfooter">
+                                <button id="profilebutton" class="btn btn-sm btn-outline-secondary" onclick="rotateCard(this)"><span class="oi oi-share"></span> Show Profile
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <button class="btn btn-sm btn-outline-success d-none roster-cart " data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove{% else %}Add{% endif %}</button>
+                    <div class="back">
+                        <div class="content">
+                            <div class="main">
+                                <h4 class="text-center mt-4">Profile of {{ bio.bio.data.name }}</h4>
+                                <div class="scrollprofile">
+                                    <p class="text-center">{{ bio.bio.data.profile }}</p>
+                                </div>
+                                <h4 class="text-center">Location</h4>
+                                <p class="text-center">{{ bio.bio.data.location }}</p>
+                                <h4 class="text-center">Assignments:</h4>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <th>Client</th>
+                                        <th>Utilization</th>
+                                        <th>End date</th>
+                                    </thead>
+                                    <tbody class="assignments">
+                                        {% for assignment in bio.bio.assignments.3 %}
+                                        <tr>
+                                            <td>{{ assignment.account_name }}</td>
+                                            <td>{{ assignment.utilisation }}</td>
+                                            <td>{{ assignment.p3_end }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th scope="row">Total</th>
+                                            <td colspan="2">{{ bio.bio.assignments.2 }}</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-success d-none roster-cart ml-3 float-right bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
+                                        {% if bio.bio.data.pk in roster %} Remove from cart {% else %} Add to cart {% endif %}
+                                    </button>
+                                    <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.bio.data.url }}">Open Bio</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-myfooter">
+                            <button id="backbutton" class="btn btn-sm btn-outline-secondary ml-2 mb-2" rel="tooltip" title="Flip Card" onclick="rotateCard(this)"><span class="oi oi-share rotate180"></span> Back</button>
+                        </div>
                     </div>
                 </div>
+                <br>
             </div>
-            <br>
-        </div>
+            {% comment %} End Smartphone view {% endcomment %} {% comment %} Start Desktop View {%endcomment %}
+            <div class="card d-none d-sm-block">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tbody>
+                            {% if bio.bio.assignments.2 >= 100 %}
+                            <tr class="notAvailable">
+                                {% else %}
+                                <tr>
+                                    {% endif %}
+                                    <td class="align-middle consultant-row">
+                                        <div class="cover">
+                                            {% if bio.bio.data.location == "Mexico Delivery Center" %}
+                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdpTmDM6lXfOqVozFAMr71PMKI7HuUA1YQ_EmN_QkEjdBg7JYo"> {% endif %} {% if bio.bio.data.location == "West" %}
+                                            <img src="https://atgusa.com/wp-content/uploads/2018/06/Phoenix-pic-.jpg"> {% endif %} {% if bio.bio.data.location == "Central" %}
+                                            <img src="https://odysseyonline-img.rbl.ms/simage/http%3A%2F%2Fcdn1.theodysseyonline.com%2Ffiles%2F2015%2F06%2F16%2F6357006265818468541994708887_Austin_Evening.jpg/2000%2C2000/s6FVytfQ3pTXc1J9/img.jpg"> {% endif %} {% if bio.bio.data.location == "East" %}
+                                            <img src="http://newyork.irishnetwork-usa.org/wp-content/uploads/sites/5/2015/06/nyc-slide.jpg"> {% endif %}
+                                        </div>
+                                        <div class="user">
+                                            <img class="img-circle" src="https://xpagexplorer.org/unicornwpfolder/wp-content/uploads/user_male2-512.png">
+                                        </div>
+                                        <h5><a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.bio.data.id }}">{{ bio.bio.data.name }}</a></h5>
+                                        <center class="font-weight-bold">
+                                            {{ bio.bio.data.title }}
+                                            <br> {{ bio.bio.data.location }}
+                                        </center>
+                                    </td>
+                                    <td class="profile" style="width: 55%;">
+                                        <div class="description">
+                                            <center>
+                                                <h4>{{ bio.bio.assignments.0 }}</h4>
+                                                <br>
+                                            </center>
+                                            <p>{{ bio.bio.data.profile|slice:"0:150" }}...</p>
 
-        <div class="card d-none d-sm-block">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <tbody>
-                        <tr>
-                            <td class="align-middle" style="width: 30%;">
-				 <h4>
-				<a href="#theModal" class="nav-link text-center" data-toggle="modal" data-target="#theModal{{ bio.id }}">
-                                {{ bio.name }} 
-                            </a>
-			    	</h4>
-                                <br>
-				<center class="font-weight-bold">{{ bio.title }}<br> {{bio.location}}</center>
-                            </td>
-                            <td class="align-middle" style="width: 55%;">{% get_importance bio.technical_skills tags %}</td>
-                            {% comment %}
-                            <td class="align-middle" style="width: 450px;">{% get_importance bio.capabilities.all tags %}</td>{% endcomment %}
-                            <td class="align-middle">
-                                <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove{% else %}Add{% endif %}</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle action-column">
+                                        <a href="#theModal" class="nav-link text-center btn btn-sm btn-outline-success profile-button" data-toggle="modal" data-target="#theModal{{ bio.bio.data.id }}"><span class="oi oi-person"></a>
+                                        <center>
+                                            {% if bio.bio.data.8 >= 100 %}
+                                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.bio.data.pk in roster %}Remove from cart{% else %}Add from cart{% endif %}</button>
+                                            {% else %}
+                                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.bio.data.pk in roster %}Remove from cart{% else %}Addfrom cart{% endif %}</button>
+
+                                            {% endif %}
+                                        </center>
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+            {% comment %} End pc view {% endcomment %} {% endif %} {% endfor %} {% comment %} start paginator {% endcomment %} {% comment %} finish paginator {% endcomment %} {% endif %}
         </div>
-
-        {% endfor %}
     </div>
-</div>
+    {% for bio in consultant.bios %} {% comment %} start open a bio view {% endcomment %}
+    <div class="modal fade mt-5 pt-5" id="theModal{{ bio.bio.data.id }}" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{ bio.bio.data.name }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">{{ bio.bio.data.profile }}
 
-{% for bio in bios %}
-<div class="modal fade mt-5 pt-5" id="theModal{{ bio.id }}" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{ bio.name }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {{ bio.profile }}
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.pk }}" data-bio="{{ bio.pk }}" data-action="{% if not bio.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.pk in roster %}Remove{% else %}Add{% endif %}</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a class="btn btn-primary" href="{{ bio.url }}">Open Bio</a>
+
+                    <h4 class="text-center">Location</h4>
+                    <p class="text-center">{{ bio.bio.data.location }}</p>
+                    <h4 class="text-center">Assignments:</h4>
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th scope="col">Client</th>
+                                <th scope="col">Utilization</th>
+                                <th scope="col">End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for value in bio.bio.assignments.3 %} 
+                            <tr>
+                                <td>{{value.account_name}}</td>
+
+                                <td>{{ value.utilisation }}</td>
+                                <td>{{ value.p3_end }}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <th scope="row">Total</th>
+                                <td colspan="2">{{ bio.bio.assignments.2 }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.bio.data.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
+
+                    <a class="btn btn-outline-primary btn-sm" href="{{ bio.bio.data.url }}">Open Bio</a>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
-{% endfor %} 
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-														                     <div class="modal-dialog modal-dialog-centered" role="document">
-										                      <div class="modal-content">
-												                             <div class="modal-header">
-					                                 <h5 class="modal-title">Message sent successfully</h5>
-									                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										                                  <span aria-hidden="true">&times;</span>
-														                             </button>
-																	                            </div>
-																				                           <div class="modal-body">
-																								                              <form method="POST" action="{% url 'send_roster' %}">
-																												                                     <div class="form-group">
-																																	                                     
-																																										                                      {% csrf_token %}
-																																																			                                    <button class="btn btn-secondary float-right mt-2" data-dismiss="modal">Ok</button>
-																																																							                                   </div>
-																																																											                                  <div class="modal-footer"></div>
-																																																															                             </form>
-																																																																		                            </div>
-																																																																					                       </div>
-																																																																							                      </div>
-																																																																									                 </div>
+    {% endfor %}
 
-{% endblock %}
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Message sent successfully</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'send_roster' %}">
+                        <div class="form-group">
+
+                            {% csrf_token %}
+                            <button class="btn btn-secondary float-right mt-2" data-dismiss="modal">Ok</button>
+                        </div>
+                        <div class="modal-footer"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header" id="exampleModalCenter1">
+                    <h5 class="modal-title">Send me the roster</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'send_roster' %}">
+                        <div class="form-group">
+                            <script>
+                                {% if messages %} 
+                                {% for message in messages %}
+                                $(document).ready(function() {
+                                    $("#myModal").modal("show");
+                                }); 
+                                {% endfor %} 
+                                {% endif %}
+                            </script>
+                            <label for="project_title" class="col-form-label">Project:</label>
+                            <input for="{{ form.title }}" type="text" class="form-control" id="project_title" value="" name="title"> {% csrf_token %}
+                            <button class="btn btn-outline-success mt-2 ml-2 float-right" type="submit" value="OK">Send</button>
+                            <button class="btn btn-secondary float-right mt-2" data-dismiss="modal">Cancel</button>
+                        </div>
+                        <div class="modal-footer"></div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% endblock %}
