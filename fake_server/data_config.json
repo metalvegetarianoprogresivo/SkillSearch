@@ -1,5 +1,5 @@
 {
-  "test_data": "EMPTY",
+  "test_data": "KIMBLE",
   "server_oauth": "./server_oauth.json",
   "empty":{
     "consultant_info": "./db_consultant_info_empty_data.json",
@@ -7,6 +7,6 @@
   },
   "kimble":{
     "consultant_info": "./db_consultant_info_kimble_dump.json",
-    "consultant_assignments": "./db_consultant_info_kimble_dump.json"
+    "consultant_assignments": "./db_consultant_assignments_kimble_dump.json"
   }
 }

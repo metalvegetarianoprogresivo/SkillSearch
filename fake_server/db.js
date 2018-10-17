@@ -12,7 +12,7 @@ module.exports = function() {
 
   return {
     serverOAuth: require(dataConfig.server_oauth),
-    consultantInfo: dataConfig.test_data === 'KIMBLE' ? require(dataConfig.kimble.consultant_info) : require(dataConfig.empty.consultant_info),
-    consultantAssignments: dataConfig.test_data === 'KIMBLE' ? require(dataConfig.kimble.consultant_assignments) : require(dataConfig.empty.consultant_assignments)
+    consultantInfo: dataConfig.test_data === 'EMPTY' ? require(dataConfig.empty.consultant_info) : require(dataConfig.kimble.consultant_info),
+    consultantAssignments: dataConfig.test_data === 'EMPTY' ? require(dataConfig.empty.consultant_assignments) : require(dataConfig.kimble.consultant_assignments)
   }
 }
