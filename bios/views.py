@@ -18,8 +18,8 @@ def index(request):
     if loged_in:
        return redirect(loged_in)
     
-    my_domain = request.build_absolute_uri()
-    my_domain = urllib.parse.quote_plus(my_domain)
+    request.session["my_domain"] = request.build_absolute_uri()
+    request.session["my_domain"] = urllib.parse.quote_plus(request.session["my_domain"])
     if("code" in request.GET.keys()):
         get_token(request, request.GET.get("code"))
     return render(request, 'bios/index.html')
@@ -38,7 +38,7 @@ def get_documents(request):
     if settings.DEBUG:
         return redirect("http://localhost:8000/bios/?code=32ewadfsghtyu678iuyhkj==")
     else:
-        url_redirect = "https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri="+my_domain
+        url_redirect = "https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri="+request.session["my_domain"]
     print(url_redirect)
     return redirect(url_redirect)
 
@@ -50,7 +50,7 @@ def get_token(request, code):
     else:
         url = "https://intersys.my.salesforce.com"+sufix
 
-    payload = "grant_type=authorization_code&redirect_uri="+my_domain+"&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
+    payload = "grant_type=authorization_code&redirect_uri="+request.session["my_domain"]+"&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
     headers = {"content-type":"application/x-www-form-urlencoded"}
 
     response = requests.request("POST", url, data= payload, headers = headers)
