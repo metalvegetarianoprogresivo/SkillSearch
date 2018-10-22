@@ -82,6 +82,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'consultantmarket',
+        'HOST': 'mongo' if DEBUG else '127.0.0.1'
     }
 }
 
