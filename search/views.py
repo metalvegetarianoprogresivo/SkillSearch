@@ -8,11 +8,12 @@ from django.http import Http404
 from bios.models import Bio, Assignments
 from django.shortcuts import redirect
 from datetime import datetime, date
+from consultantmarket import redirect_url
 
 def search(request):
-    
-    if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-        return redirect("https://skillssearcher.intersysconsulting.com/")
+    loged_in = redirect_url.redirect_url(request)
+    if loged_in:
+       return redirect(loged_in)
     
     try:
         q = request.GET["q"]

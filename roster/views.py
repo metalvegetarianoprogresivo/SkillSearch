@@ -14,6 +14,7 @@ from consultantmarket.views import index
 from .forms import sendForm
 from django.contrib import messages
 from search.views import get_availability
+from consultantmarket import redirect_url
 @require_POST
 @csrf_exempt
 
@@ -69,9 +70,9 @@ def remove_from_roster(request):
     return JsonResponse(response)
 
 def roster_detail(request):
-    
-    if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-        return redirect("https://skillssearcher.intersysconsulting.com/")
+    loged_in = redirect_url.redirect_url(request)
+    if loged_in:
+       return redirect(loged_in)
     
     roster = request.session.get('roster')
     bios = Bio.objects.filter(pk__in=roster).order_by('name')
