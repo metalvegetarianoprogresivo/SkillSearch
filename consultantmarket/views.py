@@ -11,17 +11,17 @@ from bios.models import EmailAuth
 @csrf_exempt
 
 def index(request):
-    
+    request.session['my_domain'] = request.build_absolute_uri()
     #print(EmailAuth.objects.all())
     urlProfile="https://graph.microsoft.com/v1.0/me/"
-    proxyURL = getURL()
+    proxyURL = getURL(request)
     """
     Landing page
     """
     context = {
         "title" : "Home"
     }
-
+    
     if(request.session.get('authenticated') == True):     
         return render(request, "templates/index.html", context)
     else:
@@ -89,14 +89,14 @@ def getData(ac_t,url_ac):
         })
     return json.loads(r.text)
 
-def getURL():
+def getURL(request):
     url = "https://simple-sign-on.azurewebsites.net/auth"
 
     payload = {
             "id": "a67b9eaf-4a58-40b9-be6d-e7b597d8c004",
             "secret": "ibGJSG864$ezaovEBW02]#%",
             "scope": ["openid", "profile", "User.Read"],
-            "redirect": "https://skillssearcher.intersysconsulting.com/",
+            "redirect": request.session['my_domain'],
             "response": "form_post"
             }
     headers = {
@@ -114,4 +114,4 @@ def getURL():
 
 def logout(request):
     request.session['authenticated'] = False
-    return redirect("https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://skillssearcher.intersysconsulting.com/")
+    return redirect("https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri="+request.session['my_domain'])
