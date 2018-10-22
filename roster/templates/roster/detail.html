@@ -35,7 +35,7 @@
                         get_roster_bios();
                         var buttons = $('[data-bio=' + bio_id + ']');
                         buttons.attr('data-action', data.added ? remove_from_roster_action : add_to_roster_action);
-                        buttons.html(data.added ? 'Remove from cart' : 'Add to cart');
+                        buttons.html(data.added ? 'Remove from cart' : parseInt(bio.val()) >= 100 ? 'Add Anyway' : 'Add to cart');
                     }
                 );
             });
@@ -111,8 +111,16 @@
                                     <br>
                                 </p>
                                 <div class="mt-4 col-md-4 text-center">
-                                    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
-                                        {% if bio.bio.data.pk in roster %} Add to cart {% else %} Remove from cart {% endif %}
+                                    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="bio.bio.data.pk" value="{{bio.bio.assignments.2}}">
+                                        {% if not bio.bio.data.pk in roster %} 
+                                            Remove from cart 
+                                        {% else %}
+                                            {% if bio.bio.assignments.2 >= 100 %}
+                                                Add Anyway
+                                            {% else %}
+                                                Add to Cart
+                                            {% endif %}
+                                        {% endif %}
                                     </button>
                                 </div>
                             </div>
@@ -155,8 +163,16 @@
                                     </tfoot>
                                 </table>
                                 <div>
-                                    <button class="btn btn-sm btn-outline-success d-none roster-cart ml-3 float-right bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">
-                                        {% if bio.bio.data.pk in roster %} Remove from cart {% else %} Add to cart {% endif %}
+                                    <button class="btn btn-sm btn-outline-success d-none roster-cart ml-3 float-right bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk }}" value="{{ bio.bio.assignments.2 }}">
+                                            {% if not bio.bio.data.pk in roster %} 
+                                            Remove from cart 
+                                        {% else %}
+                                            {% if bio.bio.assignments.2 >= 100 %}
+                                                Add Anyway
+                                            {% else %}
+                                                Add to Cart
+                                            {% endif %}
+                                        {% endif %}
                                     </button>
                                     <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.bio.data.url }}">Open Bio</a>
                                 </div>
@@ -209,12 +225,19 @@
                                     <td class="align-middle action-column">
                                         <a href="#theModal" class="nav-link text-center btn btn-sm btn-outline-success profile-button" data-toggle="modal" data-target="#theModal{{ bio.bio.data.id }}"><span class="oi oi-person"></a>
                                         <center>
-                                            {% if bio.bio.data.8 >= 100 %}
-                                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.bio.data.pk in roster %}Remove from cart{% else %}Add from cart{% endif %}</button>
-                                            {% else %}
-                                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if not bio.bio.data.pk in roster %}Remove from cart{% else %}Addfrom cart{% endif %}</button>
-
-                                            {% endif %}
+    
+                                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
+                                                    {% if not bio.bio.data.pk in roster %} 
+                                                    Remove from cart 
+                                                {% else %}
+                                                    {% if bio.bio.assignments.2 >= 100 %}
+                                                        Add Anyway
+                                                    {% else %}
+                                                        Add to Cart
+                                                    {% endif %}
+                                                {% endif %}
+                                            </button>
+                                            
                                         </center>
                                     </td>
                                 </tr>
@@ -266,8 +289,17 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}">{% if bio.bio.data.pk in roster %}Remove from cart{% else %}Add to cart{% endif %}</button>
-
+                    <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
+                            {% if not bio.bio.data.pk in roster %} 
+                            Remove from cart 
+                        {% else %}
+                            {% if bio.bio.assignments.2 >= 100 %}
+                                Add Anyway
+                            {% else %}
+                                Add to Cart
+                            {% endif %}
+                        {% endif %}
+                    </button>
                     <a class="btn btn-outline-primary btn-sm" href="{{ bio.bio.data.url }}">Open Bio</a>
 
                 </div>
