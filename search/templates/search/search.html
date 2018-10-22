@@ -43,15 +43,6 @@
         });
 
  });
-/*
-function set_add_anyway(id, utilization) {
-		//$(`#`+id).text()
-	if(utilization >= 90 && $(`#`+id).text() == "Remove from cart"){
-		$(`#`+id).text("Add anyway")
-	}
-	console.log($(`#`+id).text());
-	            }
-*/
 </script>
 <script>
 var card = document.querySelector('.card');
@@ -157,25 +148,25 @@ card.addEventListener( 'click', function() {
                                     <th>Utilization</th>
                                     <th>End date</th>
                                 </thead>
-				<tbody class="assignments">
-		                    {% for assignment in bio.7 %}
-                                        <tr>
-                                            <td>{{ assignment.account_name }}</td>
-		          	            <td>{{ assignment.utilisation }}</td>
-			                    <td>{{ assignment.p3_end }}</td>
-                                        </tr>
-		                    {% endfor %}
-				</tbody>
-				<tfoot>
+				                <tbody class="assignments">
+		                        {% for assignment in bio.7 %}
+                                    <tr>
+                                        <td>{{ assignment.account_name }}</td>
+		          	                    <td>{{ assignment.utilisation }}</td>
+			                            <td>{{ assignment.p3_end }}</td>
+                                    </tr>
+		                        {% endfor %}
+				                </tbody>
+				                <tfoot>
                                     <tr>
                                         <th scope="row">Total</th>
-			                <td colspan="2">{{ bio.8 }}</td>
-		                    </tr>
-	                        </tfoot>
-	                    </table>
-                <div>
-                
-                    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float-right bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}"
+			                            <td colspan="2">{{ bio.8 }}</td>
+		                            </tr>
+	                            </tfoot>
+	                        </table>
+                            <div>
+                            <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
+                            <button class="mr-2 btn btn-sm btn-outline-success d-none roster-cart float-right bio-{{ bio.3.pk }} " data-bio="{{ bio.3.pk }}"
                         data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}"
                         id="{{ bio.3.pk }}" value="{{ bio.8 }}">
                         {% if bio.3.pk in roster %}
@@ -189,7 +180,7 @@ card.addEventListener( 'click', function() {
                         {% endif %}
                     </button>
                 
-                    <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
+                    
                 </div>
                 </div>
                 </div>
@@ -252,7 +243,7 @@ card.addEventListener( 'click', function() {
 		            <a href="#theModal" class="nav-link text-center btn btn-sm btn-outline-success profile-button" data-toggle="modal" data-target="#theModal{{ bio.3.id }}"><span class="oi oi-person"></a>
 			    <center>
 		
-			    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" onclick="set_add_anyway({{ bio.3.pk }}, {{ bio.8 }})" id="{{ bio.3.pk }}" value="{{ bio.8 }}">
+			    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.3.pk }}" value="{{ bio.8 }}">
 			    {% if bio.3.pk in roster %}
 	                          Remove from cart
 		            {% else %}
