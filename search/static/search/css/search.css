@@ -191,10 +191,10 @@
     border-radius: 50%;
 }
 .scrolldiv{
-    overflow-y: scroll; height:75px;
+    overflow-y: scroll; height:75px;border:1px solid #FFFFFF;
 }
 .scrollprofile{
-    overflow-y: scroll; height:100px;
+    overflow-y: scroll; height:100px;border:1px solid #FFFFFF;
 }
 ::-webkit-scrollbar{
     -webkit-appearance: none;
@@ -270,10 +270,12 @@
 .scrolldivDesk{
     overflow-y: scroll; 
     height:100px;
+    border:1px solid #FFFFFF;
 }
 .scrolldivDeskMatches{
     overflow-y: scroll;
     height:70px;
+    border:1px solid #FFFFFF;
 }
 .assignments{
     height:50px;
