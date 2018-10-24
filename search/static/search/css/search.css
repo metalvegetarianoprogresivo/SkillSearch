@@ -275,7 +275,6 @@
 .scrolldivDeskMatches{
     overflow-y: scroll;
     height:70px;
-    border:1px solid #FFFFFF;
 }
 .assignments{
     height:50px;
