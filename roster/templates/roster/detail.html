@@ -87,7 +87,7 @@
         <div class="pt-3" style="background: LightGrey !important"></div>
         <div class="card-container manual-flip d-block d-sm-none ">
             <div class="card ">
-                {% if bio.bio.assignments.2 >= 100 %}
+                {% if bio.bio.assignments.2 >= 90 %}
                 <div class="front notAvailable">
                     {% else %}
                     <div class="front">
@@ -115,7 +115,7 @@
                                         {% if not bio.bio.data.pk in roster %} 
                                             Remove from cart 
                                         {% else %}
-                                            {% if bio.bio.assignments.2 >= 100 %}
+                                            {% if bio.bio.assignments.2 >= 90 %}
                                                 Add Anyway
                                             {% else %}
                                                 Add to Cart
@@ -167,7 +167,7 @@
                                             {% if not bio.bio.data.pk in roster %} 
                                             Remove from cart 
                                         {% else %}
-                                            {% if bio.bio.assignments.2 >= 100 %}
+                                            {% if bio.bio.assignments.2 >= 90 %}
                                                 Add Anyway
                                             {% else %}
                                                 Add to Cart
@@ -190,7 +190,7 @@
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <tbody>
-                            {% if bio.bio.assignments.2 >= 100 %}
+                            {% if bio.bio.assignments.2 >= 90 %}
                             <tr class="notAvailable">
                                 {% else %}
                                 <tr>
@@ -230,7 +230,7 @@
                                                     {% if not bio.bio.data.pk in roster %} 
                                                     Remove from cart 
                                                 {% else %}
-                                                    {% if bio.bio.assignments.2 >= 100 %}
+                                                    {% if bio.bio.assignments.2 >= 90 %}
                                                         Add Anyway
                                                     {% else %}
                                                         Add to Cart
@@ -293,7 +293,7 @@
                             {% if not bio.bio.data.pk in roster %} 
                             Remove from cart 
                         {% else %}
-                            {% if bio.bio.assignments.2 >= 100 %}
+                            {% if bio.bio.assignments.2 >= 90 %}
                                 Add Anyway
                             {% else %}
                                 Add to Cart
