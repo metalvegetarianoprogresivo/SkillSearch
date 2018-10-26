@@ -5,13 +5,18 @@ import requests
 import json
 import datetime
 import os
+from django.conf import settings
 from django.shortcuts import redirect
 from bios.models import EmailAuth
+import urllib.parse
 # Use this just as example
 @csrf_exempt
 
 def index(request):
-    request.session['my_domain'] = request.build_absolute_uri()
+    file = open("properties.txt","r").read()
+    request.session['my_domain'] = file
+
+    print(request.session['my_domain'])
     #print(EmailAuth.objects.all())
     urlProfile="https://graph.microsoft.com/v1.0/me/"
     proxyURL = getURL(request)

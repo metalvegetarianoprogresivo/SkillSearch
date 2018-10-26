@@ -13,14 +13,16 @@ import urllib.parse
 from django.conf import settings
 from consultantmarket import redirect_url
 
+
 def index(request):
+    print("entro al index ")
     loged_in = redirect_url.redirect_url(request)
     if loged_in:
        return redirect(loged_in)
-    
-    request.session["my_domain"] = request.build_absolute_uri()
+    request.session['my_domain'] = redirect_url.read_main_url()
     request.session["my_domain"] = urllib.parse.quote_plus(request.session["my_domain"])
     if("code" in request.GET.keys()):
+        print("entro a code")
         get_token(request, request.GET.get("code"))
     return render(request, 'bios/index.html')
 
@@ -36,9 +38,9 @@ def index(request):
       
 def get_documents(request):
     if settings.DEBUG:
-        return redirect("http://localhost:8000/bios/?code=32ewadfsghtyu678iuyhkj==")
+        return redirect(redirect_url.read_main_url()+"bios/?code=32ewadfsghtyu678iuyhkj==")
     else:
-        url_redirect = "https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri="+request.session["my_domain"]
+        url_redirect = "https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri="+request.session["my_domain"]+"bios%2F"
     print(url_redirect)
     return redirect(url_redirect)
 
@@ -50,7 +52,7 @@ def get_token(request, code):
     else:
         url = "https://intersys.my.salesforce.com"+sufix
 
-    payload = "grant_type=authorization_code&redirect_uri="+request.session["my_domain"]+"&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
+    payload = "grant_type=authorization_code&redirect_uri="+request.session["my_domain"]+"bios%2F&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
     headers = {"content-type":"application/x-www-form-urlencoded"}
 
     response = requests.request("POST", url, data= payload, headers = headers)
@@ -97,8 +99,9 @@ def get_name_link(token):
     
     if (consultants.get('records')):
         for consultant in consultants.get('records'):
-            if consultant['Resource_Bio__r']['Bio_Url__c'] is not None:
-                names_link[consultant['Name']] = consultant['Resource_Bio__r']['Bio_Url__c']
+            if consultant.get('Resource_Bio__r'):
+                if consultant['Resource_Bio__r'].get('Bio_Url__c') is not None:
+                    names_link[consultant['Name']] = consultant['Resource_Bio__r']['Bio_Url__c']
     
     return names_link
 
