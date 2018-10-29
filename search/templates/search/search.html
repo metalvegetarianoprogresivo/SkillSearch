@@ -142,28 +142,33 @@ card.addEventListener( 'click', function() {
                             <h4 class="text-center">Location</h4>
                             <p class="text-center">{{ bio.3.location }}</p>
                             <h4 class="text-center">Assignments:</h4>
+			                                <table class="table table-sm">
+							                                <thead>
+												                                    <th style="width: 35%;">Client</th>
+																                                        <th style="width: 20%;">Utilization</th>
+																					                                    <th class="text-right">End date</th>
+																								</thead>
+																								</table>
+			    <div class="scrolldivDeskMatches">
                             <table class="table table-sm">
-                                <thead>
-                                    <th>Client</th>
-                                    <th>Utilization</th>
-                                    <th>End date</th>
-                                </thead>
 				                <tbody class="assignments">
-		                        {% for assignment in bio.7 %}
+							{% for assignment in bio.7 %}
                                     <tr>
-                                        <td>{{ assignment.account_name }}</td>
-		          	                    <td>{{ assignment.utilisation }}</td>
-			                            <td>{{ assignment.p3_end }}</td>
-                                    </tr>
-		                        {% endfor %}
-				                </tbody>
-				                <tfoot>
-                                    <tr>
-                                        <th scope="row">Total</th>
-			                            <td colspan="2">{{ bio.8 }}</td>
-		                            </tr>
-	                            </tfoot>
+					    <td style="width: 40%;"> {{ assignment.account_name|slice:"0:20" }}...</td>
+		          	                    <td style="width: 20%;">{{ assignment.utilisation }}</td>
+			                            <td class="text-right">{{ assignment.p3_end }}</td>
+                                    </tr>		             
+				    {% endfor %}
+				                </tbody> 
+				    </div>
 	                        </table>
+				</div>
+				<table class="table table-sm">
+				                                    <tr>
+									                                            <th scope="row">Total</th>
+														                                                        <td colspan="2">{{ bio.8 }}</td>
+			   </tr>
+				</table>
                             <div>
                             <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
                             <button class="mr-2 btn btn-sm btn-outline-success d-none roster-cart float-right bio-{{ bio.3.pk }} " data-bio="{{ bio.3.pk }}"
