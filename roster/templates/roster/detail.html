@@ -146,22 +146,26 @@
                                         <th>Utilization</th>
                                         <th>End date</th>
                                     </thead>
+                                    </table>
+                                    <div class="scrolldivDeskMatches">
+                                        <table class="table table-sm">
                                     <tbody class="assignments">
                                         {% for assignment in bio.bio.assignments.3 %}
                                         <tr>
-                                            <td>{{ assignment.account_name }}</td>
-                                            <td>{{ assignment.utilisation }}</td>
-                                            <td>{{ assignment.p3_end }}</td>
+                                            <td style="width: 40%">{{ assignment.account_name }}</td>
+                                            <td style="width: 20%">{{ assignment.utilisation }}</td>
+                                            <td class="text-right">{{ assignment.p3_end }}</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
-                                    <tfoot>
+                                </table>
+                                </div>
+                                    <table class="table table-sm">
                                         <tr>
-                                            <th scope="row">Total</th>
+                                            <th scope="row" style="width: 40%">Total</th>
                                             <td colspan="2">{{ bio.bio.assignments.2 }}</td>
                                         </tr>
-                                    </tfoot>
-                                </table>
+                                    </table>
                                 <div>
                                     <button class="btn btn-sm btn-outline-success d-none roster-cart ml-3 float-right bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk }}" value="{{ bio.bio.assignments.2 }}">
                                             {% if not bio.bio.data.pk in roster %} 
