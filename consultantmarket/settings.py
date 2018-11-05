@@ -9,6 +9,22 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
+'''
+Important configuration
+
+If you are working localy with docker
+you need to set the Debug variable to True and add to the dictonary DATABASES the next kay-value pair
+'HOST': 'mongo'
+and modify the document properties.txt, it has more instructions.
+
+If you are working from a server
+you need to set the Debug variable to False and remove from the dictonary DATABASES the next kay-value pair
+'HOST': 'mongo'
+and modify the document properties.txt, it has more instructions.
+
+Remember: We are using the next command to run the app in server
+python3 manage.py runserver --insecure
+'''
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -22,7 +38,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'o&nx!s$tilel2kn7^$1%4vdo*g5zpu9+e4d8*668w(oj!99jde'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["40.113.199.40","localhost","127.0.0.1","https://skillssearcher.intersysconsulting.com/","django"]
 
@@ -81,6 +97,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'consultantmarket',
+        'HOST': 'mongo'
     }
 }
 
