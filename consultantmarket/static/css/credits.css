@@ -16,7 +16,7 @@ body {
 }
 
 #cubeWrapper {
-  width: 2050px;
+  width: 650px;
   display: flex;
   flex-direction: column;
 }
@@ -70,28 +70,42 @@ body {
 }
 
 .p1 {
-  background: url("https://static.pexels.com/photos/324658/pexels-photo-324658.jpeg") center;
+  background: url("/static/img/ALAN.JPG") center;
 }
 
 .p2 {
-  background: url("https://static.pexels.com/photos/428339/pexels-photo-428339.jpeg") center;
+  background: url("/static/img/HELOEL.JPG") center;
 }
 
 .p3 {
-  background: url("https://static.pexels.com/photos/220453/pexels-photo-220453.jpeg") center;
+  background: url("/static/img/CRISTINA.JPG") center;
 }
 
 .p4 {
-  background: url("https://static.pexels.com/photos/91227/pexels-photo-91227.jpeg") center;
+  background: url("/static/img/TONY.JPG") center;
 }
 
 .p5 {
-  background: url("https://static.pexels.com/photos/354951/pexels-photo-354951.jpeg") center;
+  background: url("/static/img/ALEX.JPG") center;
 }
 
 .p6 {
-  background: url("https://static.pexels.com/photos/193355/pexels-photo-193355.jpeg") center;
+  background: url("/static/img/EDUARDO.JPG") center;
 }
+.p7 {
+  background: url("/static/img/MAURICIO.JPG") center;
+    }
+.p8 {
+  background: url("/static/img/ANDREA.JPG") center;
+  }
+.p9 {
+  background: url("/static/img/HECTOR.JPG") center;
+  }
+.p10 {
+  background: url("/static/img/MIGUEL.JPG") center;
+  }
+
+
 
 .cube {
   height: 200px;
