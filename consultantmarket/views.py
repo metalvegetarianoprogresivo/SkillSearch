@@ -9,14 +9,14 @@ from django.conf import settings
 from django.shortcuts import redirect
 from bios.models import EmailAuth
 import urllib.parse
+from consultantmarket import redirect_url
+
 # Use this just as example
 @csrf_exempt
 
 def index(request):
-    file = open("properties.txt","r").read()
-    request.session['my_domain'] = file
+    request.session['my_domain'] = redirect_url.read_main_url()
 
-    print(request.session['my_domain'])
     #print(EmailAuth.objects.all())
     urlProfile="https://graph.microsoft.com/v1.0/me/"
     proxyURL = getURL(request)
