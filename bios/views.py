@@ -155,6 +155,25 @@ def get_email(token, name):
     return email
 
 
+def get_supervisor(token, name):
+    sufix = "/services/data/v24.0/query?q="
+    if settings.DEBUG:
+        url = "http://fake-kimble-server:3010"+sufix
+    else: 
+        url = "https://intersys.my.salesforce.com"+sufix
+    headers = {"authorization":"Bearer " + token}
+
+    response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__User__r.Manager.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
+    supervisor = json.loads(response.text)
+
+    try:
+        supervisor = email['records'][0]['KimbleOne__User__r']['Manager']['Name']
+    except:
+        supervisor = 'No supervisor available'
+
+    return supervisor
+
+
 def get_assignments(token, bio):
     sufix = "/services/data/v24.0/query?q="
     if settings.DEBUG:
@@ -230,6 +249,8 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     bio.url = pdf_link
     bio.title = get_title(token, bio.name)
     bio.email = get_email(token, bio.name)
+    bio.supervisor = get_supervisor(token, bio.name)
+    bio.supervisor_mail = get_mail(token, bio.supervisor)
     get_assignments(token, bio)
 
     try:
