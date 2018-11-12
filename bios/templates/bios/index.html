@@ -1,10 +1,21 @@
 {% extends 'templates/base.html' %}
 {% load static %}
+{% load poll_extras2 %}
+
 {% block content %}
 <div class="container my-4 pb-5">
   <div class="card">
   <div class="card-header">
   <h1 class="text-center">Welcome to Consultantmarket</h1>
+  {% if user|has_group:"Sales" %}
+    Ho  la Sales
+  {% else %}
+    {% if user|has_group:"Practice Director" %}
+      Hola Director
+    {% else %}
+      Quien eres?
+    {% endif%}
+  {% endif %}
   </div>
   <div class="mx-auto card-body">
           <p class="lead text-muted">Click on this button to update the profiles information</p>    

@@ -12,18 +12,23 @@ from datetime import datetime, date
 import urllib.parse
 from django.conf import settings
 from consultantmarket import redirect_url
-
+from django.contrib.auth.models import User
 
 def index(request):
     print("entro al index ")
+    request.user = User.objects.get(email = "mmartinez@intersysconsulting.com")
+    '''
     loged_in = redirect_url.redirect_url(request)
     if loged_in:
-       return redirect(loged_in)
+        print(loged_in)
+        return redirect(loged_in)
+
     request.session['my_domain'] = redirect_url.read_main_url()
     request.session["my_domain"] = urllib.parse.quote_plus(request.session["my_domain"])
     if("code" in request.GET.keys()):
         print("entro a code")
         get_token(request, request.GET.get("code"))
+    '''
     return render(request, 'bios/index.html')
 
     try:

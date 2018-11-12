@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 import requests
 import json
 import datetime
@@ -10,7 +11,33 @@ from django.shortcuts import redirect
 from bios.models import EmailAuth
 import urllib.parse
 from consultantmarket import redirect_url
+from django import template
+from django.contrib.auth.models import Group 
 
+register = template.Library() 
+
+@register.filter(name='has_group') 
+def has_group(user, group_name):
+    group =  Group.objects.get(name=group_name) 
+    return group in user.groups.all() 
+
+@register.simple_tag
+def get_something(customer, business):
+    return "carajo"
+
+def isPracticeDirector(mail):
+    intersys_user = User.objects.get(email = mail)
+    return "practice director" in map(lambda group: group.name.lower(), intersys_user.user.groups.all())
+
+def isSales(mail):
+    intersys_user = User.objects.get(email = mail)
+    return "sales" in map(lambda group: group.name.lower(), intersys_user.user.groups.all())
+'''
+@register.tag
+def has_group(mail, group):
+    intersys_user = User.objects.get(email = mail)
+    return group in map(lambda group: group.name.lower(), intersys_user.user.groups.all())
+'''
 # Use this just as example
 @csrf_exempt
 
@@ -35,7 +62,11 @@ def index(request):
             access_tok=request.POST['access_token']
             user=(getData(access_tok,urlProfile))
             request.session['displayName'] = user['displayName']
-            request.session['mail'] =user['mail']
+            request.session['mail'] = user['mail']
+            intersys_user = User.objects.get(email = request.session['mail'])
+            request.user = intersys_user
+            
+            #assert False, "practice director" in map(lambda group: group.name.lower(), intersys_user.groups.all())
             query = EmailAuth.objects.all()
             access = False
             for obj in query:
@@ -105,13 +136,11 @@ def getURL(request):
             "response": "form_post"
             }
     headers = {
-
-  'Content-Type': "application/json",
-
-  'Cache-Control': "no-cache",
-
-  'Postman-Token': "f033541d-4878-479a-9ac3-892522403736"
+        'Content-Type': "application/json",
+        'Cache-Control': "no-cache",
+        'Postman-Token': "f033541d-4878-479a-9ac3-892522403736"
     }
+
     response = requests.request("POST", url, data= json.dumps(payload), headers=headers)
     print(response.text)
     
