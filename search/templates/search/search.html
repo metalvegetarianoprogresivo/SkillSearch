@@ -139,14 +139,22 @@ card.addEventListener( 'click', function() {
                             <div class="scrollprofile">
                                 <p class="text-center" >{{ bio.3.profile }}</p>
                             </div>
-                            <h4 class="text-center">Location</h4>
-                            <p class="text-center">{{ bio.3.location }}</p>
+                            <table class="table table-cost">
+                                <tr>
+                                    <th class="text-center" style=" width: 50%; padding: .75rem .75rem 0 .75rem;">Location</th>
+                                    <th class="text-center" style="padding: .75rem .75rem 0 .75rem;">Actual Cost</th>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" style="width: 50%; padding: .3rem .75rem .75rem .75rem;">{{ bio.3.location }}</td>
+                                    <td class="text-center" style="padding: .3rem .75rem .75rem .75rem;">$1000</td>
+                                </tr>
+                            </table>
                             <h4 class="text-center">Assignments:</h4>
 			                <table class="table table-sm">
 							    <thead>
-								    <th style="width: 35%;">Client</th>
-								    <th style="width: 20%;">Utilization</th>
-								    <th class="text-right">End date</th>
+								    <th style="width: 35%; background-color: #007bff; color:white;">Client</th>
+								    <th style="width: 20%; background-color: #007bff; color:white;">Utilization</th>
+								    <th class="text-right" style="background-color: #007bff; color:white;">End date</th>
 								</thead>
 							</table>
 			    <div class="scrolldivDeskMatches">
@@ -292,17 +300,17 @@ card.addEventListener( 'click', function() {
 <div class="modal fade mt-5 pt-5" id="theModal{{ bio.3.id }}" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: #17a2b8" >
-                <h5 class="modal-title" id="exampleModalLabel" style="color:white">{{ bio.3.name }}</h5>
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel" >{{ bio.3.name }}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" style="color:white">×</span>
+                    <span aria-hidden="true">×</span>
 		</button>
             </div>
             <div class="modal-body"><p>{{ bio.3.profile }}</p>
                 <table class="table table-cost">
                     <tr>
                        <th class="text-center" style="border-top:0; width: 50%">Location</th>
-                       <th class="text-center" style="border-top:0;">Cost</th>
+                       <th class="text-center" style="border-top:0;">Actual Cost</th>
                     </tr>
                     <tr>
                         <td class="text-center" style="border-top:0; width: 50%">{{ bio.3.location }}</td>
@@ -314,9 +322,9 @@ card.addEventListener( 'click', function() {
 				    <table class="table ">
 	         			<thead>
 			     		<tr>
-					   <th scope="col" style="border-top:1px solid #17a2b8; border-bottom:1px solid #17a2b8">Client</th>
-					   <th scope="col" style="border-top:1px solid #17a2b8; border-bottom:1px solid #17a2b8">Utilization</th>
-			                   <th scope="col" style="border-top:1px solid #17a2b8; border-bottom:1px solid #17a2b8">End Date</th>
+					   <th scope="col" style="background-color: #007bff; color:white">Client</th>
+					   <th scope="col" style="background-color: #007bff; color:white">Utilization</th>
+			                   <th scope="col" style="background-color: #007bff; color:white">End Date</th>
 					</tr>
 					</thead>
 					<tbody>
