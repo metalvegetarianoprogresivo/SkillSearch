@@ -250,7 +250,7 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     bio.title = get_title(token, bio.name)
     bio.email = get_email(token, bio.name)
     bio.supervisor = get_supervisor(token, bio.name)
-    bio.supervisor_mail = get_mail(token, bio.supervisor)
+    bio.supervisor_mail = get_email(token, bio.supervisor)
     get_assignments(token, bio)
 
     try:
