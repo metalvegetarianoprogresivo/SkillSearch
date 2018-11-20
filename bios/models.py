@@ -31,28 +31,29 @@ class Assignments(models.Model):
     p3_end = models.DateField(blank=True, null=True)
     utilisation = models.FloatField(blank=True, null=True)
 
-class Projects(models.Model):
-   id = models.AutoField(primary_key=True)
-   name = models.CharField(max_length=100, default='')
-   rosters = models.ArrayReferenceField(
-       to=Rosters,
-       on_delete=models.DO_NOTHING,
-       blank=True,
-       null=True
-   )
+
+""" class Projects(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100, default='')
+    rosters = models.ArrayReferenceField(
+        to=Rosters,
+        on_delete=models.DO_NOTHING, 
+        blank=True, 
+        null=True
+    )    
 
 class Rosters(models.Model):
-   id = models.AutoField(primary_key=True)
-   name = models.CharField(max_length=100, default='')
-   owner = models.CharField(max_length=100, default='')
-   created_at = models.DateTimeField(auto_now_add=True)
-   bio = models.ArrayReferenceField(
-       to=Bio,
-       on_delete=models.DO_NOTHING,
-       blank=True,
-       null=True
-   )
-   
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100, default='')
+    owner = models.CharField(max_length=100, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    bio = models.ArrayReferenceField(
+        to=Bio,
+        on_delete=models.DO_NOTHING, 
+        blank=True, 
+        null=True
+    )  """
+
 
 class Bio(models.Model):
 #kimble information
