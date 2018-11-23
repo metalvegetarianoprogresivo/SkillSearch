@@ -299,16 +299,30 @@ card.addEventListener( 'click', function() {
 		</button>
             </div>
             <div class="modal-body"><p>{{ bio.3.profile }}</p>
+                
+                {% if user|has_group:"Sales" %}
                 <table class="table table-cost">
                     <tr>
                        <th class="text-center" style="border-top:0; width: 50%">Location</th>
+                       
                        <th class="text-center" style="border-top:0;">Cost</th>
+                        
+                       
                     </tr>
                     <tr>
                         <td class="text-center" style="border-top:0; width: 50%">{{ bio.3.location }}</td>
+                        
                         <td class="text-center" style="border-top:0;">$1000</td>
                     </tr>
                 </table>
+                {% else %}
+                            {% if user|has_group:"Practice Director" %}
+                                <h4 class="text-center">Location</h4>
+                                <p class="text-center">{{ bio.3.location }}</p>
+                            {% else %}
+                            You need to be assigned to a group.
+                            {% endif%}
+                        {% endif %}
                 <br>
 			            <h4 class="text-center">Assignments:</h4>
 				    <table class="table ">
@@ -335,18 +349,17 @@ card.addEventListener( 'click', function() {
 	    </div>
             <div class="modal-footer">
 		    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}"  id="{{ bio.3.pk }}" value="{{ bio.8 }}">
-		                                    {% if bio.3.pk in roster %}
-						                                            Remove from cart
-											                                    {% else %}
-															                                            {% if bio.8 >= 90 %}
-																				                                                    Add Anyway
-																										                                            {% else %}
-																															                                                    Add to Cart
-																																					                                            {% endif %}
-																																										                                    {% endif %}
-																																														                                    </button>
-               
-                <a class="btn btn-sm btn-outline-primary" href="{{ bio.3.url }}">Open Bio</a>
+		        {% if bio.3.pk in roster %}
+					Remove from cart
+				{% else %}
+					{% if bio.8 >= 90 %}
+						Add Anyway
+					{% else %}
+						Add to Cart
+					{% endif %}
+				{% endif %}
+			</button>
+            <a class="btn btn-sm btn-outline-primary" href="{{ bio.3.url }}">Open Bio</a>
             </div>
         </div>
     </div>

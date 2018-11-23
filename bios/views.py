@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 
 def index(request):
     print("entro al index ")
-    request.user = User.objects.get(email = "mmartinez@intersysconsulting.com")
+    request.user = User.objects.get(email = "edavalos@intersysconsulting.com")
     '''
     loged_in = redirect_url.redirect_url(request)
     if loged_in:
