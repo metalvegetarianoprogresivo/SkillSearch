@@ -32,7 +32,7 @@ class Assignments(models.Model):
     utilisation = models.FloatField(blank=True, null=True)
 
 
-""" class Projects(models.Model):
+class Projects(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, default='')
     rosters = models.ArrayReferenceField(
@@ -52,7 +52,7 @@ class Rosters(models.Model):
         on_delete=models.DO_NOTHING, 
         blank=True, 
         null=True
-    )  """
+    )  
 
 
 class Bio(models.Model):
