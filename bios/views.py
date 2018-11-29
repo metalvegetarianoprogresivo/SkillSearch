@@ -155,6 +155,44 @@ def get_email(token, name):
     return email
 
 
+def get_cost(token, name):
+    sufix = "/services/data/v24.0/query?q="
+    if settings.DEBUG:
+        url = "http://fake-kimble-server:3010"+sufix
+    else: 
+        url = "https://intersys.my.salesforce.com"+sufix
+    headers = {"authorization":"Bearer " + token}
+
+    response = requests.request("GET", url+"SELECT KimbleOne__ActualCost__c FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
+    cost_j = json.loads(response.text)
+
+    try:
+        cost = cost_j['records'][0]['KimbleOne__ActualCost__c']
+    except:
+        cost = 0.0
+
+    return cost
+
+
+def get_cost_type(token, name):
+    sufix = "/services/data/v24.0/query?q="
+    if settings.DEBUG:
+        url = "http://fake-kimble-server:3010"+sufix
+    else: 
+        url = "https://intersys.my.salesforce.com"+sufix
+    headers = {"authorization":"Bearer " + token}
+
+    response = requests.request("GET", url+"SELECT KimbleOne__ActualCostUnitType__c FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
+    cost_t_j = json.loads(response.text)
+
+    try:
+        cost_t = cost_t_j['records'][0]['KimbleOne__ActualCostUnitType__c']
+    except:
+        cost_t = 'Unknown type'
+
+    return cost_t
+
+
 def get_assignments(token, bio):
     sufix = "/services/data/v24.0/query?q="
     if settings.DEBUG:
@@ -230,6 +268,8 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     bio.url = pdf_link
     bio.title = get_title(token, bio.name)
     bio.email = get_email(token, bio.name)
+    bio.cost = get_cost(token, bio.name)
+    bio.cost_type = get_cost_type(token, bio.name)
     get_assignments(token, bio)
 
     try:
