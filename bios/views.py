@@ -40,7 +40,11 @@ def get_documents(request):
     if settings.DEBUG:
         return redirect(redirect_url.read_main_url()+"bios/?code=32ewadfsghtyu678iuyhkj==")
     else:
-        url_redirect = "https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri="+request.session["my_domain"]+"bios%2F"
+        try:
+            url_redirect = "https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri="+request.session["my_domain"]+"bios%2F"
+        except:
+            return redirect(redirect_url.read_main_url())
+        
     print(url_redirect)
     return redirect(url_redirect)
 
@@ -58,7 +62,10 @@ def get_token(request, code):
     response = requests.request("POST", url, data= payload, headers = headers)
     resJson = json.loads(response.text)
     print(resJson)
-    get_bios(resJson["access_token"])
+    try:
+        get_bios(resJson["access_token"])
+    except:
+        return redirect(redirect_url.read_main_url())
 
 
 def get_location(token, name):
@@ -160,26 +167,31 @@ def get_assignments(token, bio):
     assignments = json.loads(response.text)
     assignment_end_date = None
 
-    for assignment in assignments['records']:
-        end_date = assignment['KimbleOne__ForecastP3EndDate__c']
+    try:
+        decodedAssignments = assignments['records']
 
-        if end_date is not None and (datetime.strptime(end_date, '%Y-%m-%d').date() - date.today()).days > 0:
-            project = Assignments()
-            project, created = Assignments.objects.get_or_create(name=assignment['Name'])
-            project.start = datetime.strptime(assignment['KimbleOne__StartDate__c'], '%Y-%m-%d').date()
-            try:
-                project.p1_end = datetime.strptime(assignment['KimbleOne__ForecastP1EndDate__c'], '%Y-%m-%d').date()
-            except:
-                project.p1_end = None
-            try:
-                project.p2_end = datetime.strptime(assignment['KimbleOne__ForecastP2EndDate__c'], '%Y-%m-%d').date()
-            except:
-                project.p2_end = None
-            project.p3_end = datetime.strptime(assignment['KimbleOne__ForecastP3EndDate__c'], '%Y-%m-%d').date()
-            project.account_name = assignment['KimbleOne__DeliveryGroup__r']['KimbleOne__Account__r']['Name']
-            project.utilisation = int(assignment['KimbleOne__UtilisationPercentage__c'])
-            bio.assignments.add(project)
-            project.save() 
+        for assignment in assignments['records']:
+            end_date = assignment['KimbleOne__ForecastP3EndDate__c']
+
+            if end_date is not None and (datetime.strptime(end_date, '%Y-%m-%d').date() - date.today()).days > 0:
+                project = Assignments()
+                project, created = Assignments.objects.get_or_create(name=assignment['Name'])
+                project.start = datetime.strptime(assignment['KimbleOne__StartDate__c'], '%Y-%m-%d').date()
+                try:
+                    project.p1_end = datetime.strptime(assignment['KimbleOne__ForecastP1EndDate__c'], '%Y-%m-%d').date()
+                except:
+                    project.p1_end = None
+                try:
+                    project.p2_end = datetime.strptime(assignment['KimbleOne__ForecastP2EndDate__c'], '%Y-%m-%d').date()
+                except:
+                    project.p2_end = None
+                project.p3_end = datetime.strptime(assignment['KimbleOne__ForecastP3EndDate__c'], '%Y-%m-%d').date()
+                project.account_name = assignment['KimbleOne__DeliveryGroup__r']['KimbleOne__Account__r']['Name']
+                project.utilisation = int(assignment['KimbleOne__UtilisationPercentage__c'])
+                bio.assignments.add(project)
+                project.save() 
+    except:
+        pass
 
 
 def get_bios(token):

@@ -1,1 +1,9 @@
+http://localhost:8000/
+
+#If you are in the production server, use
+https://skillssearcher.intersysconsulting.com/
+#If you are in the test server, use
 https://skillssearchertest.centralus.cloudapp.azure.com/
+#If you are in local docker, use
+http://localhost:8000/
+#Don't forget the slash at the end.
