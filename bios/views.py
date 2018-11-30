@@ -164,10 +164,10 @@ def get_supervisor(token, name):
     headers = {"authorization":"Bearer " + token}
 
     response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__User__r.Manager.Name FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
-    supervisor = json.loads(response.text)
+    supervisor_json = json.loads(response.text)
 
     try:
-        supervisor = email['records'][0]['KimbleOne__User__r']['Manager']['Name']
+        supervisor = supervisor_json['records'][0]['KimbleOne__User__r']['Manager']['Name']
     except:
         supervisor = 'No supervisor available'
 
