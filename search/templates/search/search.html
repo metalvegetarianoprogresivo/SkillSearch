@@ -321,13 +321,13 @@ card.addEventListener( 'click', function() {
                     </tr>
                 </table>
                 {% else %}
-                            {% if user|has_group:"Practice Director" %}
-                                <h4 class="text-center">Location</h4>
-                                <p class="text-center">{{ bio.3.location }}</p>
-                            {% else %}
-                            You need to be assigned to a group.
-                            {% endif%}
-                        {% endif %}
+                    {% if user|has_group:"Practice Director" %}
+                        <h4 class="text-center">Location</h4>
+                        <p class="text-center">{{ bio.3.location }}</p>
+                    {% else %}
+                    You need to be assigned to a group.
+                    {% endif%}
+                {% endif %}
                 <br>
 			            <h4 class="text-center">Assignments:</h4>
 				    <table class="table ">

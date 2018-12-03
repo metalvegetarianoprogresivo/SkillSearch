@@ -1,7 +1,7 @@
 from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
-from django.contrib.auth.models import Group 
+from django.contrib.auth.models import User, Group
 
 register = template.Library()
 
@@ -31,7 +31,5 @@ def get_importance(*args, **kwargs):
 
 @register.filter(name='has_group') 
 def has_group(user, group_name):
-    print(group_name)
-    group =  Group.objects.get(name=group_name) 
-    return group in user.groups.all()
+    return user.groups.filter(name=group_name).exists()
     

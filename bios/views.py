@@ -16,8 +16,7 @@ from django.contrib.auth.models import User
 
 def index(request):
     print("entro al index ")
-    request.user = User.objects.get(email = "edavalos@intersysconsulting.com")
-    '''
+    
     loged_in = redirect_url.redirect_url(request)
     if loged_in:
         print(loged_in)
@@ -28,7 +27,7 @@ def index(request):
     if("code" in request.GET.keys()):
         print("entro a code")
         get_token(request, request.GET.get("code"))
-    '''
+    
     return render(request, 'bios/index.html')
 
     try:

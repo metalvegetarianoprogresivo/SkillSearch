@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 import requests
 import json
 import datetime
@@ -14,24 +14,6 @@ from consultantmarket import redirect_url
 from django import template
 from django.contrib.auth.models import Group 
 
-register = template.Library() 
-
-@register.filter(name='has_group') 
-def has_group(user, group_name):
-    group =  Group.objects.get(name=group_name) 
-    return group in user.groups.all() 
-
-@register.simple_tag
-def get_something(customer, business):
-    return "carajo"
-
-def isPracticeDirector(mail):
-    intersys_user = User.objects.get(email = mail)
-    return "practice director" in map(lambda group: group.name.lower(), intersys_user.user.groups.all())
-
-def isSales(mail):
-    intersys_user = User.objects.get(email = mail)
-    return "sales" in map(lambda group: group.name.lower(), intersys_user.user.groups.all())
 '''
 @register.tag
 def has_group(mail, group):
@@ -54,7 +36,7 @@ def index(request):
         "title" : "Home"
     }
     
-    if(request.session.get('authenticated') == True):     
+    if(request.session.get('authenticated') == True): 
         return render(request, "templates/index.html", context)
     else:
         if(request.POST.keys()):
@@ -62,17 +44,14 @@ def index(request):
             access_tok=request.POST['access_token']
             user=(getData(access_tok,urlProfile))
             request.session['displayName'] = user['displayName']
+            print(user)
             request.session['mail'] = user['mail']
             intersys_user = User.objects.get(email = request.session['mail'])
             request.user = intersys_user
-            
-            #assert False, "practice director" in map(lambda group: group.name.lower(), intersys_user.groups.all())
-            query = EmailAuth.objects.all()
+            print(dir(request.user))
             access = False
-            for obj in query:
-                print(request.session['mail']+"  "+obj.email)
-                if(request.session['mail'] == obj.email):
-                    print("youhaveaccess")
+            if intersys_user:
+                if (intersys_user.groups.filter(name='Practice Director').exists() or intersys_user.groups.filter(name='Sales').exists()):
                     request.session['authenticated'] = True
                     access = True
             
