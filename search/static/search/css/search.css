@@ -301,3 +301,15 @@
 .table-cost td{
     border-top:0;
 }
+.total-cost{
+    background-color: #28a745;
+    border:1px solid #28a745;
+    text-align: center;
+    vertical-align: middle;
+    cursor: default !important;
+    margin-left: 10px;
+}
+.total-cost p{
+    margin-bottom: 0;
+    color: white;
+}
