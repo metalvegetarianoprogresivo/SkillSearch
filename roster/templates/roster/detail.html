@@ -59,10 +59,14 @@
             {% if bios %}
             <h5 class="mt-2 float-left">{{ title }} {% if q %} for {{ q }} {% endif %}</h5>
 
+            <div class="float-right total-cost btn" >
+                <p>Total Cost: $2000</p>
+            </div>
+
             <button type="button" class="btn btn-primary float-right btn-info" data-toggle="modal" data-target="#exampleModalCenter">
                 Send Roster
             </button>
-
+            
             {% else %}
             <h5 class="mt-2 float-left"> You do not have roster to show </h5> {% endif %}
         </div>
