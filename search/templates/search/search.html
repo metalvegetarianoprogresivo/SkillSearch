@@ -318,7 +318,7 @@ card.addEventListener( 'click', function() {
                         <td class="text-center" style="border-top:0; width: 50%">{{ bio.3.location }}</td>
 
                         {% if bio.3.cost_type == "a8o0c000000bqdXAAQ" %}
-                            <td class="text-center" style="border-top:0;">${{ bio.3.cost }} USD/day</td>
+                            <td class="text-center" style="border-top:0;">${{ bio.3.cost|divide:8|floatformat:2 }} USD/hr</td>
                         {% else %}
                             <td class="text-center" style="border-top:0;">${{ bio.3.cost }} USD/hr</td>
                         {% endif %}

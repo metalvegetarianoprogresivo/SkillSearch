@@ -32,4 +32,7 @@ def get_importance(*args, **kwargs):
 @register.filter(name='has_group') 
 def has_group(user, group_name):
     return user.groups.filter(name=group_name).exists()
-    
+
+@register.filter(name='divide') 
+def divide(numerator, denominator):
+    return numerator/denominator
