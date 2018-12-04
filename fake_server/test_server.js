@@ -11,6 +11,8 @@ const consultantInfoNameLinksRoute = '/services/data/v24.0/query?q=SELECT%20Name
 const consultantInfoLocationRoute = '/services/data/v24.0/query\\?q=SELECT%20KimbleOne__Resource__c.KimbleOne__BusinessUnit__r.Name%20FROM%20KimbleOne__Resource__c%20WHERE%20name%20=%20\':name\'';
 const consultantInfoTitleRoute = '/services/data/v24.0/query\\?q=SELECT%20KimbleOne__Resource__c.KimbleOne__Grade__r.Name%20FROM%20KimbleOne__Resource__c%20WHERE%20name%20=%20\':name\'';
 const consultantInfoEmailRoute = '/services/data/v24.0/query\\?q=SELECT%20KimbleOne__Resource__c.KimbleOne__User__r.Email%20FROM%20KimbleOne__Resource__c%20WHERE%20name%20=%20\':name\'';
+const consultantInfoCostRoute = '/services/data/v24.0/query\\?q=SELECT%20KimbleOne__ActualCost__c%20FROM%20KimbleOne__Resource__c%20WHERE%20name%20=%20\':name\'';
+const consultantInfoCostTypeRoute = '/services/data/v24.0/query\\?q=SELECT%20KimbleOne__ActualCostUnitType__c%20FROM%20KimbleOne__Resource__c%20WHERE%20name%20=%20\':name\'';
 const consultantAssignmentsRoute = '/services/data/v24.0/query\\?q=SELECT%20name,%20KimbleOne__Resource__r.Name,%20KimbleOne__DeliveryGroup__r.KimbleOne__Account__r.Name,%20KimbleOne__StartDate__c,%20KimbleOne__ForecastP1EndDate__c,%20KimbleOne__ForecastP2EndDate__c,%20KimbleOne__ForecastP3EndDate__c,%20KimbleOne__UtilisationPercentage__c%20FROM%20KimbleOne__ActivityAssignment__c%20WHERE%20KimbleOne__DeliveryGroup__c%20!=%20NULL%20AND%20KimbleOne__Resource__r.Name%20=%20\':name\'';
 
 server.use((req, res, next) => {
@@ -44,6 +46,8 @@ server.use(
     [consultantInfoLocationRoute]: '/consultantInfo?Name=:name',
     [consultantInfoTitleRoute]: '/consultantInfo?Name=:name',
     [consultantInfoEmailRoute]: '/consultantInfo?Name=:name',
+    [consultantInfoCostRoute]: '/consultantInfo?Name=:name',
+    [consultantInfoCostTypeRoute]: '/consultantInfo?Name=:name',
     [consultantAssignmentsRoute]: '/consultantAssignments/?KimbleOne__Resource__r.Name=:name'
   })
 )
