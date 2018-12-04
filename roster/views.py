@@ -15,6 +15,7 @@ from .forms import sendForm
 from django.contrib import messages
 from search.views import get_availability
 from consultantmarket import redirect_url
+from django.contrib.auth.models import User
 @require_POST
 @csrf_exempt
 
@@ -70,6 +71,8 @@ def remove_from_roster(request):
     return JsonResponse(response)
 
 def roster_detail(request):
+    intersys_user = User.objects.get(email = request.session['mail'])
+    request.user = intersys_user
     loged_in = redirect_url.redirect_url(request)
     if loged_in:
        return redirect(loged_in)

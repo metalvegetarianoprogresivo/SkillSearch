@@ -58,10 +58,18 @@
         <div class="card-header">
             {% if bios %}
             <h5 class="mt-2 float-left">{{ title }} {% if q %} for {{ q }} {% endif %}</h5>
-
-            <div class="float-right total-cost btn" >
-                <p>Total Cost: ${{ total_cost|floatformat:2 }}</p>
-            </div>
+            {% if user|has_group:"Sales" %}
+               <div class="float-right total-cost btn" >
+                <p>Cost: ${{ total_cost|floatformat:2 }}</p>
+                </div>
+                {% else %}
+                    {% if user|has_group:"Practice Director" %}
+                        
+                    {% else %}
+                    You need to be assigned to a group.
+                    {% endif%}
+                {% endif %}
+            
 
             <button type="button" class="btn btn-primary float-right btn-info" data-toggle="modal" data-target="#exampleModalCenter">
                 Send Roster
@@ -142,15 +150,34 @@
                                     <p class="text-center">{{ bio.bio.data.profile }}</p>
                                 </div>
                                 <table class="table table-cost">
-                                    <tr>
-                                        <th class="text-center" style=" width: 50%; padding: .75rem .75rem 0 .75rem;">Location</th>
-                                        <th class="text-center" style="padding: .75rem .75rem 0 .75rem;">Actual Cost</th>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center" style="width: 50%; padding: .3rem .75rem .75rem .75rem;">{{ bio.bio.data.location }}</td>
-                                        <td class="text-center" style="padding: .3rem .75rem .75rem .75rem;">$1000</td>
-                                    </tr>
-                                </table>
+
+                {% if user|has_group:"Sales" %}
+                <tr>
+                        <th class="text-center" style=" width: 50%; padding: .75rem .75rem 0 .75rem;">Location</th>
+                        <th class="text-center" style="padding: .75rem .75rem 0 .75rem;">Hourly Actual Cost</th>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="width: 50%; padding: .3rem .75rem .75rem .75rem;">{{ bio.bio.data.location }}</td>
+                        {% if bio.3.cost_type == "a8o0c000000bqdXAAQ" %}
+                        <td class="text-center" style="padding: .3rem .75rem .75rem .75rem;">${{ bio.bio.data.cost|divide:8|floatformat:2 }}</td>
+                        {% else %}
+                            <td class="text-center" style="padding: .3rem .75rem .75rem .75rem;">${{ bio.bio.data.cost|floatformat:2 }}</td>
+                        {% endif %}
+                    </tr>
+                {% else %}
+                    {% if user|has_group:"Practice Director" %}
+                        <tr>
+                                <th class="text-center" style=" width: 50%; padding: .75rem .75rem 0 .75rem;">Location</th>
+                            </tr>
+                            <tr>
+                                <td class="text-center" style="width: 50%; padding: .3rem .75rem .75rem .75rem;">{{ bio.bio.data.location }}</td>
+                    
+                        </tr>
+                    {% else %}
+                    You need to be assigned to a group.
+                    {% endif%}
+                {% endif %}
+     </table>
                                 <h4 class="text-center">Assignments:</h4>
                                 <table class="table table-sm">
                                     <thead>
@@ -278,11 +305,15 @@
                         <table class="table table-cost">
                             <tr>
                                 <th class="text-center" style="border-top:0; width: 50%">Location</th>
-                                <th class="text-center" style="border-top:0;">Actual Cost</th>
+                                <th class="text-center" style="border-top:0;">Hourly Actual Cost</th>
                             </tr>
                             <tr>
                                 <td class="text-center" style="border-top:0; width: 50%">{{ bio.bio.data.location }}</td>
-                                <td class="text-center" style="border-top:0;">$1000</td>
+                                {% if bio.3.cost_type == "a8o0c000000bqdXAAQ" %}
+                                    <td class="text-center" style="border-top:0;">${{ bio.bio.data.cost|divide:8|floatformat:2 }}</td>
+                                {% else %}
+                                    <td class="text-center" style="border-top:0;">${{ bio.bio.data.cost|floatformat:2 }}</td>
+                                {% endif %}
                             </tr>
                         </table>
 

@@ -140,15 +140,34 @@ card.addEventListener( 'click', function() {
                                 <p class="text-center" >{{ bio.3.profile }}</p>
                             </div>
                             <table class="table table-cost">
-                                <tr>
-                                    <th class="text-center" style=" width: 50%; padding: .75rem .75rem 0 .75rem;">Location</th>
-                                    <th class="text-center" style="padding: .75rem .75rem 0 .75rem;">Actual Cost</th>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" style="width: 50%; padding: .3rem .75rem .75rem .75rem;">{{ bio.3.location }}</td>
-                                    <td class="text-center" style="padding: .3rem .75rem .75rem .75rem;">$1000</td>
-                                </tr>
-                            </table>
+
+                {% if user|has_group:"Sales" %}
+                <tr>
+                        <th class="text-center" style=" width: 50%; padding: .75rem .75rem 0 .75rem;">Location</th>
+                        <th class="text-center" style="padding: .75rem .75rem 0 .75rem;">Hourly Actual Cost</th>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="width: 50%; padding: .3rem .75rem .75rem .75rem;">{{ bio.3.location }}</td>
+                        {% if bio.3.cost_type == "a8o0c000000bqdXAAQ" %}
+                        <td class="text-center" style="padding: .3rem .75rem .75rem .75rem;">${{ bio.3.cost|divide:8|floatformat:2 }}</td>
+                        {% else %}
+                            <td class="text-center" style="padding: .3rem .75rem .75rem .75rem;">${{ bio.3.cost|floatformat:2 }}</td>
+                        {% endif %}
+                    </tr>
+                {% else %}
+                    {% if user|has_group:"Practice Director" %}
+                        <tr>
+                                <th class="text-center" style=" width: 50%; padding: .75rem .75rem 0 .75rem;">Location</th>
+                            </tr>
+                            <tr>
+                                <td class="text-center" style="width: 50%; padding: .3rem .75rem .75rem .75rem;">{{ bio.3.location }}</td>
+                    
+                        </tr>
+                    {% else %}
+                    You need to be assigned to a group.
+                    {% endif%}
+                {% endif %}
+     </table>
                             <h4 class="text-center">Assignments:</h4>
 			                <table class="table table-sm">
 							    <thead>
@@ -312,15 +331,15 @@ card.addEventListener( 'click', function() {
                 <table class="table table-cost">
                     <tr>
                        <th class="text-center" style="border-top:0; width: 50%">Location</th>
-                       <th class="text-center" style="border-top:0;">Actual Cost</th>
+                       <th class="text-center" style="border-top:0;">Hourly Actual Cost</th>
                     </tr>
                     <tr>
                         <td class="text-center" style="border-top:0; width: 50%">{{ bio.3.location }}</td>
 
                         {% if bio.3.cost_type == "a8o0c000000bqdXAAQ" %}
-                            <td class="text-center" style="border-top:0;">${{ bio.3.cost|divide:8|floatformat:2 }} USD/hr</td>
+                            <td class="text-center" style="border-top:0;">${{ bio.3.cost|divide:8|floatformat:2 }}</td>
                         {% else %}
-                            <td class="text-center" style="border-top:0;">${{ bio.3.cost }} USD/hr</td>
+                            <td class="text-center" style="border-top:0;">${{ bio.3.cost|floatformat:2 }}</td>
                         {% endif %}
                     </tr>
                 </table>
