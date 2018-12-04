@@ -81,8 +81,10 @@ def roster_detail(request):
             }
     #list_bios = []
     #list_assignments = []
-
+    total_cost = 0
     for bio in bios:
+        total_cost += bio.cost
+        print("cost "+str(total_cost))
         consultant['bios'].append(
                 {
                     'bio':{
@@ -104,7 +106,8 @@ def roster_detail(request):
     context = {
         'title': 'Roster selected',
         'bios': bios,
-        'consultant': consultant
+        'consultant': consultant,
+        'total_cost': total_cost
         }
         
 

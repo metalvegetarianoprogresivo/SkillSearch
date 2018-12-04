@@ -60,7 +60,7 @@
             <h5 class="mt-2 float-left">{{ title }} {% if q %} for {{ q }} {% endif %}</h5>
 
             <div class="float-right total-cost btn" >
-                <p>Total Cost: $2000</p>
+                <p>Total Cost: ${{ total_cost|floatformat:2 }}</p>
             </div>
 
             <button type="button" class="btn btn-primary float-right btn-info" data-toggle="modal" data-target="#exampleModalCenter">
