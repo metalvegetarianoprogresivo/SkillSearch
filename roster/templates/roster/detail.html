@@ -62,18 +62,22 @@
             <h5 class="mt-2">{{ title }} {% if q %} for {{ q }} {% endif %}</h5>
             {% if user|has_group:"Sales" %}
             <p class="header-note">{{ total_consultants }} consultants</p>
-            <p class="header-note">Total Hourly Cost: ${{ total_cost|floatformat:2 }}</p>    
+            <p class="header-note">Total Hourly Cost: ${{ total_cost|floatformat:2 }}</p>
+            </div>
+            <button type="button" class="btn btn-primary float-right btn-info send-roster" data-toggle="modal" data-target="#exampleModalCenter">
+                Send Roster
+            </button>    
             {% else %}
                 {% if user|has_group:"Practice Director" %}
-                    
+                </div>
+                <button type="button" class="btn btn-primary float-right btn-info" data-toggle="modal" data-target="#exampleModalCenter">
+                Send Roster
+                </button>    
                 {% else %}
                 You need to be assigned to a group.
                 {% endif%}
             {% endif %}
-            </div>
-            <button type="button" class="btn btn-primary float-right btn-info send-roster" data-toggle="modal" data-target="#exampleModalCenter">
-                Send Roster
-            </button>
+            
             {% else %}
             <h5 class="mt-2 float-left"> You do not have roster to show </h5> {% endif %}
         </div>
