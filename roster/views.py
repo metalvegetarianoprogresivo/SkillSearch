@@ -110,7 +110,8 @@ def roster_detail(request):
         'title': 'Roster selected',
         'bios': bios,
         'consultant': consultant,
-        'total_cost': total_cost
+        'total_cost': total_cost,
+        'total_consultants': len(consultant['bios'])
         }
         
 
