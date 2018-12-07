@@ -31,30 +31,6 @@ class Assignments(models.Model):
     p3_end = models.DateField(blank=True, null=True)
     utilisation = models.FloatField(blank=True, null=True)
 
-
-class Projects(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, default='')
-    rosters = models.ArrayReferenceField(
-        to=Rosters,
-        on_delete=models.DO_NOTHING, 
-        blank=True, 
-        null=True
-    )    
-
-class Rosters(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, default='')
-    owner = models.CharField(max_length=100, default='')
-    created_at = models.DateTimeField(auto_now_add=True)
-    bio = models.ArrayReferenceField(
-        to=Bio,
-        on_delete=models.DO_NOTHING, 
-        blank=True, 
-        null=True
-    )  
-
-
 class Bio(models.Model):
 #kimble information
     name = models.CharField(max_length=100, default='')
@@ -75,7 +51,6 @@ class Bio(models.Model):
     education = models.TextField(blank=True, null=True)
     experience = models.TextField(blank=True, null=True)
 
-    
     def __str__(self):
         return '{0},{1}'.format(self.name, self.title)
 
@@ -88,3 +63,24 @@ class Bio(models.Model):
     @comparison_validator
     def __gt__(self, other):
         return self.name > other.name
+
+class Rosters(models.Model):
+    nameR = models.CharField(max_length=100, default='')
+    ownerR = models.CharField(max_length=100, default='')
+    bio = models.ArrayReferenceField(
+        to=Bio,
+        on_delete=models.DO_NOTHING, 
+        blank=True, 
+        null=True
+    )  
+
+
+class Projects(models.Model):
+    name = models.CharField(max_length=100, default='')
+    rosters = models.ArrayReferenceField(
+        to=Rosters,
+        on_delete=models.DO_NOTHING, 
+        blank=True, 
+        null=True
+    )    
+
