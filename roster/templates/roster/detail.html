@@ -161,8 +161,8 @@
                     </tr>
                     <tr>
                         <td class="text-center" style="width: 50%; padding: .3rem .75rem .75rem .75rem;">{{ bio.bio.data.location }}</td>
-                        {% if bio.3.cost_type == "a8o0c000000bqdXAAQ" %}
-                        <td class="text-center" style="padding: .3rem .75rem .75rem .75rem;">${{ bio.bio.data.cost|divide:8|floatformat:2 }}</td>
+                        {% if bio.bio.data.cost_type == "a8o0c000000bqdXAAQ" %}
+                            <td class="text-center" style="padding: .3rem .75rem .75rem .75rem;">${{ bio.bio.data.cost|divide:8|floatformat:2 }}</td>
                         {% else %}
                             <td class="text-center" style="padding: .3rem .75rem .75rem .75rem;">${{ bio.bio.data.cost|floatformat:2 }}</td>
                         {% endif %}
@@ -315,7 +315,7 @@
                     <tr>
                         <td class="text-center" style="border-top:0; width: 50%">{{ bio.bio.data.location }}</td>
 
-                        {% if bio.3.cost_type == "a8o0c000000bqdXAAQ" %}
+                        {% if bio.bio.data.cost_type == "a8o0c000000bqdXAAQ" %}
                             <td class="text-center" style="border-top:0;">${{ bio.bio.data.cost|divide:8|floatformat:2 }}</td>
                         {% else %}
                             <td class="text-center" style="border-top:0;">${{ bio.bio.data.cost|floatformat:2 }}</td>
