@@ -86,7 +86,10 @@ def roster_detail(request):
     #list_assignments = []
     total_cost = 0
     for bio in bios:
-        total_cost += bio.cost
+        if bio.cost_type == "a8o0c000000bqdXAAQ":
+            total_cost += bio.cost/8
+        else:
+            total_cost += bio.cost
         print("cost "+str(total_cost))
         consultant['bios'].append(
                 {
