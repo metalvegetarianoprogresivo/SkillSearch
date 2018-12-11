@@ -9,13 +9,25 @@ from bs4 import BeautifulSoup
 from tika import parser
 from .models import Bio, Assignments
 from datetime import datetime, date
-
+import urllib.parse
+from django.conf import settings
+from consultantmarket import redirect_url
+from django.contrib.auth.models import User
 
 def index(request):
-    if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-        return redirect("https://skillssearcher.intersysconsulting.com/")
+    print("entro al index ")
+    
+    loged_in = redirect_url.redirect_url(request)
+    if loged_in:
+        print(loged_in)
+        return redirect(loged_in)
+
+    request.session['my_domain'] = redirect_url.read_main_url()
+    request.session["my_domain"] = urllib.parse.quote_plus(request.session["my_domain"])
     if("code" in request.GET.keys()):
-        get_token(request.GET.get("code"))
+        print("entro a code")
+        get_token(request, request.GET.get("code"))
+    
     return render(request, 'bios/index.html')
 
     try:
@@ -29,22 +41,43 @@ def index(request):
 
       
 def get_documents(request):
-    return redirect("https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F")
+    if settings.DEBUG:
+        return redirect(redirect_url.read_main_url()+"bios/?code=32ewadfsghtyu678iuyhkj==")
+    else:
+        try:
+            url_redirect = "https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri="+request.session["my_domain"]+"bios%2F"
+        except:
+            return redirect(redirect_url.read_main_url())
+        
+    print(url_redirect)
+    return redirect(url_redirect)
 
 
-def get_token(code):
-    url = "https://intersys.my.salesforce.com/services/oauth2/token"
-    payload = "grant_type=authorization_code&redirect_uri=https%3A%2F%2Fskillssearcher.intersysconsulting.com%2Fbios%2F&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
+def get_token(request, code):
+    sufix = "/services/oauth2/token"
+    if settings.DEBUG:
+        url = "http://fake-kimble-server:3010"+sufix
+    else:
+        url = "https://intersys.my.salesforce.com"+sufix
+
+    payload = "grant_type=authorization_code&redirect_uri="+request.session["my_domain"]+"bios%2F&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&client_secret=1639331975173970710&code="+code
     headers = {"content-type":"application/x-www-form-urlencoded"}
 
     response = requests.request("POST", url, data= payload, headers = headers)
     resJson = json.loads(response.text)
-
-    get_bios(resJson["access_token"])
+    print(resJson)
+    try:
+        get_bios(resJson["access_token"])
+    except:
+        return redirect(redirect_url.read_main_url())
 
 
 def get_location(token, name):
-    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    sufix = "/services/data/v24.0/query?q="
+    if settings.DEBUG:
+        url = "http://fake-kimble-server:3010"+sufix
+    else: 
+        url = "https://intersys.my.salesforce.com"+sufix
     headers = {"authorization":"Bearer "+token}
     location = "No location Found"
 
@@ -64,22 +97,32 @@ def get_location(token, name):
 
 
 def get_name_link(token):
-    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    sufix = "/services/data/v24.0/query?q="
+    if settings.DEBUG:
+        url = "http://fake-kimble-server:3010"+sufix
+    else: 
+        url = "https://intersys.my.salesforce.com"+sufix
     headers = {"authorization":"Bearer " + token}
     names_link = {}
 
     response = requests.request("GET", url+"SELECT Name,KimbleOne__Resource__c.Resource_Bio__r.Bio_Url__c FROM KimbleOne__Resource__c WHERE KimbleOne__ResourceType__c = 'a7J0c000002VD4LEAW' AND KimbleOne__Grade__c != 'a5G0c000000g2IXEAY' AND KimbleOne__StartDate__c <= TODAY AND KimbleOne__EndDate__c = Null", headers = headers)
     consultants=json.loads(response.text)
     
-    for consultant in consultants['records']:
-        if consultant['Resource_Bio__r']['Bio_Url__c'] is not None:
-            names_link[consultant['Name']] = consultant['Resource_Bio__r']['Bio_Url__c']
+    if (consultants.get('records')):
+        for consultant in consultants.get('records'):
+            if consultant.get('Resource_Bio__r'):
+                if consultant['Resource_Bio__r'].get('Bio_Url__c') is not None:
+                    names_link[consultant['Name']] = consultant['Resource_Bio__r']['Bio_Url__c']
     
     return names_link
 
 
 def get_title(token, name):
-    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    sufix = "/services/data/v24.0/query?q="
+    if settings.DEBUG:
+        url = "http://fake-kimble-server:3010"+sufix
+    else: 
+        url = "https://intersys.my.salesforce.com"+sufix
     headers = {"authorization":"Bearer " + token}
 
     try:
@@ -98,7 +141,11 @@ def get_title(token, name):
 
 
 def get_email(token, name):
-    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    sufix = "/services/data/v24.0/query?q="
+    if settings.DEBUG:
+        url = "http://fake-kimble-server:3010"+sufix
+    else: 
+        url = "https://intersys.my.salesforce.com"+sufix
     headers = {"authorization":"Bearer " + token}
 
     response = requests.request("GET", url+"SELECT KimbleOne__Resource__c.KimbleOne__User__r.Email FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
@@ -112,34 +159,81 @@ def get_email(token, name):
     return email
 
 
+def get_cost(token, name):
+    sufix = "/services/data/v24.0/query?q="
+    if settings.DEBUG:
+        url = "http://fake-kimble-server:3010"+sufix
+    else: 
+        url = "https://intersys.my.salesforce.com"+sufix
+    headers = {"authorization":"Bearer " + token}
+
+    response = requests.request("GET", url+"SELECT KimbleOne__ActualCost__c FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
+    cost_j = json.loads(response.text)
+
+    try:
+        cost = cost_j['records'][0]['KimbleOne__ActualCost__c']
+    except:
+        cost = 0.0
+
+    return cost
+
+
+def get_cost_type(token, name):
+    sufix = "/services/data/v24.0/query?q="
+    if settings.DEBUG:
+        url = "http://fake-kimble-server:3010"+sufix
+    else: 
+        url = "https://intersys.my.salesforce.com"+sufix
+    headers = {"authorization":"Bearer " + token}
+
+    response = requests.request("GET", url+"SELECT KimbleOne__ActualCostUnitType__c FROM KimbleOne__Resource__c WHERE name = '"+name+"'", headers = headers)
+    cost_t_j = json.loads(response.text)
+
+    try:
+        cost_t = cost_t_j['records'][0]['KimbleOne__ActualCostUnitType__c']
+    except:
+        cost_t = 'Unknown type'
+
+    return cost_t
+
+
 def get_assignments(token, bio):
-    url = "https://intersys.my.salesforce.com/services/data/v24.0/query?q="
+    sufix = "/services/data/v24.0/query?q="
+    if settings.DEBUG:
+        url = "http://fake-kimble-server:3010"+sufix
+    else: 
+        url = "https://intersys.my.salesforce.com"+sufix
     headers = {"authorization":"Bearer " + token}
     assignment_date = None
     response = requests.request("GET", url+"SELECT name, KimbleOne__Resource__r.Name, KimbleOne__DeliveryGroup__r.KimbleOne__Account__r.Name, KimbleOne__StartDate__c, KimbleOne__ForecastP1EndDate__c, KimbleOne__ForecastP2EndDate__c, KimbleOne__ForecastP3EndDate__c, KimbleOne__UtilisationPercentage__c FROM KimbleOne__ActivityAssignment__c WHERE KimbleOne__DeliveryGroup__c != NULL AND KimbleOne__Resource__r.Name = '"+bio.name+"'", headers = headers)
     assignments = json.loads(response.text)
     assignment_end_date = None
 
-    for assignment in assignments['records']:
-        end_date = assignment['KimbleOne__ForecastP3EndDate__c']
+    try:
+        decodedAssignments = assignments['records']
 
-        if end_date is not None and (datetime.strptime(end_date, '%Y-%m-%d').date() - date.today()).days > 0:
-            project = Assignments()
-            project, created = Assignments.objects.get_or_create(name=assignment['Name'])
-            project.start = datetime.strptime(assignment['KimbleOne__StartDate__c'], '%Y-%m-%d').date()
-            try:
-                project.p1_end = datetime.strptime(assignment['KimbleOne__ForecastP1EndDate__c'], '%Y-%m-%d').date()
-            except:
-                project.p1_end = None
-            try:
-                project.p2_end = datetime.strptime(assignment['KimbleOne__ForecastP2EndDate__c'], '%Y-%m-%d').date()
-            except:
-                project.p2_end = None
-            project.p3_end = datetime.strptime(assignment['KimbleOne__ForecastP3EndDate__c'], '%Y-%m-%d').date()
-            project.account_name = assignment['KimbleOne__DeliveryGroup__r']['KimbleOne__Account__r']['Name']
-            project.utilisation = int(assignment['KimbleOne__UtilisationPercentage__c'])
-            bio.assignments.add(project)
-            project.save() 
+        for assignment in assignments['records']:
+            end_date = assignment['KimbleOne__ForecastP3EndDate__c']
+
+            if end_date is not None and (datetime.strptime(end_date, '%Y-%m-%d').date() - date.today()).days > 0:
+                project = Assignments()
+                project, created = Assignments.objects.get_or_create(name=assignment['Name'])
+                project.start = datetime.strptime(assignment['KimbleOne__StartDate__c'], '%Y-%m-%d').date()
+                try:
+                    project.p1_end = datetime.strptime(assignment['KimbleOne__ForecastP1EndDate__c'], '%Y-%m-%d').date()
+                except:
+                    project.p1_end = None
+                try:
+                    project.p2_end = datetime.strptime(assignment['KimbleOne__ForecastP2EndDate__c'], '%Y-%m-%d').date()
+                except:
+                    project.p2_end = None
+                project.p3_end = datetime.strptime(assignment['KimbleOne__ForecastP3EndDate__c'], '%Y-%m-%d').date()
+                project.account_name = assignment['KimbleOne__DeliveryGroup__r']['KimbleOne__Account__r']['Name']
+                project.utilisation = int(assignment['KimbleOne__UtilisationPercentage__c'])
+                bio.assignments.add(project)
+                project.save() 
+    except:
+        pass
 
 
 def get_bios(token):
@@ -178,6 +272,8 @@ def process_documents(token, consultant_name, clean_text, pdf_link):
     bio.url = pdf_link
     bio.title = get_title(token, bio.name)
     bio.email = get_email(token, bio.name)
+    bio.cost = get_cost(token, bio.name)
+    bio.cost_type = get_cost_type(token, bio.name)
     get_assignments(token, bio)
 
     try:

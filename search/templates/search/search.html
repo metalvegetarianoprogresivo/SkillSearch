@@ -43,15 +43,6 @@
         });
 
  });
-/*
-function set_add_anyway(id, utilization) {
-		//$(`#`+id).text()
-	if(utilization >= 90 && $(`#`+id).text() == "Remove from cart"){
-		$(`#`+id).text("Add anyway")
-	}
-	console.log($(`#`+id).text());
-	            }
-*/
 </script>
 <script>
 var card = document.querySelector('.card');
@@ -88,7 +79,7 @@ card.addEventListener( 'click', function() {
 	<div class="pt-3" style="background: LightGrey !important"></div>
         <div class="card-container manual-flip d-block d-sm-none ">
 			<div class="card ">
-			{% if bio.8 >= 100 %}
+			{% if bio.8 >= 90 %}
 			<div class="front notAvailable">
 			{% else %}
 			<div class="front">
@@ -126,7 +117,7 @@ card.addEventListener( 'click', function() {
                                 {% if bio.3.pk in roster %}
 					Remove from cart
 		                {% else %}
-		                        {% if bio.8 >= 100 %}
+		                        {% if bio.8 >= 90 %}
 			                        Add Anyway
 			                {% else %}
 				                Add to Cart
@@ -148,34 +139,66 @@ card.addEventListener( 'click', function() {
                             <div class="scrollprofile">
                                 <p class="text-center" >{{ bio.3.profile }}</p>
                             </div>
-                            <h4 class="text-center">Location</h4>
-                            <p class="text-center">{{ bio.3.location }}</p>
+                            <table class="table table-cost">
+
+                {% if user|has_group:"Sales" %}
+                <tr>
+                        <th class="text-center" style=" width: 50%; padding: .75rem .75rem 0 .75rem;">Location</th>
+                        <th class="text-center" style="padding: .75rem .75rem 0 .75rem;">Hourly Actual Cost</th>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="width: 50%; padding: .3rem .75rem .75rem .75rem;">{{ bio.3.location }}</td>
+                        {% if bio.3.cost_type == "a8o0c000000bqdXAAQ" %}
+                        <td class="text-center" style="padding: .3rem .75rem .75rem .75rem;">${{ bio.3.cost|divide:8|floatformat:2 }}</td>
+                        {% else %}
+                            <td class="text-center" style="padding: .3rem .75rem .75rem .75rem;">${{ bio.3.cost|floatformat:2 }}</td>
+                        {% endif %}
+                    </tr>
+                {% else %}
+                    {% if user|has_group:"Practice Director" %}
+                        <tr>
+                                <th class="text-center" style=" width: 50%; padding: .75rem .75rem 0 .75rem;">Location</th>
+                            </tr>
+                            <tr>
+                                <td class="text-center" style="width: 50%; padding: .3rem .75rem .75rem .75rem;">{{ bio.3.location }}</td>
+                    
+                        </tr>
+                    {% else %}
+                    You need to be assigned to a group.
+                    {% endif%}
+                {% endif %}
+     </table>
                             <h4 class="text-center">Assignments:</h4>
-                            <table class="table table-sm">
-                                <thead>
-                                    <th>Client</th>
-                                    <th>Utilization</th>
-                                    <th>End date</th>
-                                </thead>
-				<tbody class="assignments">
-		                    {% for assignment in bio.7 %}
-                                        <tr>
-                                            <td>{{ assignment.account_name }}</td>
-		          	            <td>{{ assignment.utilisation }}</td>
-			                    <td>{{ assignment.p3_end }}</td>
-                                        </tr>
-		                    {% endfor %}
-				</tbody>
-				<tfoot>
-                                    <tr>
-                                        <th scope="row">Total</th>
-			                <td colspan="2">{{ bio.8 }}</td>
-		                    </tr>
-	                        </tfoot>
-	                    </table>
-                <div>
-                
-                    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float-right bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}"
+			                <table class="table table-sm">
+							    <thead>
+								    <th style="width: 35%; background-color: #007bff; color:white;">Client</th>
+								    <th style="width: 20%; background-color: #007bff; color:white;">Utilization</th>
+								    <th class="text-right" style="background-color: #007bff; color:white;">End date</th>
+								</thead>
+							</table>
+			    <div class="scrolldivDeskMatches">
+                    <table class="table table-sm">
+				        <tbody class="assignments">
+							{% for assignment in bio.7 %}
+                                <tr>
+					            <td style="width: 40%;"> {{ assignment.account_name|slice:"0:20" }}...</td>
+		          	            <td style="width: 20%;">{{ assignment.utilisation }}</td>
+			                    <td class="text-right">{{ assignment.p3_end }}</td>
+                                </tr>		             
+				            {% endfor %}
+				        </tbody> 
+				    </div>
+	                        </table>
+				</div>
+				<table class="table table-sm">
+				    <tr>
+						<th scope="row" style="width: 40%">Total</th>
+						<td colspan="2">{{ bio.8 }}</td>
+			        </tr>
+				</table>
+                            <div>
+                            <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
+                            <button class="mr-2 btn btn-sm btn-outline-success d-none roster-cart float-right bio-{{ bio.3.pk }} " data-bio="{{ bio.3.pk }}"
                         data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}"
                         id="{{ bio.3.pk }}" value="{{ bio.8 }}">
                         {% if bio.3.pk in roster %}
@@ -189,7 +212,7 @@ card.addEventListener( 'click', function() {
                         {% endif %}
                     </button>
                 
-                    <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.3.url }}">Open Bio</a>
+                    
                 </div>
                 </div>
                 </div>
@@ -201,12 +224,12 @@ card.addEventListener( 'click', function() {
 	<br>
     </div>	
     {% comment %} End Smartphone view  {% endcomment %}
-    {% comment %} Start Desktop View  {%endcomment %}
+    {% comment %} Start Desktop View  {% endcomment %}
     <div class="card d-none d-sm-block">
         <div class="table-responsive">
             <table class="table table-hover">
                 <tbody>
-			{% if bio.8 >= 100 %}	
+			{% if bio.8 >= 90 %}	
                     <tr class="notAvailable">
 		{% else %}
 		    <tr>
@@ -252,11 +275,11 @@ card.addEventListener( 'click', function() {
 		            <a href="#theModal" class="nav-link text-center btn btn-sm btn-outline-success profile-button" data-toggle="modal" data-target="#theModal{{ bio.3.id }}"><span class="oi oi-person"></a>
 			    <center>
 		
-			    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" onclick="set_add_anyway({{ bio.3.pk }}, {{ bio.8 }})" id="{{ bio.3.pk }}" value="{{ bio.8 }}">
+			    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.3.pk }}" value="{{ bio.8 }}">
 			    {% if bio.3.pk in roster %}
 	                          Remove from cart
 		            {% else %}
-		                  {% if bio.8 >= 100 %}
+		                  {% if bio.8 >= 90 %}
 		                        Add Anyway
 		                  {% else %}
 		                        Add to Cart
@@ -297,52 +320,74 @@ card.addEventListener( 'click', function() {
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{ bio.3.name }}</h5>
+                <h4 class="modal-title" id="exampleModalLabel" >{{ bio.3.name }}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
 		</button>
             </div>
-            <div class="modal-body">{{ bio.3.profile }}
-    
-		    <h4 class="text-center">Location</h4>
-	                <p class="text-center">{{ bio.3.location }}</p>
+            <div class="modal-body"><p>{{ bio.3.profile }}</p>
+                
+                {% if user|has_group:"Sales" %}
+                <table class="table table-cost">
+                    <tr>
+                       <th class="text-center" style="border-top:0; width: 50%">Location</th>
+                       <th class="text-center" style="border-top:0;">Hourly Actual Cost</th>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="border-top:0; width: 50%">{{ bio.3.location }}</td>
+
+                        {% if bio.3.cost_type == "a8o0c000000bqdXAAQ" %}
+                            <td class="text-center" style="border-top:0;">${{ bio.3.cost|divide:8|floatformat:2 }}</td>
+                        {% else %}
+                            <td class="text-center" style="border-top:0;">${{ bio.3.cost|floatformat:2 }}</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% else %}
+                    {% if user|has_group:"Practice Director" %}
+                        <h4 class="text-center">Location</h4>
+                        <p class="text-center">{{ bio.3.location }}</p>
+                    {% else %}
+                    You need to be assigned to a group.
+                    {% endif%}
+                {% endif %}
+                <br>
 			            <h4 class="text-center">Assignments:</h4>
 				    <table class="table ">
 	         			<thead>
 			     		<tr>
-					   <th scope="col">Client</th>
-					   <th scope="col">Utilization</th>
-			                   <th scope="col">End Date</th>
+					   <th scope="col" style="background-color: #007bff; color:white">Client</th>
+					   <th scope="col" style="background-color: #007bff; color:white">Utilization</th>
+			                   <th scope="col" style="background-color: #007bff; color:white">End Date</th>
 					</tr>
 					</thead>
 					<tbody>
 					{% for assignment in bio.7 %}
 					<tr>
-						<td>{{ assignment.account_name }}</td>
-						<td>{{ assignment.utilisation }}</td>
-						<td>{{ assignment.p3_end }}</td>
+						<td style="border-top:1px solid #17a2b8">{{ assignment.account_name }}</td>
+						<td style="border-top:1px solid #17a2b8">{{ assignment.utilisation }}</td>
+						<td style="border-top:1px solid #17a2b8">{{ assignment.p3_end }}</td>
 					</tr>
 					{% endfor %}
 					<tr>
-					<th scope="row">Total</th>
-					<td colspan="2" >{{ bio.8 }}</td>
+					<th scope="row" style="border-top:none">Total</th>
+					<td colspan="2"  style="border-top:none">{{ bio.8 }}</td>
 					</tbody>
 				    </table>
 	    </div>
             <div class="modal-footer">
 		    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}"  id="{{ bio.3.pk }}" value="{{ bio.8 }}">
-		                                    {% if bio.3.pk in roster %}
-						                                            Remove from cart
-											                                    {% else %}
-															                                            {% if bio.8 >= 100 %}
-																				                                                    Add Anyway
-																										                                            {% else %}
-																															                                                    Add to Cart
-																																					                                            {% endif %}
-																																										                                    {% endif %}
-																																														                                    </button>
-               
-                <a class="btn btn-sm btn-outline-primary" href="{{ bio.3.url }}">Open Bio</a>
+		        {% if bio.3.pk in roster %}
+					Remove from cart
+				{% else %}
+					{% if bio.8 >= 90 %}
+						Add Anyway
+					{% else %}
+						Add to Cart
+					{% endif %}
+				{% endif %}
+			</button>
+            <a class="btn btn-sm btn-outline-primary" href="{{ bio.3.url }}">Open Bio</a>
             </div>
         </div>
     </div>

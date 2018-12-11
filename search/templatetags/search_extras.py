@@ -1,6 +1,7 @@
 from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
+from django.contrib.auth.models import User, Group
 
 register = template.Library()
 
@@ -27,4 +28,11 @@ def get_importance(*args, **kwargs):
             normal_strings += '<span>%s</span> ' % (skill)
 
     return mark_safe("<p>%s %s</p>" % (bold_strings, normal_strings))
-    
+
+@register.filter(name='has_group') 
+def has_group(user, group_name):
+    return user.groups.filter(name=group_name).exists()
+
+@register.filter(name='divide') 
+def divide(numerator, denominator):
+    return numerator/denominator

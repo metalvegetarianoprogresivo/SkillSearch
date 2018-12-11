@@ -63,7 +63,7 @@
            </ul>
            
             <form class="form-inline my-2 my-lg-0 search-form justify-content-center" action="/search">
-            <input id="input-search" class="form-control mr-sm-2" type="text" name="q" placeholder="Search skills" {% if q %}value="{{ q }}"{% endif %}>
+            <input id="input-search" class="form-control mr-sm-2" type="text" name="q" placeholder="Search skills or names" {% if q %}value="{{ q }}"{% endif %}>
             <button  class="btn btn-success my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass"></span> Search</button>
                 <a id="buttonCart" class="btn btn-info mx-1 sm-block d-sm-none d-md-block d-none" href="{% url 'roster_detail' %}">
                 <span id="roster_count2" class="badge badge-sm badge-pill badge-info">0</span>
@@ -109,7 +109,7 @@
         {% endblock %}
         <footer class="footer">
             <div class="container">
-                <a href="https://skillssearcher.intersysconsulting.com/" class="text_footer">Skills Searcher team all rights reserved</a>
+                <a href="{% url 'credits'%}" class="text_footer">Skills Searcher team all rights reserved</a>
             </div>
         </footer>
     </body>

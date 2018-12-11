@@ -9,7 +9,22 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
+'''
+Important configuration
 
+If you are working localy with docker
+you need to set the Debug variable to True and add to the dictonary DATABASES the next kay-value pair
+'HOST': 'mongo'
+and modify the document properties.txt, it has more instructions.
+
+If you are working from a server
+you need to set the Debug variable to False and remove from the dictonary DATABASES the next kay-value pair
+'HOST': 'mongo'
+and modify the document properties.txt, it has more instructions.
+
+Remember: We are using the next command to run the app in server
+python3 manage.py runserver --insecure
+'''
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -82,6 +97,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'consultantmarket',
+        'HOST': 'mongo'
     }
 }
 
@@ -156,7 +172,6 @@ SHAREPOINT_SUFFIX = (
     '&p_ID=815&RootFolder=%2fmexico%2fShared%20Documents%2fResumes&'
     'PageFirstRow=31&View=d8edd401-9206-4309-8d07-a5c43cfc3180'
 )
-
 try:
     from .localsettings import *
 except:
@@ -167,3 +182,4 @@ EMAIL_HOST_USER = 'intersysinternalapplication@intersysconsulting.com'
 EMAIL_HOST_PASSWORD = 'Internal2018!'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+

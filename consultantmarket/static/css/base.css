@@ -9,7 +9,7 @@ body{
     color: #d8d9da!important
 }
 .navbar {
-    z-index: 9999;
+    z-index: 1000;
     width: 101%;
     opacity: inherit;
 }
