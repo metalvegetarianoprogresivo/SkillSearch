@@ -16,6 +16,21 @@
         <!-- Base statuc -->
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
         <link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
+        <style>
+/* hover dropdown menus */
+@media only screen and (max-width: 991px) {
+    .navbar-hover .show > .dropdown-toggle::after{
+        transform: rotate(-90deg);
+    }
+}
+@media only screen and (min-width: 992px) {
+    .navbar-hover .collapse ul li{position:relative;}
+    .navbar-hover .collapse ul li:hover> ul{display:block}
+    .navbar-hover .collapse ul ul{position:absolute;top:100%;left:0;min-width:250px;display:none}
+    .navbar-hover .collapse ul ul ul{position:absolute;top:0;left:100%;min-width:250px;display:none}
+    /*.navbar-hover .collapse ul ul ul ul{position:absolute;top:0;left:-100%;min-width:250px;display:none;z-index:1}*/
+}
+                </style>
         <script>
             function get_roster_bios(){
                 $.post(
@@ -31,6 +46,30 @@
             $(document).ready(function(){
                 get_roster_bios();
             });
+        </script>
+       <script>
+$( '.dropdown-menu .dropdown-toggle' ).on('click', function() {
+    
+    var $el = $(this);
+    var $parent = $el.offsetParent(".dropdown-menu");
+    
+    if (!$el.next().hasClass("show")) {
+        $el.parents('.dropdown-menu').first().find(".show").removeClass("show");
+    }
+    $el.next(".dropdown-menu").toggleClass("show").parent("li").toggleClass("show");
+    
+    $el.parents("li.nav-item.dropdown.show").on("hidden.bs.dropdown", function () {
+        $(".dropdown-menu .show").removeClass("show");
+    });
+    
+    if (!$parent.parent().hasClass("navbar-nav")) {
+        $el.next().css({"top":$el[0].offsetTop,"left":$parent.outerWidth()});
+    }
+    
+    return false;
+});
+
+
         </script>
         {% block extra_headers %}
         {% endblock %}
@@ -50,45 +89,48 @@
             </li>
 
 
-<!--             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Dropdown
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Dropdown
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
-                    </ul>
-                    </li>
-                </ul>
-                </li>
- -->
+    <style>
+        #OpenProject{
+            display: block !important;
+        }
+        #CloseProject{
+            display: none !important;
+        }
+    </style>
+    <script>
+        function myFunction() {
+           var x = document.getElementsByClassName("changingStatus")[0].id;
+ //  document.getElementById("test").innerHTML = x;
+//   var x = document.getElementByClassName("hola").getAttribute("id");
+  if(x=="OpenProject"){
+   document.getElementById('OpenProject').id = "CloseProject";
+  }
+  else{     
+  document.getElementById('CloseProject').id = "OpenProject";
+  }
+}
+    </script>
+
 
  <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button class="btn btn-secondary dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
       Projects
     </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <div class="dropdown-menu changingStatus" aria-labelledby="dropdownMenuButton" id="OpenProject">
 
  <div id="accordion">
     <div class="card">
       <div class="card-header" id="headingOne">
         <h5 class="mb-0">
-          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <button class="btn btn-link" id="test" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" aria-expanded="true">
             Zdata
           </button>
         </h5>
       </div>
   
       <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-        <div class="card-body">
-            <a class="dropdown-item" href="#">IDAP_DB2</a>
+        <div class="card-body" >
+            <a class="dropdown-item" id="test" href="#">IDAP_DB2</a>
             <a class="dropdown-item" href="#">Pipeline</a>
             <a class="dropdown-item" href="#">SupExCriminalMaster</a>
         </div>
@@ -104,7 +146,7 @@
       </div>
       <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
         <div class="card-body">
-            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="http://localhost:8000/roster/detail/">Action</a>
             <a class="dropdown-item" href="#">Another action</a>
             <a class="dropdown-item" href="#">Something else here</a>        </div>
       </div>
@@ -127,8 +169,6 @@
   </div>
 </div>
 </div>
-
-
 
 
              <a id="buttonCart" class="btn btn-info mx-1 sm-block d-none d-sm-block d-md-none d-block d-sm-none" href="{% url 'roster_detail' %}">
@@ -160,6 +200,10 @@
             </form>
            </div>
         </nav>
+
+
+
+
         <div class="container" style="top:30px; padding-top: 60px;">
             {% comment %}
             <div class="modal right fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
