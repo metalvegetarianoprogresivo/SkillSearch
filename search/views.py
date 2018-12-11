@@ -12,12 +12,10 @@ from consultantmarket import redirect_url
 from django.contrib.auth.models import User
 
 def search(request):
-    intersys_user = User.objects.get(email = request.session['mail'])
-    request.user = intersys_user
     loged_in = redirect_url.redirect_url(request)
     if loged_in:
-       return redirect(loged_in)
-    
+        print("loged_in"+loged_in)
+        return redirect(loged_in)
     try:
         q = request.GET["q"]
     except:

@@ -71,8 +71,6 @@ def remove_from_roster(request):
     return JsonResponse(response)
 
 def roster_detail(request):
-    intersys_user = User.objects.get(email = request.session['mail'])
-    request.user = intersys_user
     loged_in = redirect_url.redirect_url(request)
     if loged_in:
        return redirect(loged_in)
@@ -122,10 +120,10 @@ def roster_detail(request):
 
 
 def send_roster(request):
-    
-    if(request.session["authenticated"] == None or request.session["authenticated"] == False):
-        return redirect("https://skillssearcher.intersysconsulting.com/")
-    
+
+    loged_in = redirect_url.redirect_url(request)
+    if loged_in:
+       return redirect(loged_in)    
 #confirm from_mail in 'consultantmarket/settings.py'
     if request.method == 'POST':
         form = sendForm(request.POST)
