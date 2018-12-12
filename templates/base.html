@@ -128,6 +128,15 @@ $( '.dropdown-menu .dropdown-toggle' ).on('click', function() {
 
  <div id="accordion">
         <div class="card">
+                <div class="card-header" id="headingTwo">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link collapsed GrayColor" >
+                      Add new Project <span class="oi oi-cart"></span>
+                    </button>
+                  </h5>
+                </div>
+              </div>    
+    <div class="card">
                 <div class="card-header" id="headingOne">
                   <h5 class="mb-0">
                     <button class="btn btn-link GrayColor" id="test" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" aria-expanded="true">
@@ -140,7 +149,7 @@ $( '.dropdown-menu .dropdown-toggle' ).on('click', function() {
                   <div class="card-body" >
                       <a class="dropdown-item" id="test" href="#"> IDAP_DB2</a>
                       <a class="dropdown-item" href="#">Pipeline</a>
-                      <a class="dropdown-item" href="#"> SupExCriminalMaster</a>
+                      <a class="dropdown-item" href="#"> Add new roster <span class="oi oi-cart"></span></a>
                   </div>
                 </div>
               </div>
@@ -156,7 +165,7 @@ $( '.dropdown-menu .dropdown-toggle' ).on('click', function() {
         <div class="card-body">
             <a class="dropdown-item" href="·"> Action</a>
             <a class="dropdown-item" href="#"> Another action</a>
-            <a class="dropdown-item" href="#"> Something else here</a>        </div>
+            <a class="dropdown-item" href="#"> Add new roster</a>        </div>
       </div>
     </div>
     <div class="card">
@@ -171,12 +180,13 @@ $( '.dropdown-menu .dropdown-toggle' ).on('click', function() {
         <div class="card-body">
             <a class="dropdown-item" href="#"><span class="oi oi-people"></span> Action</a>
             <a class="dropdown-item" href="#"><span class="oi oi-people"></span> Another action</a>
-            <a class="dropdown-item" href="#"><span class="oi oi-people"></span> Something else here</a>        </div>
+            <a class="dropdown-item" href="#"><span class="oi oi-people"></span> Add new roster</a>        </div>
       </div>
     </div>
   </div>
 </div>
 </div>
+
 
 
              <a id="buttonCart" class="btn btn-info mx-1 sm-block d-none d-sm-block d-md-none d-block d-sm-none" href="{% url 'roster_detail' %}">
