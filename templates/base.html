@@ -90,6 +90,10 @@ $( '.dropdown-menu .dropdown-toggle' ).on('click', function() {
 
 
     <style>
+        .dimColor{
+            background-color: dimgray !important;
+        }
+
         #OpenProject{
             display: block !important;
         }
@@ -104,6 +108,7 @@ $( '.dropdown-menu .dropdown-toggle' ).on('click', function() {
             height:320px;
             border:1px solid #FFFFFF;
         }
+
     </style>
     <script>
         function myFunction() {
@@ -121,7 +126,7 @@ $( '.dropdown-menu .dropdown-toggle' ).on('click', function() {
 
 
  <div class="dropdown hola">
-    <button class="btn btn-secondary dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+    <button class="btn btn-secondary dropdown-toggle dimColor" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
       Projects
     </button>
     <div class="dropdown-menu changingStatus scrollProject" aria-labelledby="dropdownMenuButton" id="CloseProject">
