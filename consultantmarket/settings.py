@@ -97,8 +97,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'consultantmarket',
-        'HOST': 'mongo'
-    }
+        'HOST': 'mongo',
+        'ENFORCE_SCHEMA': False
+        }
 }
 
 
