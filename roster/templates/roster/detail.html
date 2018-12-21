@@ -19,7 +19,10 @@
     function removeFromRoster(id, pk){
         console.log("id: "+id+" pk:"+pk);
         $('#removeConfirmation'+id).modal('toggle'); 
+        //falta borrar del roster el consultor seleccionado, actualizar los contadores de consultores y costo total si refrescar. 
+        //<a class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
     }
+
 </script>
 <script>
     $(document).ready(function() {
