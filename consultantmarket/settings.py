@@ -40,6 +40,9 @@ SECRET_KEY = 'o&nx!s$tilel2kn7^$1%4vdo*g5zpu9+e4d8*668w(oj!99jde'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# When this flag is set to true, fake data is used
+FAKE_DATA = True
+
 ALLOWED_HOSTS = ["40.113.199.40","localhost","127.0.0.1","https://skillssearcher.intersysconsulting.com/","django"]
 
 
