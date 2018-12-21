@@ -16,6 +16,10 @@
             $card.addClass('hover');
         }
     }
+    function removeFromRoster(id, pk){
+        console.log("id: "+id+" pk:"+pk);
+        $('#removeConfirmation'+id).modal('toggle'); 
+    }
 </script>
 <script>
     $(document).ready(function() {
@@ -272,14 +276,22 @@
                                         <a href="#theModal" class="nav-link text-center btn btn-sm btn-outline-success profile-button" data-toggle="modal" data-target="#theModal{{ bio.bio.data.id }}"><span class="oi oi-person"></a>
                                         <center>
     
-                                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
-                                                    {% if not bio.bio.data.pk in roster %} 
-                                                    Remove from cart 
+                                            
+                                                    {% if not bio.bio.data.pk in roster %}
+                                                    <a class="btn btn-sm btn-outline-success d-none roster-cart" href="#removeConfirmation{{ bio.bio.data.id }}" data-toggle="modal" data-target="#removeConfirmation{{ bio.bio.data.id }}">
+                                                    Remove from cart
+                                                    </a> 
                                                 {% else %}
                                                     {% if bio.bio.assignments.2 >= 90 %}
+                                                    <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
                                                         Add Anyway
+                                                        </button>
+                                                        
                                                     {% else %}
+                                                    <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
                                                         Add to Cart
+                                                        </button>
+                                                        
                                                     {% endif %}
                                                 {% endif %}
                                             </button>
@@ -375,6 +387,33 @@
         </div>
     </div>
 
+    <div class="modal fade" id="removeConfirmation{{ bio.bio.data.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Remove consultant</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              This action will remove the consultant permantly and modify the total cost.
+              <strong>Are you sure you want to proceed?</strong>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <a class="btn btn-danger d-none roster-cart" style="color:white" onclick="removeFromRoster({{bio.bio.data.id}},{{bio.bio.data.pk}})">Remove</a>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
     {% endfor %}
 
     <!-- Modal -->
@@ -434,6 +473,11 @@
             </div>
         </div>
     </div>
+
+
+
+
+    
 
 
     {% endblock %}
