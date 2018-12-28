@@ -86,6 +86,18 @@ def credits(request):
         pass
     return render(request, "templates/credits.html")
 
+def project(request):
+    try:
+        today = datetime.date.today()
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"project"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
+    return render(request, "templates/project.html")
+
+
 def getData(ac_t,url_ac):
     r=requests.get(url_ac, headers={
         'Content-type': "application/json",

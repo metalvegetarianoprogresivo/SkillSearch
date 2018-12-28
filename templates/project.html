@@ -1,0 +1,116 @@
+{% extends "templates/base.html" %}
+{% load static %}
+{% block extra_headers %}
+{% endblock %}
+{% block content %}
+<div class="container">
+		<div id="accordion">
+				<div class="card">
+				  <div class="card-header" id="headingOne">
+					<h5 class="mb-0">
+					  <button class="btn btn-link" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="#collapse1">
+						Big Commerce
+					  </button>
+					</h5>
+				  </div>
+			  
+				  <div id="collapse1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+					<div class="card-body">
+							<div class="row">
+									<div class="col-7">
+										<h5 class="ml-3">Project1</h5>
+									</div>
+									<div class="col-2">
+											<button type="button" class="btn btn-success float-right">Edit</button>
+									</div>
+									<div class="col-3">
+											<button type="button" class="btn btn-danger">Remove</button>
+									</div>
+								</div>
+					</div>
+					<div class="card-body">
+							<div class="row">
+									<div class="col-7">
+										<h5 class="ml-3">Project2</h5>
+									</div>
+									<div class="col-2">
+											<button type="button" class="btn btn-success float-right">Edit</button>
+									</div>
+									<div class="col-3">
+											<button type="button" class="btn btn-danger">Remove</button>
+									</div>
+								</div>
+					</div>
+					<div class="card-body">
+							<div class="row">
+									<div class="col-7">
+										<h5 class="ml-3">Project3</h5>
+									</div>
+									<div class="col-2">
+											<button type="button" class="btn btn-success float-right">Edit</button>
+									</div>
+									<div class="col-3">
+											<button type="button" class="btn btn-danger">Remove</button>
+									</div>
+								</div>
+					</div>
+					
+				  </div>
+				</div>
+				</div>
+				<div id="accordion">
+						<div class="card">
+						  <div class="card-header" id="headingOne">
+							<h5 class="mb-0">
+							  <button class="btn btn-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="true" aria-controls="#collapse2">
+								Blue cross blue shield of North Carolina
+							  </button>
+							</h5>
+						  </div>
+					  
+						  <div id="collapse2" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+							<div class="card-body">
+									<div class="row">
+											<div class="col-7">
+												<h5 class="ml-3">Project1</h5>
+											</div>
+											<div class="col-2">
+													<button type="button" class="btn btn-success float-right">Edit</button>
+											</div>
+											<div class="col-3">
+													<button type="button" class="btn btn-danger">Remove</button>
+											</div>
+										</div>
+							</div>
+							<div class="card-body">
+									<div class="row">
+											<div class="col-7">
+												<h5 class="ml-3">Project2</h5>
+											</div>
+											<div class="col-2">
+													<button type="button" class="btn btn-success float-right">Edit</button>
+											</div>
+											<div class="col-3">
+													<button type="button" class="btn btn-danger">Remove</button>
+											</div>
+										</div>
+							</div>
+							<div class="card-body">
+									<div class="row">
+											<div class="col-7">
+												<h5 class="ml-3">Project3</h5>
+											</div>
+											<div class="col-2">
+													<button type="button" class="btn btn-success float-right">Edit</button>
+											</div>
+											<div class="col-3">
+													<button type="button" class="btn btn-danger">Remove</button>
+											</div>
+										</div>
+							</div>
+							
+						  </div>
+						</div>
+						</div>
+</div>
+{% endblock %}
