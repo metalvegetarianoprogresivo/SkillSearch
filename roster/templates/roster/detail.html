@@ -3,8 +3,35 @@
 <script src="{% static 'js/modal.js' %}"></script>
 
 <script type="text/javascript">
+
     $().ready(function() {
         $('[rel="tooltip"]').tooltip();
+    });
+
+    function remove_from_roster(pk){
+                $.post(
+                    "{% url 'remove_from_roster' %}",
+                    {
+                        bio_id: pk
+                    },
+                    function(data){
+                       $('#row'+pk).remove();  
+                       get_roster_bios();
+                       setTimeout(function(){
+                            console.log(roster_count);
+                            if(roster_count == 0){
+                                $('#roster_table').remove();
+                                $('#empty_roster').show();
+                            }
+                        }, 100);
+                       
+                    }
+                );
+            }
+
+    $(document).ready(function(){
+        get_roster_bios();
+        $('#empty_roster').hide();
     });
 
     function rotateCard(btn) {
@@ -17,8 +44,9 @@
         }
     }
     function removeFromRoster(id, pk){
-        console.log("id: "+id+" pk:"+pk);
+        //console.log("id: "+id+" pk:"+pk);
         $('#removeConfirmation'+id).modal('toggle'); 
+        remove_from_roster(pk);
         //falta borrar del roster el consultor seleccionado, actualizar los contadores de consultores y costo total si refrescar. 
         //<a class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
     }
@@ -57,11 +85,12 @@
         card.classList.toggle('is-flipped');
     });
 </script>
-
 {% endblock %} {% block content %}
 
-<div class="container my-4 pb-5">
-    <div class="card ">
+<div class="container my-4 pb-5" id="roster_table">
+
+
+    <div class="card"  >
         <div class="card-header">
             {% if bios %}
 
@@ -105,7 +134,7 @@
         </div>
 
         {% for bio in consultant.bios %} {% if bio %} {% comment %} start Smartphone view  {% endcomment %}
-
+        <div id="row{{ bio.bio.data.pk }}">
         <div class="pt-3" style="background: LightGrey !important"></div>
         <div class="card-container manual-flip d-block d-sm-none ">
             <div class="card ">
@@ -306,6 +335,7 @@
                     </table>
                 </div>
             </div>
+            </div>
             {% comment %} End pc view {% endcomment %} {% endif %} {% endfor %} {% comment %} start paginator {% endcomment %} {% comment %} finish paginator {% endcomment %} {% endif %}
         </div>
     </div>
@@ -477,9 +507,13 @@
         </div>
     </div>
 
-
-
-
+<div class="container my-4 pb-5" id="empty_roster">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mt-2 float-left"> You do not have roster to show </h5>
+        </div>
+    </div>
+</div>
     
 
 

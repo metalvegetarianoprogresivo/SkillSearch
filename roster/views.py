@@ -20,6 +20,7 @@ from django.contrib.auth.models import User
 @csrf_exempt
 
 def get_roster_bios(request):
+    #roster is a list of indexes
     roster = request.session.setdefault('roster', [])
     response = {
         'bios': roster
@@ -88,7 +89,7 @@ def roster_detail(request):
             total_cost += bio.cost/8
         else:
             total_cost += bio.cost
-        print("cost "+str(total_cost))
+        #print("cost "+str(total_cost))
         consultant['bios'].append(
                 {
                     'bio':{

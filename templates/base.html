@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
         <link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
         <script>
+        var roster_count;
             function get_roster_bios(){
                 $.post(
                     "{% url 'get_roster_bios' %}",
@@ -24,6 +25,7 @@
                         //roster_bios = data.bios;
                         $('#roster_count2').html(data.bios.length);
                         $('#roster_count1').html(data.bios.length);
+                        roster_count = data.bios.length;
                     }
                 );
             }
