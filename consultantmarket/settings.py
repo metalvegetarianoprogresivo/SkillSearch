@@ -178,8 +178,7 @@ except:
     pass
 
 EMAIL_HOST = 'smtp-mail.outlook.com'
-EMAIL_HOST_USER = 'intersysinternalapplication@intersysconsulting.com'
+EMAIL_HOST_USER = 'intersysinternalapp@intersysconsulting.com'
 EMAIL_HOST_PASSWORD = 'Internal2018!'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
