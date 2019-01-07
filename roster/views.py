@@ -22,8 +22,18 @@ from django.contrib.auth.models import User
 def get_roster_bios(request):
     #roster is a list of indexes
     roster = request.session.setdefault('roster', [])
+    bios = Bio.objects.filter(pk__in=roster).order_by('name')
+
+    total_cost = 0
+    for bio in bios:
+        if bio.cost_type == "a8o0c000000bqdXAAQ":
+            total_cost += bio.cost/8
+        else:
+            total_cost += bio.cost
+
     response = {
-        'bios': roster
+        'bios': roster,
+        'total_cost': total_cost
     }
     try:
         today = datetime.date.today() 

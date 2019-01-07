@@ -17,11 +17,15 @@
                     function(data){
                        $('#row'+pk).remove();  
                        get_roster_bios();
+                       
                        setTimeout(function(){
                             console.log(roster_count);
+                            $('#number_consultants_desktop').text(String(roster_count)+" consultants");
+                            $('#total_cost_desktop').text("Total Hourly Cost: $"+String(roster_cost));
                             if(roster_count == 0){
                                 $('#roster_table').remove();
                                 $('#empty_roster').show();
+                                
                             }
                         }, 100);
                        
@@ -98,8 +102,8 @@
             <div class="header-container float-left">
             <h5 class="mt-2">{{ title }} {% if q %} for {{ q }} {% endif %}</h5>
             {% if user|has_group:"Sales" %}
-            <p class="header-note">{{ total_consultants }} consultants</p>
-            <p class="header-note">Total Hourly Cost: ${{ total_cost|floatformat:2 }}</p>
+            <p class="header-note" id="number_consultants_desktop">{{ total_consultants }} consultants</p>
+            <p class="header-note" id="total_cost_desktop">Total Hourly Cost: ${{ total_cost|floatformat:2 }}</p>
             </div>
             <button type="button" class="btn btn-primary float-right btn-info send-roster" data-toggle="modal" data-target="#exampleModalCenter">
                 Send Roster

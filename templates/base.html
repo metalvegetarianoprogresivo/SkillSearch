@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
         <script>
         var roster_count;
+        var roster_cost;
             function get_roster_bios(){
                 $.post(
                     "{% url 'get_roster_bios' %}",
@@ -26,6 +27,7 @@
                         $('#roster_count2').html(data.bios.length);
                         $('#roster_count1').html(data.bios.length);
                         roster_count = data.bios.length;
+                        roster_cost = data.total_cost;
                     }
                 );
             }
