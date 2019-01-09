@@ -15,7 +15,6 @@
             }
         );
     }
-
     $(document).ready(function(){
         get_roster_bios();
     });
@@ -25,128 +24,116 @@
     <body>
     {% block content %}
 
-<h3 class="note text-center">SKILLS SEARCHER TEAM</h3>
-
-<section>
-	<div class="container">
-		<div class="row flex-center sm-no-flex">
-
-			<div class="pull-right sm-no-float col-md-8">
-				<ul class="team-members">
-					<!-- single member row starts -->
-					<li class="clearfix">
-						<div class="member-details">
-							<div>
-								<img src="{% static 'img/alan.png' %}" alt="UI Designer">
-								<div class="member-info">
-									<h3>Alan</h3>
-									<p>Muñoz</p>
-								</div>
-							</div>
-						</div>
-						
-						<div class="member-details">
-							<div>
-								<img src="{% static 'img/alex.png' %}" alt="UI Designer">
-								<div class="member-info">
-									<h3>Alex</h3>
-									<p>Gomez</p>
-								</div>
-							</div>
-						</div>
-						
-						<div class="member-details">
-							<div>
-								<img src="{% static 'img/eduardo.png' %}" alt="UI Designer">
-								<div class="member-info">
-									<h3>Eduardo</h3>
-									<p>Gamboa</p>
-								</div>
-							</div>
-						</div>
-					</li><!-- /single member row ends -->
-					
-					<!-- single member row starts -->
-					<li class="clearfix">
-						<div class="member-details">
-							<div>
-								<img src="{% static 'img/andy.png' %}" alt="UI Designer">
-								<div class="member-info">
-									<h3>Andrea</h3>
-									<p>Barba</p>
-								</div>
-							</div>
-						</div>
-						
-						<div class="member-details">
-							<div>
-								<img src="{% static 'img/logo3.png' %}" alt="UI Designer">
-								<div class="member-info">
-									<h3>Team</h3>
-									<p>Skills Searcher</p>
-								</div>
-							</div>
-						</div>
-						
-						<div class="member-details">
-							<div>
-								<img src="{% static 'img/hector.png' %}" alt="UI Designer">
-								<div class="member-info">
-									<h3>Hector</h3>
-									<p>Rodriguez</p>
-								</div>
-							</div>
-						</div>
-					</li><!-- /single member row ends -->
-
-					<!-- single member row starts -->
-					<li class="clearfix">
-						<div class="member-details">
-							<div>
-								<img src="{% static 'img/heloel.png' %}" alt="UI Designer">
-								<div class="member-info">
-									<h3>Heloel</h3>
-									<p>Hernandez</p>
-								</div>
-							</div>
-						</div>
-						
-						<div class="member-details">
-							<div>
-								<img src="{% static 'img/tony.png' %}" alt="UI Designer">
-								<div class="member-info">
-									<h3>Eduardo</h3>
-									<p>Davalos</p>
-								</div>
-							</div>
-						</div>
-						
-						<div class="member-details">
-							<div>
-								<img src="{% static 'img/mau.png' %}" alt="UI Designer">
-								<div class="member-info">
-									<h3>Mauricio</h3>
-									<p>Saavedra</p>
-								</div>
-							</div>
-						</div>
-					</li><!-- /single member row ends -->
-
-				</ul><!-- /end team-photos -->
-			</div><!-- /end col-md-8 -->
-			
-			<div class="pull-left col-md-4 sm-text-center">
-				<div class="team-overview">
-          <h2>Who Are We?</h2>
-					<p><div>Our team members are strategic in their thinking, so they can organize thoughts to suit the expectations that we have for the tool and have the courage and confidence to work and  share their ideas.
-					We are really proud of the Skills Searcher Team!</div></p>
-                    <a href="https://skillssearcher.intersysconsulting.com/">Return to Skills searcher</a>
-
+ <div class="team-grid">
+        <div class="container">
+            <div class="intro">
+                <h2 class="text-center">SKILLS SEARCHER TEAM </h2>
+                  <p class="text-center">Our team members are strategic in their thinking, so they can organize thoughts to suit the expectations that we have for the tool and have the courage and confidence to work and share their ideas. We are really proud of the Skills Searcher Team!  </p>
+            </div>
+            <div class="row people">
+                <div class="col-md-4 col-lg-3 item">
+                    <div class="box" style="background-image:url({% static 'img/ALEX.JPG' %})">
+                        <div class="cover">
+                            <h3 class="name">Alejandro Gomez</h3>
+                            <p class="title">Manager</p>
+                            <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3 item">
+                    <div class="box" style="background-image:url({% static 'img/CRISTINA.jpg' %})">
+                        <div class="cover">
+                            <h3 class="name">Cristina Torres</h3>
+                            <p class="title">Developer </p>
+                            <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3 item">
+                    <div class="box" style="background-image:url({% static 'img/HELOEL.jpg' %})">
+                        <div class="cover">
+                            <h3 class="name">Heloel Hernadez</h3>
+                            <p class="title">Developer </p>
+                            <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="col-md-4 col-lg-3 item">
+                    <div class="box" style="background-image:url({% static 'img/TONY.jpg' %})">
+                        <div class="cover">
+                            <h3 class="name">Eduardo Davalos</h3>
+                            <p class="title">Developer </p>
+                            <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3 item">
+                    <div class="box" style="background-image:url({% static 'img/ALAN.JPG' %})">
+                        <div class="cover">
+                            <h3 class="name">Alan Munoz</h3>
+                            <p class="title">Developer</p>
+                            <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3 item">
+                    <div class="box" style="background-image:url({% static 'img/EDUARDO.jpg' %})">
+                        <div class="cover">
+                            <h3 class="name">Eduardo Gamboa</h3>
+                            <p class="title">Developer</p>
+                            <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="col-md-4 col-lg-3 item">
+                    <div class="box" style="background-image:url({% static 'img/MIGUEL.jpg' %})">
+                        <div class="cover">
+                            <h3 class="name">Miguel Martinez</h3>
+                            <p class="title">SDET</p>
+                            <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3 item">
+                    <div class="box" style="background-image:url({% static 'img/ANDREA.JPG' %})">
+                        <div class="cover">
+                            <h3 class="name">Andrea Barba</h3>
+                            <p class="title">Project Manager</p>
+                            <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                                                <div class="col-md-4 col-lg-3 item">
+                    <div class="box" style="background-image:url({% static 'img/MAURICIO.jpg' %})">
+                        <div class="cover">
+                            <h3 class="name">Mauricio Saavedra</h3>
+                            <p class="title">Developer</p>
+                            <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                                                <div class="col-md-4 col-lg-3 item">
+                    <div class="box" style="background-image:url({% static 'img/HECTOR.jpg' %})">
+                        <div class="cover">
+                            <h3 class="name">Hector Rodriguez</h3>
+                            <p class="title">Developer</p>
+                            <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
 				</div>
-			</div><!-- /end col-md-4 -->
-		</div><!-- /end row -->
-	</div><!-- /end container -->
-</section>
+				<div class="col-md-4 col-lg-3 item">
+                    <div class="box" style="background-image:url({% static 'img/ESMERALDA.jpg' %})">
+                        <div class="cover">
+                            <h3 class="name">Esmeralda Sanchez</h3>
+                            <p class="title">Developer</p>
+                            <div class="social"><a href="#"><i class="fa fa-facebook-official"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         {% endblock %}
     </body>
 </html>
