@@ -6,12 +6,12 @@ body{
 }
 /* Top menu */
 .text_footer{
-    color: #d8d9da!important
+    color: #d8d9da!important;
 }
 .navbar {
     z-index: 1000;
     width: 101%;
-    opacity: inherit;
+    opacity: inherit!important;
 }
 .custom-navbar-toggler-icon {
     margin-left: 5px;
