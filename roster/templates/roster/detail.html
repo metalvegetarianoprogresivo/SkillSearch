@@ -21,7 +21,7 @@
                        setTimeout(function(){
                             console.log(roster_count);
                             $('#number_consultants_desktop').text(String(roster_count)+" consultants");
-                            $('#total_cost_desktop').text("Total Hourly Cost: $"+String(roster_cost));
+                            $('#total_cost_desktop').text("Total Hourly Cost: $"+ String(roster_cost.toFixed(2)));
                             if(roster_count == 0){
                                 $('#roster_table').remove();
                                 $('#empty_roster').show();
