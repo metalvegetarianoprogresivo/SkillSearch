@@ -69,6 +69,7 @@
             </button>    
             {% else %}
                 {% if user|has_group:"Practice Director" %}
+                <p class="header-note">{{ total_consultants }} consultants</p>
                 </div>
                 <button type="button" class="btn btn-primary float-right btn-info" data-toggle="modal" data-target="#exampleModalCenter">
                 Send Roster

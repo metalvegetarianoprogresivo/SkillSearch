@@ -41,7 +41,7 @@ def index(request):
 
       
 def get_documents(request):
-    if settings.DEBUG:
+    if settings.FAKE_DATA:
         return redirect(redirect_url.read_main_url()+"bios/?code=32ewadfsghtyu678iuyhkj==")
     else:
         try:
@@ -55,7 +55,7 @@ def get_documents(request):
 
 def get_token(request, code):
     sufix = "/services/oauth2/token"
-    if settings.DEBUG:
+    if settings.FAKE_DATA:
         url = "http://fake-kimble-server:3010"+sufix
     else:
         url = "https://intersys.my.salesforce.com"+sufix
@@ -74,7 +74,7 @@ def get_token(request, code):
 
 def get_location(token, name):
     sufix = "/services/data/v24.0/query?q="
-    if settings.DEBUG:
+    if settings.FAKE_DATA:
         url = "http://fake-kimble-server:3010"+sufix
     else: 
         url = "https://intersys.my.salesforce.com"+sufix
@@ -98,7 +98,7 @@ def get_location(token, name):
 
 def get_name_link(token):
     sufix = "/services/data/v24.0/query?q="
-    if settings.DEBUG:
+    if settings.FAKE_DATA:
         url = "http://fake-kimble-server:3010"+sufix
     else: 
         url = "https://intersys.my.salesforce.com"+sufix
@@ -113,13 +113,19 @@ def get_name_link(token):
             if consultant.get('Resource_Bio__r'):
                 if consultant['Resource_Bio__r'].get('Bio_Url__c') is not None:
                     names_link[consultant['Name']] = consultant['Resource_Bio__r']['Bio_Url__c']
-    
+
+    from bios.models import Bio
+    print('vivo')
+    print(Bio.objects.all())
+    records_in_db = Bio.objects.all()
+    [record.delete() for record in records_in_db if record.name not in [y.get('Name') for y in [x for x in consultants.get('records')] if y.get('Name')]]
+
     return names_link
 
 
 def get_title(token, name):
     sufix = "/services/data/v24.0/query?q="
-    if settings.DEBUG:
+    if settings.FAKE_DATA:
         url = "http://fake-kimble-server:3010"+sufix
     else: 
         url = "https://intersys.my.salesforce.com"+sufix
@@ -142,7 +148,7 @@ def get_title(token, name):
 
 def get_email(token, name):
     sufix = "/services/data/v24.0/query?q="
-    if settings.DEBUG:
+    if settings.FAKE_DATA:
         url = "http://fake-kimble-server:3010"+sufix
     else: 
         url = "https://intersys.my.salesforce.com"+sufix
@@ -161,7 +167,7 @@ def get_email(token, name):
 
 def get_cost(token, name):
     sufix = "/services/data/v24.0/query?q="
-    if settings.DEBUG:
+    if settings.FAKE_DATA:
         url = "http://fake-kimble-server:3010"+sufix
     else: 
         url = "https://intersys.my.salesforce.com"+sufix
@@ -180,7 +186,7 @@ def get_cost(token, name):
 
 def get_cost_type(token, name):
     sufix = "/services/data/v24.0/query?q="
-    if settings.DEBUG:
+    if settings.FAKE_DATA:
         url = "http://fake-kimble-server:3010"+sufix
     else: 
         url = "https://intersys.my.salesforce.com"+sufix
@@ -199,7 +205,7 @@ def get_cost_type(token, name):
 
 def get_assignments(token, bio):
     sufix = "/services/data/v24.0/query?q="
-    if settings.DEBUG:
+    if settings.FAKE_DATA:
         url = "http://fake-kimble-server:3010"+sufix
     else: 
         url = "https://intersys.my.salesforce.com"+sufix
