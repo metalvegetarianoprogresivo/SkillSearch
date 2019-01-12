@@ -113,7 +113,13 @@ def get_name_link(token):
             if consultant.get('Resource_Bio__r'):
                 if consultant['Resource_Bio__r'].get('Bio_Url__c') is not None:
                     names_link[consultant['Name']] = consultant['Resource_Bio__r']['Bio_Url__c']
-    
+
+    from bios.models import Bio
+    print('vivo')
+    print(Bio.objects.all())
+    records_in_db = Bio.objects.all()
+    [record.delete() for record in records_in_db if record.name not in [y.get('Name') for y in [x for x in consultants.get('records')] if y.get('Name')]]
+
     return names_link
 
 
