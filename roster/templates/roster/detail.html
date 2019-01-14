@@ -3,8 +3,44 @@
 <script src="{% static 'js/modal.js' %}"></script>
 
 <script type="text/javascript">
+
     $().ready(function() {
         $('[rel="tooltip"]').tooltip();
+    });
+
+    function remove_from_roster(pk){
+                $.post(
+                    "{% url 'remove_from_roster' %}",
+                    {
+                        bio_id: pk
+                    },
+                    function(data){
+                       $('#row'+pk).remove();  
+                       get_roster_bios();
+                       
+                       setTimeout(function(){
+                            console.log(roster_count);  
+                            if(roster_count == 1){
+                                $('#number_consultants_desktop').text(String(roster_count)+" consultant");
+                            }
+                            else {
+                                $('#number_consultants_desktop').text(String(roster_count)+" consultants");
+                            }
+                            $('#total_cost_desktop').text("Total Hourly Cost: $"+ String(roster_cost.toFixed(2)));
+                            if(roster_count == 0){
+                                $('#roster_table').remove();
+                                $('#empty_roster').show();
+                                
+                            }
+                        }, 150);
+                       
+                    }
+                );
+            }
+
+    $(document).ready(function(){
+        get_roster_bios();
+        $('#empty_roster').hide();
     });
 
     function rotateCard(btn) {
@@ -16,6 +52,15 @@
             $card.addClass('hover');
         }
     }
+    function removeFromRoster(id, pk){
+        //console.log("id: "+id+" pk:"+pk);
+        $('#removeConfirmation'+id).modal('hide'); 
+        $('#theModal'+id).modal('hide');
+        remove_from_roster(pk);
+        //falta borrar del roster el consultor seleccionado, actualizar los contadores de consultores y costo total si refrescar. 
+        //<a class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
+    }
+
 </script>
 <script>
     $(document).ready(function() {
@@ -50,19 +95,20 @@
         card.classList.toggle('is-flipped');
     });
 </script>
-
 {% endblock %} {% block content %}
 
-<div class="container my-4 pb-5">
-    <div class="card ">
+<div class="container my-4 pb-5" id="roster_table">
+
+
+    <div class="card"  >
         <div class="card-header">
             {% if bios %}
 
             <div class="header-container float-left">
             <h5 class="mt-2">{{ title }} {% if q %} for {{ q }} {% endif %}</h5>
             {% if user|has_group:"Sales" %}
-            <p class="header-note">{{ total_consultants }} consultants</p>
-            <p class="header-note">Total Hourly Cost: ${{ total_cost|floatformat:2 }}</p>
+            <p class="header-note" id="number_consultants_desktop">{% if total_consultants == 1 %} {{ total_consultants }} consultant {% else %} {{ total_consultants }} consultants  {% endif %}</p>
+            <p class="header-note" id="total_cost_desktop">Total Hourly Cost: ${{ total_cost|floatformat:2 }}</p>
             </div>
             <button type="button" class="btn btn-primary float-right btn-info send-roster" data-toggle="modal" data-target="#exampleModalCenter">
                 Send Roster
@@ -98,8 +144,8 @@
             </div>
         </div>
 
-        {% for bio in consultant.bios %} {% if bio %} {% comment %} start Smartphone view {% endcomment %}
-
+        {% for bio in consultant.bios %} {% if bio %} {% comment %} start Smartphone view  {% endcomment %}
+        <div id="row{{ bio.bio.data.pk }}">
         <div class="pt-3" style="background: LightGrey !important"></div>
         <div class="card-container manual-flip d-block d-sm-none ">
             <div class="card ">
@@ -127,17 +173,23 @@
                                     <br>
                                 </p>
                                 <div class="mt-4 col-md-4 text-center">
-                                    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="bio.bio.data.pk" value="{{bio.bio.assignments.2}}">
+                                    
                                         {% if not bio.bio.data.pk in roster %} 
+                                            <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.bio.data.pk }}" href="#removeConfirmation{{ bio.bio.data.pk }}" data-toggle="modal" data-target="#removeConfirmation{{ bio.bio.data.pk }}">
                                             Remove from cart 
+                                            </button>
                                         {% else %}
                                             {% if bio.bio.assignments.2 >= 90 %}
+                                            <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="bio.bio.data.pk" value="{{bio.bio.assignments.2}}">
                                                 Add Anyway
+                                            </button>
                                             {% else %}
+                                            <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="bio.bio.data.pk" value="{{bio.bio.assignments.2}}">
                                                 Add to Cart
+                                            </button>
                                             {% endif %}
                                         {% endif %}
-                                    </button>
+                                    
                                 </div>
                             </div>
                             <div class="card-myfooter">
@@ -210,17 +262,23 @@
                                         </tr>
                                     </table>
                                 <div>
-                                    <button class="btn btn-sm btn-outline-success d-none roster-cart ml-3 float-right bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk }}" value="{{ bio.bio.assignments.2 }}">
+                                    
                                             {% if not bio.bio.data.pk in roster %} 
-                                            Remove from cart 
+                                            <button class="ml-2 btn btn-sm btn-outline-success d-none roster-cart float-right bio-{{ bio.bio.data.pk }}" href="#removeConfirmation{{ bio.bio.data.pk }}" data-toggle="modal" data-target="#removeConfirmation{{ bio.bio.data.pk }}">
+                                            Remove from cart
+                                            </button>
                                         {% else %}
                                             {% if bio.bio.assignments.2 >= 90 %}
+                                            <button class="btn btn-sm btn-outline-success d-none roster-cart ml-3 float-right bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk }}" value="{{ bio.bio.assignments.2 }}">
                                                 Add Anyway
+                                            </button>
                                             {% else %}
+                                            <button class="btn btn-sm btn-outline-success d-none roster-cart ml-3 float-right bio-{{ bio.bio.data.pk }}" data-bio="{{ bio.bio.data.pk }}" data-action="{% if bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk }}" value="{{ bio.bio.assignments.2 }}">
                                                 Add to Cart
+                                            </button>
                                             {% endif %}
                                         {% endif %}
-                                    </button>
+                                    
                                     <a class="btn btn-sm btn-outline-info float-right" href="{{ bio.bio.data.url }}">Open Bio</a>
                                 </div>
                             </div>
@@ -273,14 +331,22 @@
                                         <a href="#theModal" class="nav-link text-center btn btn-sm btn-outline-success profile-button" data-toggle="modal" data-target="#theModal{{ bio.bio.data.id }}"><span class="oi oi-person"></a>
                                         <center>
     
-                                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
-                                                    {% if not bio.bio.data.pk in roster %} 
-                                                    Remove from cart 
+                                            
+                                                    {% if not bio.bio.data.pk in roster %}
+                                                    <a class="btn btn-sm btn-outline-success d-none roster-cart" href="#removeConfirmation{{ bio.bio.data.id }}" data-toggle="modal" data-target="#removeConfirmation{{ bio.bio.data.id }}">
+                                                    Remove from cart
+                                                    </a> 
                                                 {% else %}
                                                     {% if bio.bio.assignments.2 >= 90 %}
+                                                    <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
                                                         Add Anyway
+                                                        </button>
+                                                        
                                                     {% else %}
+                                                    <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
                                                         Add to Cart
+                                                        </button>
+                                                        
                                                     {% endif %}
                                                 {% endif %}
                                             </button>
@@ -291,6 +357,7 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
             </div>
             {% comment %} End pc view {% endcomment %} {% endif %} {% endfor %} {% comment %} start paginator {% endcomment %} {% comment %} finish paginator {% endcomment %} {% endif %}
         </div>
@@ -358,23 +425,58 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
+                    <a class="btn btn-outline-primary btn-sm float-left" href="{{ bio.bio.data.url }}">Open Bio</a>
                             {% if not bio.bio.data.pk in roster %} 
-                            Remove from cart 
+                            <button class="btn btn-sm btn-outline-success d-none roster-cart float-left bio-{{ bio.bio.data.pk }}" href="#removeConfirmation{{ bio.bio.data.pk }}" data-toggle="modal" data-target="#removeConfirmation{{ bio.bio.data.pk }}">
+                                            Remove from cart
+                                            </button>
                         {% else %}
                             {% if bio.bio.assignments.2 >= 90 %}
+                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
                                 Add Anyway
+                                </button>
                             {% else %}
+                            <button class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
                                 Add to Cart
+                                </button>
                             {% endif %}
                         {% endif %}
-                    </button>
-                    <a class="btn btn-outline-primary btn-sm" href="{{ bio.bio.data.url }}">Open Bio</a>
+                    
+                    
 
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="removeConfirmation{{ bio.bio.data.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Remove consultant</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              This action will remove the consultant permantly{% if user|has_group:"Sales" %}
+               and modify the total cost{% endif %}.
+                <br />
+              <strong>Are you sure you want to proceed?</strong>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <a class="btn btn-danger d-none roster-cart" style="color:white" onclick="removeFromRoster({{bio.bio.data.id}},{{bio.bio.data.pk}})">Remove</a>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
 
     {% endfor %}
 
@@ -435,6 +537,15 @@
             </div>
         </div>
     </div>
+
+<div class="container my-4 pb-5" id="empty_roster">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mt-2 float-left"> You do not have roster to show </h5>
+        </div>
+    </div>
+</div>
+    
 
 
     {% endblock %}
