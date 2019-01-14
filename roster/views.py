@@ -20,9 +20,20 @@ from django.contrib.auth.models import User
 @csrf_exempt
 
 def get_roster_bios(request):
+    #roster is a list of indexes
     roster = request.session.setdefault('roster', [])
+    bios = Bio.objects.filter(pk__in=roster).order_by('name')
+
+    total_cost = 0
+    for bio in bios:
+        if bio.cost_type == "a8o0c000000bqdXAAQ":
+            total_cost += bio.cost/8
+        else:
+            total_cost += bio.cost
+
     response = {
-        'bios': roster
+        'bios': roster,
+        'total_cost': total_cost
     }
     try:
         today = datetime.date.today() 
@@ -88,7 +99,7 @@ def roster_detail(request):
             total_cost += bio.cost/8
         else:
             total_cost += bio.cost
-        print("cost "+str(total_cost))
+        #print("cost "+str(total_cost))
         consultant['bios'].append(
                 {
                     'bio':{
