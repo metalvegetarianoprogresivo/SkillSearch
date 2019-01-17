@@ -46,21 +46,13 @@ def index(request):
             request.session['displayName'] = user['displayName']
             print(user)
             request.session['mail'] = user['mail']
-            intersys_user = User.objects.get(email = request.session['mail'])
-            request.user = intersys_user
-            print(dir(request.user))
-            access = False
-            if intersys_user:
-                if (intersys_user.groups.filter(name='Practice Director').exists() or intersys_user.groups.filter(name='Sales').exists()):
-                    request.session['authenticated'] = True
-                    access = True
-            
-            if(access == False):
-                return redirect('noAccess')
+            loged_in = redirect_url.redirect_url(request)
+            if loged_in:
+                return redirect(loged_in)
+            else:
+                print("you have access")
         else:
             print("Entro al no post")
-            request.session['authenticated'] = False
-            print("False")
             return redirect(proxyURL["authurl"])
        
     try:
@@ -71,7 +63,6 @@ def index(request):
         f.close()
     except:
         pass
-    #assert(False, request.session['authenticated'])
     return render(request, "templates/index.html", context)
   
 def noAccess(request):
@@ -126,5 +117,5 @@ def getURL(request):
     return json.loads(response.text)
 
 def logout(request):
-    request.session['authenticated'] = False
+    request.session['mail'] = None
     return redirect("https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri="+request.session['my_domain'])

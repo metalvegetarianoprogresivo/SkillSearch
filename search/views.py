@@ -14,8 +14,9 @@ from django.contrib.auth.models import User
 def search(request):
     loged_in = redirect_url.redirect_url(request)
     if loged_in:
-        print("loged_in"+loged_in)
         return redirect(loged_in)
+    else:
+        print("you have access")
     try:
         q = request.GET["q"]
     except:
