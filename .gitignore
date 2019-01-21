@@ -111,3 +111,6 @@ venv.bak/
 
 #excel db
 allemployees.xlsx
+
+#config file
+properties.txt
