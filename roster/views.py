@@ -16,6 +16,7 @@ from django.contrib import messages
 from search.views import get_availability
 from consultantmarket import redirect_url
 from django.contrib.auth.models import User
+from django.conf import settings
 @require_POST
 @csrf_exempt
 
@@ -152,7 +153,7 @@ def send_roster(request):
             
             message += '\nGreetings from the Skills Searcher Team.'
             subject = 'Roster for {}'.format(project_title)
-            from_mail = 'intersysinternalapplication@intersysconsulting.com'
+            from_mail = settings.EMAIL_HOST_USER
             to_mail = [request.session['mail']]
             response = send_mail(subject, message, from_mail, to_mail, fail_silently=False)
             if response:

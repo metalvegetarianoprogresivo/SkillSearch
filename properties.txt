@@ -1,4 +1,7 @@
 http://localhost:8000/
+smtp-mail.outlook.com
+intersysinternalapp@intersysconsulting.com
+Internal2018!
 
 #If you are in the production server, use
 https://skillssearcher.intersysconsulting.com/

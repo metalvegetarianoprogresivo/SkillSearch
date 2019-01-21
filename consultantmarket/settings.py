@@ -38,7 +38,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'o&nx!s$tilel2kn7^$1%4vdo*g5zpu9+e4d8*668w(oj!99jde'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # When this flag is set to true, fake data is used
 FAKE_DATA = False
@@ -180,10 +180,10 @@ try:
     from .localsettings import *
 except:
     pass
-
-EMAIL_HOST = 'smtp-mail.outlook.com'
-EMAIL_HOST_USER = 'intersysinternalapplication@intersysconsulting.com'
-EMAIL_HOST_PASSWORD = 'Internal2018!'
+file = open("properties.txt","r").read()
+EMAIL_HOST = file.splitlines()[1]
+EMAIL_HOST_USER = file.splitlines()[2]
+EMAIL_HOST_PASSWORD = file.splitlines()[3]
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
