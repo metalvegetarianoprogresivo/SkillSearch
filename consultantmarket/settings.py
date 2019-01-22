@@ -181,6 +181,7 @@ try:
 except:
     pass
 file = open("properties.txt","r").read()
+MAIN_URL =  file.splitlines()[0]
 EMAIL_HOST = file.splitlines()[1]
 EMAIL_HOST_USER = file.splitlines()[2]
 EMAIL_HOST_PASSWORD = file.splitlines()[3]

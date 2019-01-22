@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
+from django.conf import settings
 
 def redirect_url(request):
-    main_domain = read_main_url()
+    main_domain = settings.MAIN_URL
     try:
         intersys_user = User.objects.get(email = request.session['mail'])
         request.user = intersys_user
@@ -14,8 +15,3 @@ def redirect_url(request):
     except:
             main_domain = main_domain+"noaccess/"
     return main_domain
-   
-def read_main_url():
-    file = open("properties.txt","r").read()
-    print("leyo"+file.splitlines()[0])
-    return file.splitlines()[0]

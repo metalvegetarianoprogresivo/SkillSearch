@@ -16,7 +16,7 @@ from django.contrib import messages
 from search.views import get_availability
 from consultantmarket import redirect_url
 from django.contrib.auth.models import User
-from django.conf import settings
+
 @require_POST
 @csrf_exempt
 
