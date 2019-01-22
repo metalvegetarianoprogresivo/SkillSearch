@@ -24,7 +24,7 @@ def has_group(mail, group):
 @csrf_exempt
 
 def index(request):
-    request.session['my_domain'] = redirect_url.read_main_url()
+    request.session['my_domain'] = settings.MAIN_URL
 
     #print(EmailAuth.objects.all())
     urlProfile="https://graph.microsoft.com/v1.0/me/"

@@ -14,6 +14,7 @@ from django.conf import settings
 from consultantmarket import redirect_url
 from django.contrib.auth.models import User
 
+
 def index(request):
     print("entro al index ")
     
@@ -22,7 +23,7 @@ def index(request):
         print(loged_in)
         return redirect(loged_in)
 
-    request.session['my_domain'] = redirect_url.read_main_url()
+    request.session['my_domain'] = settings.MAIN_URL
     request.session["my_domain"] = urllib.parse.quote_plus(request.session["my_domain"])
     if("code" in request.GET.keys()):
         print("entro a code")
@@ -42,12 +43,12 @@ def index(request):
       
 def get_documents(request):
     if settings.FAKE_DATA:
-        return redirect(redirect_url.read_main_url()+"bios/?code=32ewadfsghtyu678iuyhkj==")
+        return redirect(settings.MAIN_URL+"bios/?code=32ewadfsghtyu678iuyhkj==")
     else:
         try:
             url_redirect = "https://intersys.my.salesforce.com/services/oauth2/authorize?response_type=code&client_id=3MVG99OxTyEMCQ3i_6e.7CZ89dFfpk2X6t_CvQIU3u31aIQ1DpbJJY2naIXQLgn6n0R6OMLaih7A_Ujyx_2hW&redirect_uri="+request.session["my_domain"]+"bios%2F"
         except:
-            return redirect(redirect_url.read_main_url())
+            return redirect(settings.MAIN_URL)
         
     print(url_redirect)
     return redirect(url_redirect)
@@ -69,7 +70,7 @@ def get_token(request, code):
     try:
         get_bios(resJson["access_token"])
     except:
-        return redirect(redirect_url.read_main_url())
+        return redirect(settings.MAIN_URL)
 
 
 def get_location(token, name):
