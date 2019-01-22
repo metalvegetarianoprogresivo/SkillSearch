@@ -35,11 +35,37 @@
     {% block content %}
     <div class="text-center" style="color:rgb(101, 101, 107);">
         <h1>Accounts</h1>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary active" onclick="myFunction()">
+                  <input type="radio" name="options" id="option1" autocomplete="off" checked onclick="myFunction()"> Cards
+                </label>
+                <label class="btn btn-secondary" onclick="myFunction1()">
+                  <input type="radio" name="options" id="option2" autocomplete="off" onclick="myFunction1()"> Collapsable
+                </label>
+              </div>
     </div>
+
+    <script>
+            function myFunction() {
+                var x = document.getElementById("mystyle");
+                var y = document.getElementById("mystyle2");
+                  x.className = "row position-absolute visible";
+                  y.className = "invisible";
+            }
+              </script>
+                  <script>
+                        function myFunction1() {
+                            var x = document.getElementById("mystyle");
+                            var y = document.getElementById("mystyle2");
+                              x.className = "row position-absolute invisible";
+                              y.className = "visible";
+                        }
+                          </script>
+
     <div class=" container">
-        <div class="row justify-content-center">
+        <div class="row position-absolute visible" id="mystyle" >
             {% for a in "HolaMu" %}
-            <div class="card mt-4 mr-4" style="width: 18rem ;height: 20rem; border-radius: 25px; ">
+            <div class="card mt-4 mr-4 " style="width: 18rem ;height: 20rem; border-radius: 25px; ">
                 <div class="card-body" style="padding-left:15px; padding-top:0px; padding-right:15px;">
                     <div class="row">
                         <div class="col-4" style="background: rgb(101, 101, 107); border-radius: 25px 0px 0px 0px;padding-left:0px; padding-top:0px; padding-right:0px;">
@@ -64,8 +90,29 @@
             </div>
             {% endfor %}
         </div>
-        <div class="text-right">
-        <button type="button" class="btn btn-info mt-5 mb-5">New Account</button>
+        <div class="invisible" id="mystyle2">
+        <div class="mt-2" id="accordion">
+          {% for a in "Hel" %}      
+          <div class="card" >
+                  <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                      <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Big Commerce
+                      </button>
+                    </h5>
+                  </div>
+              
+                  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                      4 projects
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              </div>
+        <!-- <div class="text-right">
+        <button type="button" class="btn btn-info mt-5 mb-5">New Account</button> -->
         <br><br>
     </div>
     </div>
