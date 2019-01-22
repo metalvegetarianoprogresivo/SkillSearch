@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from .views import index, noAccess, credits, logout
+from .views import index, noAccess, account, credits, logout
 
 urlpatterns = [
     path('', index, name='index'),
@@ -25,5 +25,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('noaccess/', noAccess, name="noAccess"),
     path('credits/', credits, name="credits"),
+    path('account/', account, name="account"),
     path('logout/',logout, name ="logout") 
 ]

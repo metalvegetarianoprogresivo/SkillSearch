@@ -76,6 +76,18 @@ def noAccess(request):
         pass
     return render(request, "templates/noaccess.html")
 
+def account(request):
+    try:
+        today = datetime.date.today()
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"credits"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
+    return render(request, "templates/account.html")
+
+
 def credits(request):
     try:
         today = datetime.date.today()

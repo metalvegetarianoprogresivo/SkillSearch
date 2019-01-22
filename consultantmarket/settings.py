@@ -38,7 +38,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'o&nx!s$tilel2kn7^$1%4vdo*g5zpu9+e4d8*668w(oj!99jde'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # When this flag is set to true, fake data is used
 FAKE_DATA = False
