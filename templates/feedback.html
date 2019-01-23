@@ -1,0 +1,69 @@
+{% extends "templates/base.html" %}
+{% load static %}
+{% block extra_headers %}
+<!-- Base statuc -->
+<link rel="stylesheet" href="{% static 'css/credits.css' %}">
+<link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
+<script>
+    function get_roster_bios() {
+        $.post(
+            "{% url 'get_roster_bios' %}",
+            function (data) {
+                //roster_bios = data.bios;
+                $('#roster_count2').html(data.bios.length);
+                $('#roster_count1').html(data.bios.length);
+            }
+        );
+    }
+    $(document).ready(function () {
+        get_roster_bios();
+    });
+</script>
+{% endblock %}
+<title>{{ title }}</title>
+<style>
+    #rcorners3 {
+        border-radius: 15px 50px;
+        background: #73AD21;
+        padding: 20px;
+        width: 200px;
+        height: 150px;
+    }
+</style>
+
+<body>
+    {% block content %}
+    <div class=" container">
+        <h1 class="mt-4"> Feedback </h1>
+        <div class="form-group col-md-4">
+            <label for="inputState">View of the Skills searcher</label>
+            <select id="inputState" class="form-control">
+                <option selected>Choose an option</option>
+                <option>Home</option>
+                <option>Search</option>
+                <option>Accounts</option>
+                <option>Who we are</option>
+                <option>FAQ</option>
+                <option>Feedback</option>
+                <option>LogOut</option>
+                <option>LogIn</option>
+                <option>Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Please describe the feedback</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <form>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Just if you want to attach a file </label>
+                <input type="file" class="form-control-file" id="exampleFormControlFile1" style="background: white">
+            </div>
+        </form>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+    <br><br><br>
+    {% endblock %}
+</body>
+
+</html>

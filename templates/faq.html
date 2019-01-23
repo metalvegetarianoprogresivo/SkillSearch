@@ -1,0 +1,146 @@
+{% extends "templates/base.html" %}
+{% load static %}
+{% block extra_headers %}
+<!-- Base statuc -->
+<link rel="stylesheet" href="{% static 'css/credits.css' %}">
+<link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
+<script>
+    function get_roster_bios() {
+        $.post(
+            "{% url 'get_roster_bios' %}",
+            function (data) {
+                //roster_bios = data.bios;
+                $('#roster_count2').html(data.bios.length);
+                $('#roster_count1').html(data.bios.length);
+            }
+        );
+    }
+    $(document).ready(function () {
+        get_roster_bios();
+    });
+</script>
+{% endblock %}
+<title>{{ title }}</title>
+<style>
+    #rcorners3 {
+        border-radius: 15px 50px;
+        background: #73AD21;
+        padding: 20px;
+        width: 200px;
+        height: 150px;
+    }
+</style>
+
+<body>
+    {% block content %}
+    <div class="text-center" style="color:rgb(101, 101, 107);">
+        <h1>Accounts</h1>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary active" onclick="myFunction()">
+                  <input type="radio" name="options" id="option1" autocomplete="off" checked onclick="myFunction()"> Cards
+                </label>
+                <label class="btn btn-secondary" onclick="myFunction1()">
+                  <input type="radio" name="options" id="option2" autocomplete="off" onclick="myFunction1()"> Collapsable
+                </label>
+              </div>
+    </div>
+
+    <script>
+            function myFunction() {
+                var x = document.getElementById("mystyle");
+                var y = document.getElementById("mystyle2");
+                  x.className = "row position-absolute visible";
+                  y.className = "invisible";
+            }
+              </script>
+                  <script>
+                        function myFunction1() {
+                            var x = document.getElementById("mystyle");
+                            var y = document.getElementById("mystyle2");
+                              x.className = "row position-absolute invisible";
+                              y.className = "visible";
+                        }
+                          </script>
+
+    <div class=" container">
+        <div class="row position-absolute visible" id="mystyle" >
+          <!--  -->
+          <div class="card mt-4 mr-4 " style="width: 18rem ;height: 20rem; border-radius: 25px; ">
+            <div class="card-body" style="padding-left:15px; padding-top:0px; padding-right:15px;">
+                <div class="row">
+                    <div class="col-4" style="background: rgb(101, 101, 107); border-radius: 25px 0px 0px 0px;padding-left:0px; padding-top:0px; padding-right:0px;">
+                        <div class="text-center" style="background: white; border-radius: 25px 25px 0px 0px;">
+                            <img src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/c3aad795a4ebe39fc19071b551d88106" alt="Test" class="text-center rounded-circle mt-1"
+                                style="width: 50px; height: 50px; ">
+                        </div>
+                    </div>
+                    <div class="col-8 text-center " id="rcorners3" style="background: rgb(101, 101, 107); border-radius: 0px 25px 0px 35px;">
+                        <p class="mt-2" style="color: white;">New</p>
+                    </div>
+                </div>
+                <br><br>
+                <h3 class=" mt-4 card-title mt-4 text-center">New Account</h3>
+
+                <br><br>
+
+                <div class="mt-5 text-right">
+                    <button type="button" class="btn btn-outline-success">Create New Account</button>
+                </div>
+            </div>
+        </div>  
+          {% for a in "Hola" %}
+            <div class="card mt-4 mr-4 " style="width: 18rem ;height: 20rem; border-radius: 25px; ">
+                <div class="card-body" style="padding-left:15px; padding-top:0px; padding-right:15px;">
+                    <div class="row">
+                        <div class="col-4" style="background: rgb(101, 101, 107); border-radius: 25px 0px 0px 0px;padding-left:0px; padding-top:0px; padding-right:0px;">
+                            <div class="text-center" style="background: white; border-radius: 25px 25px 0px 0px;">
+                                <img src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/c3aad795a4ebe39fc19071b551d88106" alt="Test" class="text-center rounded-circle mt-1"
+                                    style="width: 50px; height: 50px; ">
+                            </div>
+                        </div>
+                        <div class="col-8 text-center " id="rcorners3" style="background: rgb(101, 101, 107); border-radius: 0px 25px 0px 35px;">
+                            <p class="mt-2" style="color: white;">4 projects</p>
+                        </div>
+                    </div>
+                    <br><br>
+                    <h3 class=" mt-4 card-title mt-4 text-center">Big Commerce</h3>
+                    <br><br>
+
+                    <div class="mt-5 text-right">
+                        <button type="button" class="btn btn-outline-success"><span class="oi oi-brush"></span></button>
+                        <button type="button" class="btn btn-outline-danger"><span class="oi oi-trash"></span></button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="invisible" id="mystyle2">
+        <div class="mt-2" id="accordion">
+          {% for a in "Hel" %}      
+          <div class="card" >
+                  <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                      <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Big Commerce
+                      </button>
+                    </h5>
+                  </div>
+              
+                  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                      4 projects
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+               <div class="text-left">
+        <button type="button" class="btn btn-info mt-3 mb-5">New Account</button> 
+        <br><br>
+    </div>
+              </div>
+              </div>
+    </div>
+    {% endblock %}
+</body>
+
+</html>
