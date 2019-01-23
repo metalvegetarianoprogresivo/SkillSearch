@@ -80,7 +80,7 @@ def account(request):
     try:
         today = datetime.date.today()
         f = open ('../logdate.txt','a')
-        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"credits"
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"account"
         f.write(today+"\n")
         f.close()
     except:
@@ -98,6 +98,29 @@ def credits(request):
     except:
         pass
     return render(request, "templates/credits.html")
+
+def faq(request):
+    try:
+        today = datetime.date.today()
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"faq"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
+    return render(request, "templates/faq.html")
+
+def feedback(request):
+    try:
+        today = datetime.date.today()
+        f = open ('../logdate.txt','a')
+        today="date :"+str(datetime.datetime.now())+"    "+str(request.session['mail'])+"    "+"feedback"
+        f.write(today+"\n")
+        f.close()
+    except:
+        pass
+    return render(request, "templates/feedback.html")
+
 
 def getData(ac_t,url_ac):
     r=requests.get(url_ac, headers={
