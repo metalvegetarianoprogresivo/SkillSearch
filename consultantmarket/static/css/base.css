@@ -1,5 +1,5 @@
 body{
-    background: LightGrey ;
+    background: LightGrey !important;
 }
 .fix-out-fix{
     position: absolute;
