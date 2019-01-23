@@ -36,6 +36,38 @@
                 get_roster_bios();
             });
         </script>
+<script>
+$(document).ready(function () {
+    var trigger = $('.hamburger'),
+        overlay = $('.overlay'),
+       isClosed = false;
+  
+      trigger.click(function () {
+        hamburger_cross();      
+      });
+  
+      function hamburger_cross() {
+  
+        if (isClosed == true) {          
+          overlay.hide();
+          trigger.removeClass('is-open');
+          trigger.addClass('is-closed');
+          isClosed = false;
+        } else {   
+          overlay.show();
+          trigger.removeClass('is-closed');
+          trigger.addClass('is-open');
+          isClosed = true;
+        }
+    }
+    
+    $('[data-toggle="offcanvas"]').click(function () {
+          $('#wrapper').toggleClass('toggled');
+    });  
+  });
+</script>
+
+
         {% block extra_headers %}
         {% endblock %}
         <title>{{ title }}</title>
@@ -43,9 +75,61 @@
     <body>
 {% comment %} style="position: inherit" {% endcomment %}
         <nav class="navbar navbar-expand-md bg-light navbar-light fixed-top">
-           <a class="navbar-brand" href="https://www.intersysconsulting.com/">
+           
+
+                <div id="wrapper">
+                        <div class="overlay"></div>
+                         
+                             <!-- Sidebar -->
+                         <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
+                          <ul class="nav sidebar-nav">
+                            <div class="sidebar-header">
+                            <div class="sidebar-brand">
+                              <a href="#">Intersys Consulting</a></div></div>
+                              <img src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/c3aad795a4ebe39fc19071b551d88106" alt="Test" class="ml-5 text-center rounded-circle mt-1"
+                                    style="width: 110px; height: 110px; ">
+                                    <h3 class="text-center ml-4 mt-2 mb-3" style="color: white;">  Alan Muñoz N</h3>
+                            <li><a href="#home"><span class="oi oi-home"></span> Home</a></li>
+                            <li><a href="#about"><span class="oi oi-magnifying-glass"></span> Search</a></li>
+                            <li><a href="#events"><span class="oi oi-cart"></span> Accounts</a></li>
+                            <li><a href="#team"><span class="oi oi-info"></span> Who we are?</a></li>
+                            <!-- <li class="dropdown">
+                            <a href="#works" class="dropdown-toggle"  data-toggle="dropdown">Works <span class="caret"></span></a>
+                          <ul class="dropdown-menu animated fadeInLeft" role="menu">
+                           <div class="dropdown-header">Dropdown heading</div>
+                           <li><a href="#pictures">Pictures</a></li>
+                           <li><a href="#videos">Videeos</a></li>
+                           <li><a href="#books">Books</a></li>
+                           <li><a href="#art">Art</a></li>
+                           <li><a href="#awards">Awards</a></li>
+                           </ul>
+                           </li> -->
+                           <li><a href="#services"><span class="oi oi-people"></span> FAQ</a></li>
+                           <li><a href="#contact"><span class="oi oi-thumb-up"></span> Feedback</a></li>
+                           </ul>
+                       </nav>
+                             <!-- /#sidebar-wrapper -->
+                     
+                             <!-- Page Content -->
+                             <div id="page-content-wrapper">
+                                 <button type="button" class="hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
+                                     <span class="hamb-top"></span>
+                                     <span class="hamb-middle"></span>
+                                     <span class="hamb-bottom"></span>
+                                 </button>
+                             </div>
+                             <!-- /#page-content-wrapper -->
+                     
+                         </div>
+                         <!-- /#wrapper -->
+
+
+
+
+            <a class="ml-5 navbar-brand" href="https://www.intersysconsulting.com/">
                <img width="159" height="23" src="https://www.intersysconsulting.com/wp-content/themes/intersys17/dist/images/intersys-logo.svg" alt="Intersys Consulting, Inc.">
            </a>
+
            <!-- Links -->
            <div class="d-none d-md-block">
             </div>
@@ -68,7 +152,7 @@
            
             <form class="form-inline my-2 my-lg-0 search-form justify-content-center" action="/search">
             <input id="input-search" class="form-control mr-sm-2" type="text" name="q" placeholder="Search skills or names" {% if q %}value="{{ q }}"{% endif %}>
-            <button  class="btn btn-success my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass"></span> Search</button>
+            <button  class="btn btn-success my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass"></span> </button>
                 <a id="buttonCart" class="btn btn-info mx-1 sm-block d-sm-none d-md-block d-none" href="{% url 'roster_detail' %}">
                 <span id="roster_count2" class="badge badge-sm badge-pill badge-info">0</span>
 		<span class="oi oi-cart"></span>
@@ -108,6 +192,29 @@
                 </div>
             </div>
             {% endcomment %}
+        </div>
+        <div class="container">
+        
+            
+
+
+
+
+
+
+
+
+
+
+                
+
+
+
+
+
+
+
+
         </div>
         {% block content %}
         {% endblock %}
