@@ -15,6 +15,28 @@
             $card.addClass('hover');
         }
     }
+    function removeFromRoster(id, pk){
+        //console.log("id: "+id+" pk:"+pk);
+        $('#removeConfirmation'+id).modal('hide'); 
+        $('#theModal'+id).modal('hide');
+        remove_from_roster(pk);
+        //falta borrar del roster el consultor seleccionado, actualizar los contadores de consultores y costo total si refrescar. 
+        //<a class="btn btn-sm btn-outline-success d-none roster-cart" data-bio="{{ bio.bio.data.pk }}" data-action="{% if not bio.bio.data.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.bio.data.pk}}" value="{{ bio.bio.assignments.2}}">
+    }
+
+    function remove_from_roster(pk){
+                $.post(
+                    "{% url 'remove_from_roster' %}",
+                    {
+                        bio_id: pk
+                    },
+                    function(data){
+                       get_roster_bios();
+                       //Aquí debo agregar el actualizar button
+                    }
+                );
+            }
+
 </script>
 <script>
     $(document).ready(function() {
@@ -275,17 +297,22 @@ card.addEventListener( 'click', function() {
 		            <a href="#theModal" class="nav-link text-center btn btn-sm btn-outline-success profile-button" data-toggle="modal" data-target="#theModal{{ bio.3.id }}"><span class="oi oi-person"></a>
 			    <center>
 		
-			    <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="{{ bio.3.pk }}" value="{{ bio.8 }}">
 			    {% if bio.3.pk in roster %}
-	                          Remove from cart
-		            {% else %}
-		                  {% if bio.8 >= 90 %}
-		                        Add Anyway
-		                  {% else %}
-		                        Add to Cart
-		                  {% endif %}
-		            {% endif %}
-		            </button>
+                        <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" href="#removeConfirmation{{ bio.3.pk }}" data-toggle="modal" data-target="#removeConfirmation{{ bio.3.pk }}" id="button{{bio.3.pk}}">
+                        Remove from cart 
+                        </button>
+                    {% else %}
+                        {% if bio.8 >= 90 %}
+                        <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if not bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="button{{bio.3.pk}}" value="bio.8">
+                            Add Anyway
+                        </button>
+                        {% else %}
+                        <button class="ml-auto btn btn-sm btn-outline-success d-none roster-cart float_left bio-{{ bio.3.pk }}" data-bio="{{ bio.3.pk }}" data-action="{% if not bio.3.pk in roster %}{% url 'remove_from_roster' %}{% else %}{% url 'add_to_roster' %}{% endif %}" id="button{{bio.3.pk}}" value="bio.8">
+                            Add to Cart
+                        </button>
+                        {% endif %}
+                    {% endif %}
+		            
 					    </center>
 	 	        </td>
                     </tr>
@@ -392,4 +419,31 @@ card.addEventListener( 'click', function() {
         </div>
     </div>
 </div>
+
+    <div class="modal fade" id="removeConfirmation{{ bio.3.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Remove consultant</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              This action will remove the consultant from the roster{% if user|has_group:"Sales" %}
+               and modify the total cost{% endif %}.
+                <br />
+              <strong>Are you sure you want to proceed?</strong>
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <a class="btn btn-danger d-none roster-cart" style="color:white" onclick="removeFromRoster({{bio.3.id}},{{bio.3.pk}})">Remove</a>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+
 {% endfor %} {% endblock %} {% comment %} finish open a bio   {% endcomment %}
