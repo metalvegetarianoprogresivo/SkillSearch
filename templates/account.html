@@ -64,7 +64,31 @@
 
     <div class=" container">
         <div class="row position-absolute visible" id="mystyle" >
-            {% for a in "HolaMu" %}
+          <!--  -->
+          <div class="card mt-4 mr-4 " style="width: 18rem ;height: 20rem; border-radius: 25px; ">
+            <div class="card-body" style="padding-left:15px; padding-top:0px; padding-right:15px;">
+                <div class="row">
+                    <div class="col-4" style="background: rgb(101, 101, 107); border-radius: 25px 0px 0px 0px;padding-left:0px; padding-top:0px; padding-right:0px;">
+                        <div class="text-center" style="background: white; border-radius: 25px 25px 0px 0px;">
+                            <img src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/c3aad795a4ebe39fc19071b551d88106" alt="Test" class="text-center rounded-circle mt-1"
+                                style="width: 50px; height: 50px; ">
+                        </div>
+                    </div>
+                    <div class="col-8 text-center " id="rcorners3" style="background: rgb(101, 101, 107); border-radius: 0px 25px 0px 35px;">
+                        <p class="mt-2" style="color: white;">New</p>
+                    </div>
+                </div>
+                <br><br>
+                <h3 class=" mt-4 card-title mt-4 text-center">New Account</h3>
+
+                <br><br>
+
+                <div class="mt-5 text-right">
+                    <button type="button" class="btn btn-outline-success">Create New Account</button>
+                </div>
+            </div>
+        </div>  
+          {% for a in "HolaMu" %}
             <div class="card mt-4 mr-4 " style="width: 18rem ;height: 20rem; border-radius: 25px; ">
                 <div class="card-body" style="padding-left:15px; padding-top:0px; padding-right:15px;">
                     <div class="row">
@@ -109,12 +133,12 @@
                   </div>
                 </div>
                 {% endfor %}
-              </div>
-              </div>
-        <!-- <div class="text-right">
-        <button type="button" class="btn btn-info mt-5 mb-5">New Account</button> -->
+               <div class="text-left">
+        <button type="button" class="btn btn-info mt-3 mb-5">New Account</button> 
         <br><br>
     </div>
+              </div>
+              </div>
     </div>
     {% endblock %}
 </body>
