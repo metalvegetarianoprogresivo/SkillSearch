@@ -1,99 +1,109 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- Latest compiled and minified CSS -->
-        <link rel="icon" href="https://www.intersysconsulting.com/wp-content/uploads/2016/07/cropped-favicon-150x150.png" sizes="32x32">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-        <!-- jQuery library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <!-- Popper JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-        <!-- Latest compiled JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-        <!-- Base statuc -->
-        <link rel="stylesheet" href="{% static 'css/base.css' %}">
-        <link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
-        <script>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="icon" href="https://www.intersysconsulting.com/wp-content/uploads/2016/07/cropped-favicon-150x150.png"
+        sizes="32x32">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <!-- Base statuc -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
+    <script>
         var roster_count;
         var roster_cost;
-            function get_roster_bios(){
-                $.post(
-                    "{% url 'get_roster_bios' %}",
-                    function(data){
-                        //roster_bios = data.bios;
-                        $('#roster_count2').html(data.bios.length);
-                        $('#roster_count1').html(data.bios.length);
-                        roster_count = data.bios.length;
-                        roster_cost = data.total_cost;
-                    }
-                );
+        function get_roster_bios() {
+            $.post(
+                "{% url 'get_roster_bios' %}",
+                function (data) {
+                    //roster_bios = data.bios;
+                    $('#roster_count2').html(data.bios.length);
+                    $('#roster_count1').html(data.bios.length);
+                    roster_count = data.bios.length;
+                    roster_cost = data.total_cost;
+                }
+            );
+        }
+
+        $(document).ready(function () {
+            get_roster_bios();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            var trigger = $('.hamburger'),
+                overlay = $('.overlay'),
+                isClosed = false;
+
+            trigger.click(function () {
+                hamburger_cross();
+            });
+
+            function hamburger_cross() {
+
+                if (isClosed == true) {
+                    overlay.hide();
+                    trigger.removeClass('is-open');
+                    trigger.addClass('is-closed');
+                    isClosed = false;
+                } else {
+                    overlay.show();
+                    trigger.removeClass('is-closed');
+                    trigger.addClass('is-open');
+                    isClosed = true;
+                }
             }
 
-            $(document).ready(function(){
-                get_roster_bios();
+            $('[data-toggle="offcanvas"]').click(function () {
+                $('#wrapper').toggleClass('toggled');
             });
-        </script>
-<script>
-$(document).ready(function () {
-    var trigger = $('.hamburger'),
-        overlay = $('.overlay'),
-       isClosed = false;
-  
-      trigger.click(function () {
-        hamburger_cross();      
-      });
-  
-      function hamburger_cross() {
-  
-        if (isClosed == true) {          
-          overlay.hide();
-          trigger.removeClass('is-open');
-          trigger.addClass('is-closed');
-          isClosed = false;
-        } else {   
-          overlay.show();
-          trigger.removeClass('is-closed');
-          trigger.addClass('is-open');
-          isClosed = true;
-        }
-    }
-    
-    $('[data-toggle="offcanvas"]').click(function () {
-          $('#wrapper').toggleClass('toggled');
-    });  
-  });
-</script>
+        });
+    </script>
 
 
-        {% block extra_headers %}
-        {% endblock %}
-        <title>{{ title }}</title>
-    </head>
-    <body>
-{% comment %} style="position: inherit" {% endcomment %}
-        <nav class="navbar navbar-expand-md bg-light navbar-light fixed-top">
-           
+    {% block extra_headers %}
+    {% endblock %}
+    <title>{{ title }}</title>
+</head>
 
-                <div id="wrapper">
-                        <div class="overlay"></div>
-                         
-                             <!-- Sidebar -->
-                         <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
-                          <ul class="nav sidebar-nav">
-                            <div class="sidebar-header">
-                            <div class="sidebar-brand">
-                              <a href="#">Intersys Consulting</a></div></div>
-                              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGH7m65SKf4AjA_9-1TeAXHYOOx0bHbvjDyNxq2Svf2i1mvF89fw" alt="Test" class="ml-5 text-center rounded-circle mt-1"
-                                    style="width: 110px; height: 110px; ">
-                                    <h3 class="text-center ml-4 mt-2 mb-3" style="color: white;">  Alan Muñoz N</h3>
-                            <li><a href="/"><span class="oi oi-home"></span> Home</a></li>
-                            <li><a href="/search/?q="><span class="oi oi-magnifying-glass"></span> Search</a></li>
-                            <li><a href="/account"><span class="oi oi-cart"></span> Accounts</a></li>
-                            <li><a href="/credits"><span class="oi oi-info"></span> Who we are?</a></li>
-                            <!-- <li class="dropdown">
+<body>
+    {% comment %} style="position: inherit" {% endcomment %}
+    <nav class="navbar navbar-expand-md bg-light navbar-light fixed-top">
+
+
+        <div id="wrapper">
+            <div class="overlay"></div>
+
+            <!-- Sidebar -->
+            <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
+                <ul class="nav sidebar-nav">
+                    <div class="sidebar-header">
+                        <div class="sidebar-brand">
+                            <a href="#">Intersys Consulting</a></div>
+                    </div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGH7m65SKf4AjA_9-1TeAXHYOOx0bHbvjDyNxq2Svf2i1mvF89fw"
+                        alt="Test" class="ml-5 text-center rounded-circle mt-1" style="width: 110px; height: 110px; ">
+                    <h3 class="text-center ml-4 mt-2 mb-3" style="color: white;"> Alan Muñoz N</h3>
+                    <li>
+                            <form class="form-inline search-form justify-content-center" action="/search">
+                                <input id="input-search" size="11" class="form-control" type="text" name="q" placeholder="Search skills or names"
+                                    {% if q %}value="{{ q }}" {% endif %}>
+                                    <button class="btn btn-success ml-1" type="submit"><span class="oi oi-magnifying-glass"></span>
+                            </form>
+                    </li>
+                    <li><a href="/"><span class="oi oi-home"></span> Home</a></li>
+                    <li><a href="/account"><span class="oi oi-cart"></span> Accounts</a></li>
+                    <li><a href="/credits"><span class="oi oi-info"></span> Who we are?</a></li>
+                    <!-- <li class="dropdown">
                             <a href="#works" class="dropdown-toggle"  data-toggle="dropdown">Works <span class="caret"></span></a>
                           <ul class="dropdown-menu animated fadeInLeft" role="menu">
                            <div class="dropdown-header">Dropdown heading</div>
@@ -104,125 +114,136 @@ $(document).ready(function () {
                            <li><a href="#awards">Awards</a></li>
                            </ul>
                            </li> -->
-                           <li><a href="/faq"><span class="oi oi-people"></span> FAQ</a></li>
-                           <li><a href="/feedback"><span class="oi oi-thumb-up"></span> Feedback</a></li>
-                           <li><a href="{% url 'logout'%}"><span class="oi oi-power-standby"></span> Log Out</a></li>
-                           </ul>
-                       </nav>
-                             <!-- /#sidebar-wrapper -->
-                     
-                             <!-- Page Content -->
-                             <div id="page-content-wrapper">
-                                 <button type="button" class="hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
-                                     <span class="hamb-top"></span>
-                                     <span class="hamb-middle"></span>
-                                     <span class="hamb-bottom"></span>
-                                 </button>
-                             </div>
-                             <!-- /#page-content-wrapper -->
-                     
-                         </div>
-                         <!-- /#wrapper -->
+                    <li><a href="/faq"><span class="oi oi-people"></span> FAQ</a></li>
+                    <li><a href="/feedback"><span class="oi oi-thumb-up"></span> Feedback</a></li>
+                    <li><a href="{% url 'logout'%}"><span class="oi oi-power-standby"></span> Log Out</a></li>
+                </ul>
+            </nav>
+            <!-- /#sidebar-wrapper -->
 
-
-
-
-            <a class="ml-5 navbar-brand" href="https://www.intersysconsulting.com/">
-               <img width="159" height="23" src="https://www.intersysconsulting.com/wp-content/themes/intersys17/dist/images/intersys-logo.svg" alt="Intersys Consulting, Inc.">
-           </a>
-
-           <!-- Links -->
-           <div class="d-none d-md-block">
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <button type="button" class="hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
+                    <span class="hamb-top"></span>
+                    <span class="hamb-middle"></span>
+                    <span class="hamb-bottom"></span>
+                </button>
             </div>
-            <li class="nav-item d-none d-sm-block d-md-none navbar-nav mr-auto">
-                   <a class=" nav-link" href="/"><span class="oi oi-home"></span> Home</a>
-            </li>
-             <a id="buttonCart" class="btn btn-info mx-1 sm-block d-none d-sm-block d-md-none d-block d-sm-none" href="{% url 'roster_detail' %}">
-                   <span id="roster_count1" class="badge badge-sm badge-pill badge-info">0</span>
-                   <span class="oi oi-cart"></span>
-                 </a>
-           <button  class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-               <span class="navbar-toggler-icon"></span>
-           </button>
-           <div class="collapse navbar-collapse float-right" id="navbarSupportedContent">
-           <ul class="navbar-nav mr-auto">
-               <li class="nav-item d-block d-sm-none d-sm-none d-md-block d-none ">
-                   <a class=" nav-link" href="/"><span class="oi oi-home"></span> Home</a>
-               </li>
-           </ul>
-           
-            <form class="form-inline my-2 my-lg-0 search-form justify-content-center" action="/search">
-            <input id="input-search" class="form-control mr-sm-2" type="text" name="q" placeholder="Search skills or names" {% if q %}value="{{ q }}"{% endif %}>
-            <button  class="btn btn-success my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass"></span> </button>
-                <a id="buttonCart" class="btn btn-info mx-1 sm-block d-sm-none d-md-block d-none" href="{% url 'roster_detail' %}">
-                <span id="roster_count2" class="badge badge-sm badge-pill badge-info">0</span>
-		<span class="oi oi-cart"></span>
-		<a href="{% url 'logout'%}" class="btn btn-info btn-dark ml-1 mr-4">
-		     <span class="glyphicon glyphicon-log-out"></span> Log out
-		 </a>
-		</a>
-            </form>
-           </div>
-        </nav>
-        <div class="container" style="top:30px; padding-top: 60px;">
-            {% comment %}
-            <div class="modal right fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div class="nav flex-sm-column flex-row">
-                                {% if user.profile %}
-                                    <a class="nav-item nav-link profile-link" href="{% url 'account' %}"><span class="oi oi-person"></span> {{ user.profile }}</a>
-                                    <a class="nav-item nav-link" href="{% url 'list_stores' %}"><span class="oi oi-basket"></span> Your stores</a>
-                                    <a class="nav-item nav-link" href="{% url 'dashboard' model_name='Store' %}"><span class="oi oi-box"></span> Your products</a>
-                                    <a class="nav-item nav-link" href="{% url 'advace_search' %}"><span class="oi oi-list-rich"></span> Advanced search</a>
-                                {% endif %}
+            <!-- /#page-content-wrapper -->
 
-                                {% for item in menu %}
-                                <a class="nav-item nav-link" href="{{ item.0 }}">{{ item.1 }}</a>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="modal-footer">
+        </div>
+        <!-- /#wrapper -->
+
+
+
+
+        <a class="ml-5 navbar-brand" href="https://www.intersysconsulting.com/">
+            <img width="159" height="23" src="https://www.intersysconsulting.com/wp-content/themes/intersys17/dist/images/intersys-logo.svg"
+                alt="Intersys Consulting, Inc.">
+        </a>
+
+        <!-- Links -->
+        <div class="d-none d-md-block">
+        </div>
+        <li class="nav-item d-none d-sm-block d-md-none navbar-nav mr-auto">
+            <a class=" nav-link" href="/"><span class="oi oi-home"></span> Home</a>
+        </li>
+        <a id="buttonCart" class="btn btn-info mx-1 sm-block d-none d-sm-block d-md-none d-block d-sm-none" href="{% url 'roster_detail' %}">
+            <span id="roster_count1" class="badge badge-sm badge-pill badge-info">0</span>
+            <span class="oi oi-cart"></span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse float-right" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item d-block d-sm-none d-sm-none d-md-block d-none ">
+                    <a class=" nav-link" href="/"><span class="oi oi-home"></span> Home</a>
+                </li>
+            </ul>
+
+            <form class="form-inline my-2 my-lg-0 search-form justify-content-center" action="/search">
+                <input id="input-search" class="form-control mr-sm-3" type="text" name="q" placeholder="Search skills or names"
+                    {% if q %}value="{{ q }}" {% endif %}>
+                <button class="btn btn-success my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass"></span>
+                </button>
+                <a id="buttonCart" class="btn btn-info mx-1 sm-block d-sm-none d-md-block d-none mr-4" href="{% url 'roster_detail' %}">
+                    <span id="roster_count2" class="badge badge-sm badge-pill badge-info">0</span>
+                    <span class="oi oi-cart"></span>
+                    <!-- <a href="{% url 'logout'%}" class="btn btn-info btn-dark ml-1 mr-4">
+		     <span class="glyphicon glyphicon-log-out"></span> Log out
+		 </a> -->
+                </a>
+            </form>
+        </div>
+    </nav>
+    <div class="container" style="top:30px; padding-top: 60px;">
+        {% comment %}
+        <div class="modal right fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="nav flex-sm-column flex-row">
                             {% if user.profile %}
-                                {%csrf_token%}
-                                <a href="{% url 'logout' %}" class="btn btn-danger"><span class="oi oi-account-logout"></span> Log out</a>
+                            <a class="nav-item nav-link profile-link" href="{% url 'account' %}"><span class="oi oi-person"></span>
+                                {{ user.profile }}</a>
+                            <a class="nav-item nav-link" href="{% url 'list_stores' %}"><span class="oi oi-basket"></span>
+                                Your stores</a>
+                            <a class="nav-item nav-link" href="{% url 'dashboard' model_name='Store' %}"><span class="oi oi-box"></span>
+                                Your products</a>
+                            <a class="nav-item nav-link" href="{% url 'advace_search' %}"><span class="oi oi-list-rich"></span>
+                                Advanced search</a>
                             {% endif %}
+
+                            {% for item in menu %}
+                            <a class="nav-item nav-link" href="{{ item.0 }}">{{ item.1 }}</a>
+                            {% endfor %}
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        {% if user.profile %}
+                        {%csrf_token%}
+                        <a href="{% url 'logout' %}" class="btn btn-danger"><span class="oi oi-account-logout"></span>
+                            Log out</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-            {% endcomment %}
         </div>
+        {% endcomment %}
+    </div>
+    <div class="container">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    {% block content %}
+    {% endblock %}
+    <footer class="footer">
         <div class="container">
-        
-            
-
-
-
-
-
-
-
-
-
-
-                
-
-
-
-
-
-
-
-
+            <a href="{% url 'credits'%}" class="text_footer">Skills Searcher team all rights reserved</a>
         </div>
-        {% block content %}
-        {% endblock %}
-        <footer class="footer">
-            <div class="container">
-                <a href="{% url 'credits'%}" class="text_footer">Skills Searcher team all rights reserved</a>
-            </div>
-        </footer>
-    </body>
+    </footer>
+</body>
+
 </html>

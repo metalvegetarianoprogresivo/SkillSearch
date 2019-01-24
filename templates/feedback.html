@@ -33,34 +33,35 @@
 
 <body>
     {% block content %}
-    <div class=" container">
-        <h1 class="mt-4"> Feedback </h1>
-        <div class="form-group col-md-4">
-            <label for="inputState">View of the Skills searcher</label>
-            <select id="inputState" class="form-control">
-                <option selected>Choose an option</option>
-                <option>Home</option>
-                <option>Search</option>
-                <option>Accounts</option>
-                <option>Who we are</option>
-                <option>FAQ</option>
-                <option>Feedback</option>
-                <option>LogOut</option>
-                <option>LogIn</option>
-                <option>Other</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="exampleFormControlTextarea1">Please describe the feedback</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-        </div>
+    <div class=" container mt-4  mb-4" style="background:darkgray;  border-radius: 0px 25px 0px 35px;">
+        <br>
+        <h1 class="text-center"> Feedback </h1>
         <form>
+            <div class="form-group col-md-4" style="padding: 0px;">
+                <label for="inputState" >Select a Skills searcher view</label>
+                <select id="inputState" class="form-control">
+                    <option selected>Choose an option</option>
+                    <option>Home</option>
+                    <option>Search</option>
+                    <option>Accounts</option>
+                    <option>Who we are</option>
+                    <option>FAQ</option>
+                    <option>Feedback</option>
+                    <option>LogOut</option>
+                    <option>LogIn</option>
+                    <option>Other</option>
+                </select>
+            </div>
             <div class="form-group">
+                <label for="exampleFormControlTextarea1">Please describe the feedback</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                 <label for="exampleFormControlFile1">Just if you want to attach a file </label>
                 <input type="file" class="form-control-file" id="exampleFormControlFile1" style="background: white">
             </div>
         </form>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <br>
+        <br>
     </div>
     <br><br><br>
     {% endblock %}
