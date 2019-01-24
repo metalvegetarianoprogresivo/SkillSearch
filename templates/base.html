@@ -80,7 +80,7 @@
     <nav class="navbar navbar-expand-md bg-light navbar-light fixed-top">
 
 
-        <div id="wrapper">
+        <div class="mr-2" id="wrapper">
             <div class="overlay"></div>
 
             <!-- Sidebar -->
@@ -94,16 +94,24 @@
                         alt="Test" class="ml-5 text-center rounded-circle mt-1" style="width: 110px; height: 110px; ">
                     <h3 class="text-center ml-4 mt-2 mb-3" style="color: white;"> Alan Muñoz N</h3>
                     <li>
-                            <form class="form-inline search-form justify-content-center" action="/search">
-                                <input id="input-search" size="11" class="form-control" type="text" name="q" placeholder="Search skills or names"
-                                    {% if q %}value="{{ q }}" {% endif %}>
-                                    <button class="btn btn-success ml-1" type="submit"><span class="oi oi-magnifying-glass"></span>
-                            </form>
-                    </li>
-                    <li><a href="/"><span class="oi oi-home"></span> Home</a></li>
-                    <li><a href="/account"><span class="oi oi-cart"></span> Accounts</a></li>
-                    <li><a href="/credits"><span class="oi oi-info"></span> Who we are?</a></li>
-                    <!-- <li class="dropdown">
+
+                        <form class="form-inline search-form justify-content-center" action="/search">
+                            <div class="row">
+                            <div class="col-9 " style="padding:0px;">
+                            <input id="input-search" size="11" class="form-control" type="text" name="q" placeholder="Search skills or names"
+                                {% if q %}value="{{ q }}" {% endif %}>
+        </div>
+        <div class="col-3" style="padding:0px;">
+            <button class="btn btn-success mr-2" type="submit"><span class="oi oi-magnifying-glass"></span>
+            </button>
+        </div>
+                            </div>
+        </form>
+        </li>
+        <li><a href="/"><span class="oi oi-home"></span> Home</a></li>
+        <li><a href="/account"><span class="oi oi-cart"></span> Accounts</a></li>
+        <li><a href="/credits"><span class="oi oi-info"></span> Who we are?</a></li>
+        <!-- <li class="dropdown">
                             <a href="#works" class="dropdown-toggle"  data-toggle="dropdown">Works <span class="caret"></span></a>
                           <ul class="dropdown-menu animated fadeInLeft" role="menu">
                            <div class="dropdown-header">Dropdown heading</div>
@@ -114,69 +122,69 @@
                            <li><a href="#awards">Awards</a></li>
                            </ul>
                            </li> -->
-                    <li><a href="/faq"><span class="oi oi-people"></span> FAQ</a></li>
-                    <li><a href="/feedback"><span class="oi oi-thumb-up"></span> Feedback</a></li>
-                    <li><a href="{% url 'logout'%}"><span class="oi oi-power-standby"></span> Log Out</a></li>
-                </ul>
-            </nav>
-            <!-- /#sidebar-wrapper -->
+        <li><a href="/faq"><span class="oi oi-people"></span> FAQ</a></li>
+        <li><a href="/feedback"><span class="oi oi-thumb-up"></span> Feedback</a></li>
+        <li><a href="{% url 'logout'%}"><span class="oi oi-power-standby"></span> Log Out</a></li>
+        </ul>
+    </nav>
+    <!-- /#sidebar-wrapper -->
 
-            <!-- Page Content -->
-            <div id="page-content-wrapper">
-                <button type="button" class="hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
-                    <span class="hamb-top"></span>
-                    <span class="hamb-middle"></span>
-                    <span class="hamb-bottom"></span>
-                </button>
-            </div>
-            <!-- /#page-content-wrapper -->
-
-        </div>
-        <!-- /#wrapper -->
-
-
-
-
-        <a class="ml-5 navbar-brand" href="https://www.intersysconsulting.com/">
-            <img width="159" height="23" src="https://www.intersysconsulting.com/wp-content/themes/intersys17/dist/images/intersys-logo.svg"
-                alt="Intersys Consulting, Inc.">
-        </a>
-
-        <!-- Links -->
-        <div class="d-none d-md-block">
-        </div>
-        <li class="nav-item d-none d-sm-block d-md-none navbar-nav mr-auto">
-            <a class=" nav-link" href="/"><span class="oi oi-home"></span> Home</a>
-        </li>
-        <a id="buttonCart" class="btn btn-info mx-1 sm-block d-none d-sm-block d-md-none d-block d-sm-none" href="{% url 'roster_detail' %}">
-            <span id="roster_count1" class="badge badge-sm badge-pill badge-info">0</span>
-            <span class="oi oi-cart"></span>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <button type="button" class="hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
+            <span class="hamb-top"></span>
+            <span class="hamb-middle"></span>
+            <span class="hamb-bottom"></span>
         </button>
-        <div class="collapse navbar-collapse float-right" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item d-block d-sm-none d-sm-none d-md-block d-none ">
-                    <a class=" nav-link" href="/"><span class="oi oi-home"></span> Home</a>
-                </li>
-            </ul>
+    </div>
+    <!-- /#page-content-wrapper -->
 
-            <form class="form-inline my-2 my-lg-0 search-form justify-content-center" action="/search">
-                <input id="input-search" class="form-control mr-sm-3" type="text" name="q" placeholder="Search skills or names"
-                    {% if q %}value="{{ q }}" {% endif %}>
-                <button class="btn btn-success my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass"></span>
-                </button>
-                <a id="buttonCart" class="btn btn-info mx-1 sm-block d-sm-none d-md-block d-none mr-4" href="{% url 'roster_detail' %}">
-                    <span id="roster_count2" class="badge badge-sm badge-pill badge-info">0</span>
-                    <span class="oi oi-cart"></span>
-                    <!-- <a href="{% url 'logout'%}" class="btn btn-info btn-dark ml-1 mr-4">
+    </div>
+    <!-- /#wrapper -->
+
+
+
+
+    <a class="ml-5 navbar-brand" href="https://www.intersysconsulting.com/">
+        <img width="159" height="23" src="https://www.intersysconsulting.com/wp-content/themes/intersys17/dist/images/intersys-logo.svg"
+            alt="Intersys Consulting, Inc.">
+    </a>
+
+    <!-- Links -->
+    <div class="d-none d-md-block">
+    </div>
+    <li class="nav-item d-none d-sm-block d-md-none navbar-nav mr-auto">
+        <a class=" nav-link" href="/"><span class="oi oi-home"></span> Home</a>
+    </li>
+    <a id="buttonCart" class="btn btn-info mx-1 sm-block d-none d-sm-block d-md-none d-block d-sm-none" href="{% url 'roster_detail' %}">
+        <span id="roster_count1" class="badge badge-sm badge-pill badge-info">0</span>
+        <span class="oi oi-cart"></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse float-right" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item d-block d-sm-none d-sm-none d-md-block d-none ">
+                <a class=" nav-link" href="/"><span class="oi oi-home"></span> Home</a>
+            </li>
+        </ul>
+
+        <form class="form-inline my-2 my-lg-0 search-form justify-content-center" action="/search">
+            <input id="input-search" class="form-control mr-sm-3" type="text" name="q" placeholder="Search skills or names"
+                {% if q %}value="{{ q }}" {% endif %}>
+            <button class="btn btn-success my-2 my-sm-0" type="submit"><span class="oi oi-magnifying-glass"></span>
+            </button>
+            <a id="buttonCart" class="btn btn-info mx-1 sm-block d-sm-none d-md-block d-none mr-4" href="{% url 'roster_detail' %}">
+                <span id="roster_count2" class="badge badge-sm badge-pill badge-info">0</span>
+                <span class="oi oi-cart"></span>
+                <!-- <a href="{% url 'logout'%}" class="btn btn-info btn-dark ml-1 mr-4">
 		     <span class="glyphicon glyphicon-log-out"></span> Log out
 		 </a> -->
-                </a>
-            </form>
-        </div>
+            </a>
+        </form>
+    </div>
     </nav>
     <div class="container" style="top:30px; padding-top: 60px;">
         {% comment %}
