@@ -1,11 +1,17 @@
-## What?
+## What does this do?
 ...
 
-## Why?
+## This PR fixes #XXX
 ...
 
-## Testing / Proof
+(If it close any current issue, tag it.)
+
+## Picture / GIF of the solution
 ...
+
+## Closing issues
+
+Put closes #XXXX in your comment to auto-close the issue that your PR fixes (if such).
 
 ## How can this change be undone in case of failure?
 
